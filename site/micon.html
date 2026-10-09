@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Micon</title>
+<meta name="description" content="Micon: sản phẩm sắp ra mắt của Bravinall.">
+<link rel="icon" href="assets/icon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.soon-hero{min-height:calc(100svh - 62px - 120px);display:flex;align-items:center;padding-block:56px}
+.soon-hero .wrap{width:100%;display:grid;gap:22px}
+.big{font-size:clamp(56px,13vw,190px);font-weight:700;letter-spacing:-.05em;line-height:.9}
+.slate{display:inline-grid;grid-template-columns:auto auto;gap:6px 22px;padding:18px 22px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);font:500 13px/1.4 var(--f-mono);color:var(--muted);justify-self:start}
+.slate b{color:var(--fg);font-weight:500}
+.bars{display:flex;gap:4px;height:10px;max-width:520px}
+.bars i{flex:1;border-radius:3px;background:var(--panel)}
+.bars i:nth-child(-n+3){background:var(--iris)}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Bravinall</a>
+    <nav class="nav" aria-label="Sản phẩm">
+      <a href="bravin.html">Bravin</a>
+      <a href="micon.html" aria-current="page">Micon<span class="soon">sắp có</span></a>
+      <a href="antifact.html">Antifact<span class="soon">sắp có</span></a>
+    </nav>
+  </div>
+</header>
+<main class="soon-hero">
+  <div class="wrap">
+    <p class="eyebrow">Bravinall · Sắp ra mắt</p>
+    <h1 class="big">Micon</h1>
+    <p class="muted" style="max-width:46ch;font-size:18px">Micon đang được phát triển. Thông tin và bản dùng thử sẽ được đăng tại đây khi sẵn sàng.</p>
+    <div class="slate" aria-label="Trạng thái">
+      <span>Dự án</span><b>Micon</b>
+      <span>Trạng thái</span><b>Đang phát triển</b>
+      <span>Người làm</span><b>Phạm Việt Hà</b>
+    </div>
+    <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px">
+      <a class="btn primary" href="bravin.html">Xem Bravin trong lúc chờ</a>
+      <a class="btn" href="index.html">Về Bravinall</a>
+    </div>
+  </div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Phạm Việt Hà</span>
+    <a href="index.html">Bravinall</a><a href="bravin.html">Bravin</a>
+    <span class="tc">Micon</span>
+  </div>
+</footer>
+</body>
+</html>

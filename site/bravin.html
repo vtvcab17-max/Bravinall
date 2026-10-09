@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bravin</title>
+<meta name="description" content="Bravin: dựng video nhiều lớp với keyframe, mask, chỉnh màu kiểu node và trợ lý AI trên web, Android và Windows.">
+<link rel="icon" href="assets/icon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+html{scroll-snap-type:y proximity;scroll-padding-top:62px}
+body{padding-bottom:76px}
+.slide{position:relative;min-height:calc(100svh - 62px - 76px);display:flex;align-items:center;scroll-snap-align:start;padding-block:clamp(40px,6vw,72px);border-bottom:1px solid var(--line)}
+.slide>.wrap{width:100%}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,80px);align-items:center}
+.split.rev>:first-child{order:2}
+.kicker{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.kicker .tc{color:var(--gold);font-size:13px}
+.kicker .eyebrow{color:var(--muted)}
+.slide h2{font-size:clamp(30px,4.6vw,60px)}
+.slide .body{margin-top:18px;font-size:clamp(16px,1.35vw,18px);max-width:52ch;color:color-mix(in srgb,var(--fg) 86%,var(--muted))}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chip{font:500 13px/1 var(--f-body);padding:9px 12px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
+.keys{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.key{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.key kbd{font:600 13px/1 var(--f-mono);color:var(--fg);min-width:30px;text-align:center;padding:8px 9px;border-radius:8px;background:var(--panel);border:1px solid var(--line);border-bottom-width:3px}
+.stage{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:clamp(14px,2vw,22px);overflow:hidden}
+.stage svg{display:block;width:100%;height:auto}
+
+/* hero */
+.hero h1{font-size:clamp(56px,11vw,168px);font-weight:700;letter-spacing:-.05em;line-height:.9}
+.hero h1 em{font-style:normal;color:var(--iris)}
+.hero .body{font-size:clamp(17px,1.7vw,22px);max-width:40ch}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.ed{display:grid;gap:10px}
+.ed .pv{aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;position:relative;background:#000}
+.ed .pv::before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,#5b4be0,#f2c14e,#1f6f68,#8b7cff,#5b4be0);filter:blur(30px) saturate(1.2);animation:spin 16s linear infinite}
+.ed .pv::after{content:"BRAVIN";position:absolute;left:8%;bottom:12%;font:700 clamp(18px,3vw,34px)/1 var(--f-display);letter-spacing:-.03em;color:#fff;text-shadow:0 4px 18px rgba(0,0,0,.4)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ed .tl{position:relative;display:grid;gap:6px;padding:12px 10px;border-radius:12px;background:var(--ink)}
+.ed .tr{display:flex;gap:4px;height:26px}
+.ed .tr i{display:block;border-radius:6px;flex:1;background:var(--clip-a)}
+.ed .tr.v i:nth-child(2n){background:#3a3172}
+.ed .tr.t i{background:#4a3f8f;flex:.6}.ed .tr.t i:nth-child(odd){opacity:0;flex:.9}
+.ed .tr.a i{background:var(--clip-b);background-image:repeating-linear-gradient(90deg,transparent 0 3px,rgba(160,230,200,.35) 3px 4px)}
+.ed .ph{position:absolute;top:4px;bottom:4px;width:2px;background:var(--gold);left:10px;animation:sweep 9s linear infinite;box-shadow:0 0 12px var(--gold)}
+.ed .ph::before{content:"";position:absolute;top:-4px;left:-5px;border:6px solid transparent;border-top-color:var(--gold)}
+@keyframes sweep{to{left:calc(100% - 12px)}}
+.ed .tcbar{display:flex;justify-content:space-between;font:500 12px/1 var(--f-mono);color:var(--muted)}
+
+/* timeline slide */
+.rows{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;align-items:center;font:500 11px/1 var(--f-mono);color:var(--muted)}
+.row .lane{position:relative;height:34px;border-radius:8px;background:var(--ink)}
+.row .clip{position:absolute;top:3px;bottom:3px;border-radius:6px;font:500 11px/28px var(--f-body);color:var(--fg);padding-left:8px;white-space:nowrap;overflow:hidden}
+.c1{background:#3a3172}.c2{background:var(--clip-a)}.c3{background:var(--clip-b)}.c4{background:var(--clip-c)}.c5{background:#4a3f8f}
+.row .clip.sel{box-shadow:inset 0 0 0 2px var(--gold)}
+.rp2{animation:rp2 3.6s ease-in-out infinite}.rp3{animation:rp3 3.6s ease-in-out infinite}.rp4{animation:rp4 3.6s ease-in-out infinite}
+@keyframes rp2{0%,20%,100%{width:20%}50%,70%{width:12%}}
+@keyframes rp3{0%,20%,100%{left:46%}50%,70%{left:38%}}
+@keyframes rp4{0%,20%,100%{left:77%}50%,70%{left:69%}}
+
+/* effect tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tile{aspect-ratio:1;max-width:100%;border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:10px;font:600 12px/1.2 var(--f-body);color:#fff}
+.tile::before{content:"";position:absolute;inset:0;z-index:0}
+.tile span{position:relative;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.t1::before{background:radial-gradient(circle at 60% 40%,#fff 0 6%,#f2c14e 12%,#5b4be0 45%,#111 80%)}
+.t2::before{background:linear-gradient(45deg,transparent 47%,#fff 50%,transparent 53%),linear-gradient(-45deg,transparent 47%,#fff 50%,transparent 53%),radial-gradient(circle,#ffe7a8 0 8%,#1b1530 50%)}
+.t3::before{background:repeating-conic-gradient(from 0deg at 50% 0%,rgba(255,231,160,.55) 0 4deg,transparent 4deg 12deg),#1d1a33}
+.t4::before{background:linear-gradient(90deg,#ff3b6b 0 33%,#3bff9e 33% 66%,#3b8bff 66%);filter:blur(3px);opacity:.85}
+.t5::before{background:linear-gradient(#c48a4e,#5b3a26);filter:contrast(1.2) sepia(.4)}
+.t6::before{background:repeating-linear-gradient(0deg,#2a2d38 0 3px,#3b3f4c 3px 6px)}
+.t7::before{background:linear-gradient(135deg,#1f6f68,#0f2b2a)}
+.t8::before{background:linear-gradient(90deg,rgba(139,124,255,.9),rgba(139,124,255,.1)),repeating-linear-gradient(90deg,#15161c 0 10px,#22232b 10px 20px)}
+
+/* audio */
+.meter{display:flex;align-items:end;gap:14px;margin-top:14px}
+.meter .v{font:700 clamp(34px,5vw,56px)/1 var(--f-display);color:var(--gold);letter-spacing:-.03em}
+.meter small{font:500 12px/1.4 var(--f-mono);color:var(--muted)}
+canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:var(--ink)}
+
+/* devices */
+.devices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.dev{display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
+.dev .shape{height:120px;display:flex;align-items:center;justify-content:center}
+.dev .shape i{display:block;border:3px solid color-mix(in srgb,var(--fg) 60%,transparent);border-radius:12px;background:linear-gradient(160deg,color-mix(in srgb,var(--iris-deep) 45%,var(--ink)),var(--ink))}
+.dev h3{font-size:20px}
+.dev ul{margin:0;padding-left:18px;color:color-mix(in srgb,var(--fg) 86%,var(--muted));font-size:14px;display:grid;gap:4px}
+
+/* export spec */
+.spec{width:100%;border-collapse:collapse;font-size:14px}
+.spec th,.spec td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.spec th{font:500 11px/1.4 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);width:34%}
+.spec td{font-variant-numeric:tabular-nums}
+
+/* download */
+.dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:34px}
+.get{display:flex;flex-direction:column;gap:12px;padding:26px;border-radius:var(--r);border:1px solid var(--line);background:var(--panel);text-decoration:none;transition:transform .2s,border-color .2s}
+.get:hover{transform:translateY(-3px);border-color:var(--iris)}
+.get .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--ink);border:1px solid var(--line)}
+.get .ic svg{width:24px;height:24px}
+.get h3{font-size:22px}
+.get .meta{font:500 12px/1.5 var(--f-mono);color:var(--muted)}
+.get .act{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font:600 15px/1 var(--f-body);color:#120f2a;background:var(--iris);padding:13px 18px;border-radius:999px;align-self:flex-start}
+.get.web .act{background:var(--gold)}
+.notes{margin-top:24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;color:var(--muted);font-size:14px}
+.notes b{color:var(--fg);font-weight:600}
+
+/* scrubber */
+.scrub{position:fixed;left:0;right:0;bottom:0;z-index:50;background:color-mix(in srgb,var(--ink) 90%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px))}
+.scrub .in{max-width:1320px;margin-inline:auto;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center}
+.scrub .tcv{font:500 14px/1 var(--f-mono);color:var(--gold);font-variant-numeric:tabular-nums;min-width:86px}
+.scrub .track{position:relative;display:flex;gap:3px;height:36px}
+.scrub .track button{flex:1;min-width:0;border:0;border-radius:6px;background:var(--panel);color:var(--muted);font:500 11px/36px var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 8px;cursor:pointer;text-align:left;transition:background-color .2s,color .2s}
+.scrub .track button.on{background:color-mix(in srgb,var(--iris) 34%,var(--panel));color:var(--fg)}
+.scrub .track .head{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--gold);left:0;pointer-events:none;box-shadow:0 0 10px var(--gold)}
+.scrub .nav2{display:flex;gap:6px}
+.scrub .nav2 button{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;font:600 16px/1 var(--f-body)}
+
+@media (max-width:980px){
+  .split,.split.rev{grid-template-columns:1fr}
+  .split.rev>:first-child{order:0}
+  .devices,.dl,.notes{grid-template-columns:1fr}
+  .tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .scrub .track button{font-size:0;padding:0}
+  .scrub .nav2{display:none}
+  .scrub .in{grid-template-columns:auto minmax(0,1fr)}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row{grid-template-columns:44px minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .ed .pv::before,.ed .ph,.rp2,.rp3,.rp4{animation:none}
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Bravinall</a>
+    <nav class="nav" aria-label="Sản phẩm">
+      <a href="bravin.html" aria-current="page">Bravin</a>
+      <a href="micon.html">Micon<span class="soon">sắp có</span></a>
+      <a href="antifact.html">Antifact<span class="soon">sắp có</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="deck">
+  <!-- 1 -->
+  <section class="slide hero" id="mo-dau" data-label="Mở đầu">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Bravin 4.1 · Web · Android · Windows</p>
+        <h1 style="margin-top:18px">Bravin<em>.</em></h1>
+        <p class="body">Dựng video nhiều lớp với keyframe, mask, chỉnh màu kiểu node và trợ lý AI. Mở trên trình duyệt, cài lên điện thoại, máy tính bảng hay máy tính, rồi dựng ngay.</p>
+        <div class="cta">
+          <a class="btn primary" href="#tai-ve">Tải về
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          <a class="btn" href="https://bravin.vtvcab17.workers.dev/" target="_blank" rel="noopener">Mở bản web</a>
+        </div>
+      </div>
+      <div class="ed stage rise" aria-hidden="true">
+        <div class="pv"></div>
+        <div class="tcbar"><span>00:00:00:00</span><span>Bravin · 1080 × 1920 · 30 fps</span></div>
+        <div class="tl">
+          <div class="tr t"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="tr v"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="tr a"><i></i></div>
+          <div class="ph"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" id="timeline" data-label="Timeline">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:00:12</span><span class="eyebrow">Timeline</span></div>
+        <h2>Cắt ghép như trên phần mềm chuyên nghiệp.</h2>
+        <p class="body">Timeline nhiều track cho video, video phủ, chữ, sticker, hiệu ứng và âm thanh. Đủ bộ công cụ sửa kiểu Premiere, chọn nhiều clip bằng kéo chuột, menu chuột phải ở mọi chỗ và lịch sử thao tác.</p>
+        <div class="keys">
+          <span class="key"><kbd>V</kbd>Chọn</span><span class="key"><kbd>C</kbd>Dao cắt</span><span class="key"><kbd>B</kbd>Ripple</span><span class="key"><kbd>N</kbd>Rolling</span>
+          <span class="key"><kbd>Y</kbd>Slip</span><span class="key"><kbd>U</kbd>Slide</span><span class="key"><kbd>R</kbd>Rate stretch</span><span class="key"><kbd>P</kbd>Bút</span>
+          <span class="key"><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd>Tua</span><span class="key"><kbd>I</kbd><kbd>O</kbd>Điểm vào / ra</span>
+        </div>
+      </div>
+      <div class="stage rise" aria-hidden="true">
+        <div class="rows">
+          <div class="row"><span>Chữ</span><div class="lane"><span class="clip c5" style="left:4%;width:30%">Tiêu đề</span><span class="clip c5" style="left:52%;width:26%">Phụ đề</span></div></div>
+          <div class="row"><span>Phủ</span><div class="lane"><span class="clip c4" style="left:30%;width:24%">Logo</span></div></div>
+          <div class="row"><span>Video</span><div class="lane"><span class="clip c1" style="left:0;width:24%">Cảnh 1</span><span class="clip c2 sel rp2" style="left:25%;width:20%">Cảnh 2</span><span class="clip c1 rp3" style="left:46%;width:30%">Cảnh 3</span><span class="clip c2 rp4" style="left:77%;width:22%">Cảnh 4</span></div></div>
+          <div class="row"><span>Voice</span><div class="lane"><span class="clip c3" style="left:0;width:72%">Giọng đọc</span></div></div>
+          <div class="row"><span>Nhạc</span><div class="lane"><span class="clip c3" style="left:0;width:100%">Nhạc nền · ducking</span></div></div>
+        </div>
+        <div class="chips"><span class="chip">Ripple / Roll / Slip / Slide</span><span class="chip">Chọn nhiều clip</span><span class="chip">Nhãn màu</span><span class="chip">Marker có tên</span><span class="chip">Nhập FCP XML</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide" id="keyframe" data-label="Keyframe">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:00:24</span><span class="eyebrow">Keyframe và Bút</span></div>
+        <h2>Mọi thông số đều đặt key được.</h2>
+        <p class="body">Bảng Effect Controls kiểu Premiere gom vị trí, cỡ, góc xoay, lật, độ mờ, độ nhoè, hoà trộn, tốc độ và âm lượng lên một thước thời gian. Kéo key để đổi thời điểm, chuột phải để chọn kiểu chuyển động. Speed ramp làm chậm rồi tăng tốc trong cùng một clip.</p>
+        <p class="body">Công cụ Bút vẽ hình và mask bằng điểm bezier: bấm để đặt điểm, kéo để uốn, Alt để đổi góc nhọn sang cong.</p>
+        <div class="chips"><span class="chip">Effect Controls</span><span class="chip">Speed ramp</span><span class="chip">Mẫu chuyển động</span><span class="chip">Bút bezier</span><span class="chip">Key độ mờ trên timeline</span></div>
+      </div>
+      <div class="stage rise" aria-hidden="true">
+        <svg viewBox="0 0 460 280">
+          <g stroke="rgba(236,235,243,.08)">
+            <path d="M40 40H440M40 100H440M40 160H440M40 220H440"/>
+            <path d="M40 30V250M140 30V250M240 30V250M340 30V250M440 30V250"/>
+          </g>
+          <text x="40" y="22" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="11">Tốc độ</text>
+          <text x="440" y="270" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="11" text-anchor="end">00:00:04</text>
+          <path d="M40 160 C 110 160, 120 220, 200 220 S 300 60, 440 60" fill="none" stroke="#8b7cff" stroke-width="3"/>
+          <path d="M200 220 L150 220 M200 220 L250 220" stroke="#ecebf3" stroke-width="1.2"/>
+          <circle cx="150" cy="220" r="4" fill="#ecebf3"/><circle cx="250" cy="220" r="4" fill="#ecebf3"/>
+          <g fill="#f2c14e"><path d="M40 152l8 8-8 8-8-8z"/><path d="M200 212l8 8-8 8-8-8z"/><path d="M440 52l8 8-8 8-8-8z"/></g>
+          <text x="208" y="246" fill="#f2c14e" font-family="JetBrains Mono,monospace" font-size="11">0,25×</text>
+          <text x="400" y="50" fill="#f2c14e" font-family="JetBrains Mono,monospace" font-size="11">3×</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide" id="mau" data-label="Chỉnh màu">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:00:36</span><span class="eyebrow">Chỉnh màu</span></div>
+        <h2>Lumetri và bảng node kiểu DaVinci.</h2>
+        <p class="body">Bánh xe màu Lift, Gamma, Gain, Offset, đường cong, hue curves, qualifier chọn vùng theo màu và cửa sổ power window. Nối các node bằng dây trên canvas: nối tiếp, song song, theo lớp hoặc ngoài vùng. Nạp LUT .cube, xem waveform, parade, vectorscope, histogram.</p>
+        <div class="chips"><span class="chip">Alt+S nối tiếp</span><span class="chip">Alt+P song song</span><span class="chip">Alt+L lớp</span><span class="chip">LUT .cube</span><span class="chip">Gallery still</span></div>
+      </div>
+      <div class="stage rise" aria-hidden="true">
+        <svg viewBox="0 0 470 260">
+          <g fill="none" stroke-width="2.4">
+            <path d="M100 130 C 140 130, 140 80, 170 80" stroke="#6fd38a"/>
+            <path d="M100 130 C 140 130, 140 190, 170 190" stroke="#6fd38a"/>
+            <path d="M270 80 C 300 80, 300 130, 320 130" stroke="#6fd38a"/>
+            <path d="M270 190 C 300 190, 300 140, 320 140" stroke="#6fd38a"/>
+            <path d="M400 135 L 430 135" stroke="#6fd38a"/>
+          </g>
+          <g font-family="Be Vietnam Pro,sans-serif" font-size="12" font-weight="600" fill="#ecebf3">
+            <rect x="14" y="106" width="86" height="48" rx="10" fill="#2a4a36"/><text x="30" y="135">Nguồn</text>
+            <rect x="170" y="52" width="100" height="56" rx="10" fill="#4a3f8f"/><text x="184" y="76">01 Cân sáng</text><text x="184" y="96" font-size="10" fill="#c9c3ff">Lift · Gain</text>
+            <rect x="170" y="162" width="100" height="56" rx="10" fill="#4a3f8f"/><text x="184" y="186">02 Da người</text><text x="184" y="206" font-size="10" fill="#c9c3ff">Qualifier · W1</text>
+            <rect x="320" y="108" width="80" height="56" rx="10" fill="#6b5a2f"/><text x="332" y="132">Trộn</text><text x="332" y="150" font-size="10" fill="#f2dfa8">song song</text>
+            <rect x="430" y="114" width="36" height="42" rx="9" fill="#2a4a36"/><text x="437" y="140" font-size="11">Ra</text>
+          </g>
+          <g fill="#6fd38a"><circle cx="100" cy="130" r="5"/><circle cx="170" cy="80" r="5"/><circle cx="170" cy="190" r="5"/><circle cx="270" cy="80" r="5"/><circle cx="270" cy="190" r="5"/><circle cx="320" cy="130" r="5"/><circle cx="320" cy="140" r="5"/><circle cx="400" cy="135" r="5"/></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" id="mask" data-label="Mask">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:00:48</span><span class="eyebrow">Mask và tách nền</span></div>
+        <h2>Mask đặt key, tự bám theo chuyển động.</h2>
+        <p class="body">Mask elip, chữ nhật, đường gradient, trái tim, ngôi sao và mask vẽ bằng bút. Cộng, trừ, giao nhiều mask, làm mềm cạnh, nới rộng, đảo ngược. Theo dõi chuyển động để mask đi theo người trong khung. Tách nền xanh và tách người khỏi phông không cần phông xanh.</p>
+        <div class="chips"><span class="chip">Cộng · Trừ · Giao</span><span class="chip">Làm mềm cạnh</span><span class="chip">Tracking</span><span class="chip">Tách nền xanh</span><span class="chip">Tách người</span></div>
+      </div>
+      <div class="stage rise" aria-hidden="true">
+        <svg viewBox="0 0 460 280">
+          <defs><radialGradient id="soft"><stop offset=".62" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+            <linearGradient id="scene" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f6f68"/><stop offset="1" stop-color="#2b2552"/></linearGradient>
+            <mask id="m"><rect width="460" height="280" fill="#000"/><ellipse cx="250" cy="140" rx="120" ry="100" fill="url(#soft)"/></mask></defs>
+          <rect width="460" height="280" rx="14" fill="#0f1014"/>
+          <rect width="460" height="280" rx="14" fill="url(#scene)" mask="url(#m)"/>
+          <ellipse cx="250" cy="140" rx="96" ry="80" fill="none" stroke="#8b7cff" stroke-width="2"/>
+          <ellipse cx="250" cy="140" rx="120" ry="100" fill="none" stroke="#8b7cff" stroke-width="1.2" stroke-dasharray="3 6"/>
+          <g fill="#f2c14e"><circle cx="90" cy="200" r="3"/><circle cx="120" cy="186" r="3"/><circle cx="152" cy="170" r="3"/><circle cx="186" cy="158" r="3"/><circle cx="218" cy="147" r="3"/><circle cx="250" cy="140" r="5"/></g>
+          <text x="20" y="262" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="11">Tracking · 6 khung · 0,8 s</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide" id="hieu-ung" data-label="Hiệu ứng">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:00</span><span class="eyebrow">Hiệu ứng và sửa lỗi</span></div>
+        <h2>Không cần mua thêm plugin.</h2>
+        <p class="body">Hơn 40 hiệu ứng và 23 chuyển cảnh, gói hiệu ứng ánh sáng Glow, Glint, Rays, Prism. Bộ công cụ sửa lỗi có sẵn: khử nhiễu hạt, chống nhấp nháy, ổn định hình rung, slow-motion mượt bằng khung hình nội suy, làm mịn da và giả lập phim nhựa.</p>
+        <div class="chips"><span class="chip">Khử nhiễu</span><span class="chip">Chống nhấp nháy</span><span class="chip">Ổn định hình</span><span class="chip">Slow-motion mượt</span><span class="chip">Làm mịn da</span><span class="chip">Giả lập phim</span></div>
+      </div>
+      <div class="stage rise" aria-hidden="true">
+        <div class="tiles">
+          <div class="tile t1"><span>Glow</span></div><div class="tile t2"><span>Glint</span></div><div class="tile t3"><span>Rays</span></div><div class="tile t4"><span>Prism</span></div>
+          <div class="tile t5"><span>Phim 250D</span></div><div class="tile t6"><span>Khử nhiễu</span></div><div class="tile t7"><span>Ổn định hình</span></div><div class="tile t8"><span>Slow 25%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide" id="am-thanh" data-label="Âm thanh">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:01:12</span><span class="eyebrow">Âm thanh và phụ đề</span></div>
+        <h2>Tiếng chuẩn âm lượng mạng xã hội.</h2>
+        <p class="body">Đo và chuẩn hoá độ to theo LUFS, khử ồn, tự hạ nhạc khi có giọng nói, cân trái phải, bàn trộn từng track. Đồng bộ tiếng thu rời với video theo dạng sóng. Tạo phụ đề tự động từ giọng nói, kiểu karaoke sáng theo từng chữ, nhập và xuất SRT.</p>
+        <div class="chips"><span class="chip">LUFS</span><span class="chip">Khử ồn</span><span class="chip">Ducking</span><span class="chip">Đồng bộ âm thanh</span><span class="chip">Phụ đề tự động</span><span class="chip">SRT</span></div>
+      </div>
+      <div class="stage rise">
+        <canvas class="wave" id="wave" width="900" height="300" aria-label="Dạng sóng âm thanh minh hoạ" role="img"></canvas>
+        <div class="meter"><span class="v tc">−14,0</span><small>LUFS tích hợp<br>chuẩn TikTok · YouTube</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide" id="ai" data-label="Trợ lý AI">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:24</span><span class="eyebrow">Trợ lý AI</span></div>
+        <h2>Gõ lệnh, AI sửa timeline cho bạn xem.</h2>
+        <p class="body">“Thay cảnh ở giây 30”, “thêm phụ đề vàng”, “nhạc nhỏ thêm 4 dB”: trợ lý thao tác từng bước ngay trên timeline, hoàn tác được. Dựng luồng nhiều AI trên canvas với node điều kiện, gộp, lặp lại. Dán mã API là Bravin tự nhận nhà cung cấp và chọn model, hoặc dùng AI chạy trên máy như Ollama, LM Studio, hay model nhúng sẵn.</p>
+        <div class="chips"><span class="chip">Claude</span><span class="chip">OpenAI</span><span class="chip">Gemini</span><span class="chip">DeepSeek</span><span class="chip">Groq</span><span class="chip">Ollama</span><span class="chip">Model nhúng</span></div>
+      </div>
+      <div class="stage rise" aria-hidden="true">
+        <svg viewBox="0 0 470 250">
+          <g fill="none" stroke-width="2.4">
+            <path d="M118 70 C 150 70, 150 70, 172 70" stroke="#b9b0ff"/>
+            <path d="M292 70 C 320 70, 320 170, 340 170" stroke="#f2c14e"/>
+            <path d="M118 80 C 140 120, 150 170, 172 170" stroke="#b9b0ff"/>
+            <path d="M292 170 C 310 170, 320 170, 340 170" stroke="#b9b0ff"/>
+            <path d="M440 190 C 470 230, 120 240, 160 190" stroke="#ff9d6c" stroke-dasharray="5 5"/>
+          </g>
+          <g font-family="Be Vietnam Pro,sans-serif" font-size="12" font-weight="600" fill="#ecebf3">
+            <rect x="8" y="44" width="110" height="52" rx="10" fill="#2a4a36"/><text x="20" y="74">Lệnh của bạn</text>
+            <rect x="172" y="40" width="120" height="60" rx="10" fill="#4a3f8f"/><text x="184" y="64">AI lập kế hoạch</text><text x="184" y="84" font-size="10" fill="#c9c3ff">Claude Sonnet</text>
+            <rect x="172" y="140" width="120" height="60" rx="10" fill="#4a3f8f"/><text x="184" y="164">AI thao tác</text><text x="184" y="184" font-size="10" fill="#c9c3ff">JSON · GPT</text>
+            <rect x="340" y="140" width="100" height="60" rx="10" fill="#6b5a2f"/><text x="352" y="164">Timeline</text><text x="352" y="184" font-size="10" fill="#f2dfa8">Xong · Lỗi ↺</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" id="thiet-bi" data-label="Thiết bị">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:01:36</span><span class="eyebrow">Mọi thiết bị</span></div>
+      <h2 style="max-width:18ch">Một ứng dụng cho điện thoại, máy tính bảng, máy tính và TV.</h2>
+      <div class="devices" style="margin-top:34px">
+        <div class="dev rise"><div class="shape"><i style="width:56px;height:104px"></i></div><h3>Điện thoại Android</h3>
+          <ul><li>Giao diện gọn cho màn hình dọc và ngang</li><li>Chạm 2 ngón hoàn tác, 3 ngón làm lại</li><li>Chụm để phóng to timeline, vuốt để tua</li><li>Chiếu lên TV tự chuyển giao diện máy tính</li></ul></div>
+        <div class="dev rise"><div class="shape"><i style="width:150px;height:100px"></i></div><h3>Máy tính bảng và S Pen</h3>
+          <ul><li>Tự bỏ qua lòng bàn tay khi viết bằng bút</li><li>Rê bút xem trước khung hình</li><li>Nút bên của bút mở menu</li><li>Samsung DeX, chia đôi màn hình, Galaxy Fold</li></ul></div>
+        <div class="dev rise"><div class="shape"><i style="width:170px;height:96px;border-radius:10px 10px 4px 4px"></i></div><h3>Máy tính Windows</h3>
+          <ul><li>Bộ cài một file, không cần quyền quản trị</li><li>Dựng và xuất video không cần mạng</li><li>Đủ phím tắt kiểu Premiere</li><li>Nhiều màn hình, màn xem trước riêng</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide" id="xuat" data-label="Xuất video">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:48</span><span class="eyebrow">Xuất video</span></div>
+        <h2>Xuất MP4 nhanh hơn thời gian thực.</h2>
+        <p class="body">Bravin dùng bộ mã hoá có sẵn trong máy, xuất chính xác từng khung, chọn đoạn In–Out và chuẩn độ to ngay khi xuất. Dự án tự lưu trong máy, mở lại là thấy đúng chỗ đang làm.</p>
+      </div>
+      <div class="stage rise" style="overflow-x:auto">
+        <table class="spec">
+          <tr><th>Độ phân giải</th><td>720p · 1080p · 2K · 4K</td></tr>
+          <tr><th>Tốc độ khung</th><td>24 · 25 · 30 · 50 · 60 fps</td></tr>
+          <tr><th>Khung hình</th><td>9:16 · 16:9 · 1:1 · 4:5</td></tr>
+          <tr><th>Định dạng</th><td>MP4 (H.264 + AAC), ảnh PNG từng khung</td></tr>
+          <tr><th>Độ to</th><td>−14 LUFS (mạng xã hội) hoặc tự chọn</td></tr>
+          <tr><th>Trao đổi</th><td>Dự án .json · phụ đề .srt · nhập FCP XML</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="slide" id="tai-ve" data-label="Tải về">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:02:00</span><span class="eyebrow">Tải về</span></div>
+      <h2 style="max-width:16ch">Chọn nơi bạn muốn dựng.</h2>
+      <div class="dl">
+        <a class="get" href="downloads/Bravin_4.1.apk">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></span>
+          <h3>Android</h3>
+          <span class="meta">Bravin_4.1.apk · 25,7 MB<br>Android 7 trở lên · điện thoại, máy tính bảng</span>
+          <span class="act">Tải APK</span>
+        </a>
+        <a class="get" href="downloads/Bravin_Setup_4.1.exe">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
+          <h3>Windows</h3>
+          <span class="meta">Bravin_Setup_4.1.exe · 4,3 MB<br>Windows 10 và 11 · chạy không cần mạng</span>
+          <span class="act">Tải bộ cài</span>
+        </a>
+        <a class="get web" href="https://bravin.vtvcab17.workers.dev/" target="_blank" rel="noopener">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></span>
+          <h3>Bản web</h3>
+          <span class="meta">bravin.vtvcab17.workers.dev<br>Chrome hoặc Edge · không cần cài</span>
+          <span class="act">Mở ngay</span>
+        </a>
+      </div>
+      <div class="notes">
+        <p><b>Cài APK:</b> mở file bằng My Files, cho phép cài từ nguồn này. Máy Samsung bật Chặn tự động thì tắt tạm khi cài.</p>
+        <p><b>Cài trên Windows:</b> nếu hiện màn hình SmartScreen, chọn More info rồi Run anyway. Bộ cài chỉ cài cho tài khoản đang dùng.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="scrub" aria-label="Các trang trình bày">
+  <div class="in">
+    <span class="tcv" id="tcv">00:00:00</span>
+    <div class="track" id="track"><span class="head" id="head"></span></div>
+    <div class="nav2"><button type="button" id="prev" aria-label="Trang trước">‹</button><button type="button" id="next" aria-label="Trang sau">›</button></div>
+  </div>
+</nav>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Phạm Việt Hà</span>
+    <a href="index.html">Bravinall</a><a href="micon.html">Micon</a><a href="antifact.html">Antifact</a>
+    <span class="tc">Bravin 4.1</span>
+  </div>
+</footer>
+<script>
+(function () {
+  const slides = [...document.querySelectorAll(".slide")], track = document.getElementById("track"), head = document.getElementById("head"), tcv = document.getElementById("tcv");
+  const btns = slides.map((s, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = s.dataset.label; b.title = s.dataset.label; b.setAttribute("aria-label", "Tới " + s.dataset.label); b.onclick = () => go(i); track.appendChild(b); return b; });
+  const cur = () => { const y = scrollY + innerHeight * 0.4; let k = 0; slides.forEach((s, i) => { if (s.offsetTop <= y) k = i; }); return k; };
+  function go(i) { i = Math.max(0, Math.min(slides.length - 1, i)); slides[i].scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
+  const total = 120; // giây "thời lượng" của bài trình bày, khớp với các mốc trên trang
+  function upd() {
+    const max = document.documentElement.scrollHeight - innerHeight, p = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0, k = cur();
+    btns.forEach((b, i) => b.classList.toggle("on", i === k));
+    const r = track.getBoundingClientRect(); head.style.left = (p * (r.width - 2)) + "px";
+    const s = Math.round(p * total); tcv.textContent = "00:" + String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+  }
+  addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+  document.getElementById("prev").onclick = () => go(cur() - 1); document.getElementById("next").onclick = () => go(cur() + 1);
+  addEventListener("keydown", e => { if (e.target.closest && e.target.closest("input,textarea,select")) return; if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); go(cur() + 1); } else if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); go(cur() - 1); } else if (e.key === "Home") { e.preventDefault(); go(0); } else if (e.key === "End") { e.preventDefault(); go(slides.length - 1); } });
+  // dạng sóng minh hoạ
+  const cv = document.getElementById("wave"), g = cv.getContext("2d"), W = cv.width, H = cv.height;
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  g.clearRect(0, 0, W, H); const mid = H / 2;
+  for (let x = 0; x < W; x += 3) { const env = 0.25 + 0.75 * Math.abs(Math.sin(x / 70) * Math.sin(x / 23)), a = env * (0.4 + rnd() * 0.6) * (H * 0.42); const duck = x > W * 0.55 && x < W * 0.8 ? 0.45 : 1;
+    g.fillStyle = x < W * 0.55 ? "#6fd3a5" : (duck < 1 ? "#8b7cff" : "#6fd3a5"); g.fillRect(x, mid - a * duck, 2, a * duck * 2); }
+  g.fillStyle = "#f2c14e"; g.fillRect(W * 0.62, 0, 3, H);
+  g.font = "500 22px JetBrains Mono, monospace"; g.fillStyle = "#9a99a8"; g.fillText("ducking −8 dB", W * 0.56, 30);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bravinall</title>
+<meta name="description" content="Bravinall: các sản phẩm của Phạm Việt Hà, người làm Bravin, ở Hà Nội.">
+<link rel="icon" href="assets/icon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.hero{padding-block:clamp(48px,9vw,120px) clamp(40px,6vw,80px)}
+.hero .grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:end}
+.name{font-size:clamp(46px,9.4vw,138px);font-weight:700;letter-spacing:-.045em;line-height:1.02}
+.name span{display:block;color:var(--iris)}
+.lede{font-size:clamp(17px,1.6vw,20px);max-width:36ch;margin-top:26px;color:var(--fg)}
+.lede b{font-weight:600;color:var(--gold)}
+.route{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;overflow:hidden}
+.route svg{display:block;width:100%;height:auto}
+.route .cities{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.city .lbl{font:500 11px/1.4 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.city .nm{font:600 18px/1.25 var(--f-display);margin-top:4px}
+.city .clock{font:500 26px/1.1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--gold);margin-top:8px}
+.city:last-child{text-align:right}
+.route .dist{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);margin-top:16px;padding-top:12px;font:500 12px/1.4 var(--f-mono);color:var(--muted)}
+
+.sec{padding-block:clamp(48px,7vw,96px)}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;gap:12px 28px;margin-bottom:28px}
+.sec-head h2{font-size:clamp(28px,4vw,48px)}
+.sec-head p{max-width:46ch}
+
+.projects{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px}
+.proj{position:relative;display:flex;flex-direction:column;gap:14px;min-height:300px;padding:26px;border-radius:var(--r);border:1px solid var(--line);background:var(--panel);text-decoration:none;overflow:hidden;transition:transform .2s,border-color .2s}
+.proj:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--iris) 45%,transparent)}
+.proj h3{font-size:30px}
+.proj .st{font:500 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid var(--line);align-self:flex-start}
+.proj .st.live{color:#120f2a;background:var(--gold);border-color:var(--gold)}
+.proj .st.soon{color:var(--muted)}
+.proj p{color:var(--muted);max-width:40ch}
+.proj .go{margin-top:auto;font:600 14px/1 var(--f-body);color:var(--iris)}
+.proj.featured{background:linear-gradient(160deg,color-mix(in srgb,var(--iris-deep) 34%,var(--panel)) 0%,var(--panel) 62%)}
+.proj.featured .strip{display:flex;gap:4px;height:34px;margin-top:6px}
+.proj.featured .strip i{display:block;border-radius:6px;background:var(--clip-a)}
+.proj.featured .strip i:nth-child(2){background:var(--clip-b);flex:1.6}
+.proj.featured .strip i:nth-child(3){background:var(--clip-c)}
+.proj.featured .strip i{flex:1}
+.proj.dim{background:repeating-linear-gradient(135deg,var(--panel) 0 14px,color-mix(in srgb,var(--panel) 86%,var(--fg)) 14px 15px)}
+
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,5vw,72px)}
+.about .big{font:600 clamp(24px,3vw,36px)/1.25 var(--f-display);letter-spacing:-.02em}
+.about .txt{display:flex;flex-direction:column;gap:16px;max-width:62ch;color:var(--fg)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:30px}
+.facts div{background:var(--ink);padding:18px}
+.facts dt{font:500 11px/1.4 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:6px 0 0;font:600 17px/1.3 var(--f-display)}
+
+@media (max-width:900px){
+  .hero .grid,.about{grid-template-columns:1fr}
+  .projects{grid-template-columns:1fr}
+  .proj{min-height:0}
+  .facts{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.route .dot{display:none}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-current="page"><i aria-hidden="true"></i>Bravinall</a>
+    <nav class="nav" aria-label="Sản phẩm">
+      <a href="bravin.html">Bravin</a>
+      <a href="micon.html">Micon<span class="soon">sắp có</span></a>
+      <a href="antifact.html">Antifact<span class="soon">sắp có</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="grid">
+      <div>
+        <p class="eyebrow">Hà Nội · 21.0285° N, 105.8542° E</p>
+        <h1 class="name" style="margin-top:18px">Phạm<br>Việt <span>Hà</span></h1>
+        <p class="lede">Người thiết kế và tự xây <b>Bravin</b>, trình dựng video chạy trên web, Android và Windows. Hiện đang học Thạc sĩ Trí tuệ nhân tạo tại Đại học Stanford.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px">
+          <a class="btn primary" href="bravin.html">Xem Bravin
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn" href="#du-an">Các dự án</a>
+        </div>
+      </div>
+      <aside class="route rise" aria-label="Hà Nội và Stanford">
+        <svg viewBox="0 0 400 150" role="img" aria-label="Đường bay từ Hà Nội tới Stanford">
+          <defs><linearGradient id="arc" x1="0" x2="1"><stop offset="0" stop-color="#f2c14e"/><stop offset="1" stop-color="#8b7cff"/></linearGradient></defs>
+          <path id="routePath" d="M30 120 C 120 10, 280 10, 370 120" fill="none" stroke="url(#arc)" stroke-width="2" stroke-dasharray="4 7"/>
+          <circle cx="30" cy="120" r="6" fill="#f2c14e"/><circle cx="370" cy="120" r="6" fill="#8b7cff"/>
+          <circle class="dot" r="4.5" fill="#ecebf3"><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#routePath"/></animateMotion></circle>
+        </svg>
+        <div class="cities">
+          <div class="city"><div class="lbl">Đang sống</div><div class="nm">Hà Nội</div><div class="clock" id="clkHN">--:--</div></div>
+          <div class="city"><div class="lbl">Đang học</div><div class="nm">Stanford, California</div><div class="clock" id="clkSF">--:--</div></div>
+        </div>
+        <div class="dist"><span>≈ 11.800 km</span><span id="clkDiff">lệch 14 giờ</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="du-an">
+    <div class="sec-head">
+      <h2>Dự án</h2>
+      <p class="muted">Ba sản phẩm dưới tên Bravinall. Bravin đã phát hành, hai dự án còn lại đang được làm.</p>
+    </div>
+    <div class="projects">
+      <a class="proj featured rise" href="bravin.html">
+        <span class="st live">Đã phát hành · v4.1</span>
+        <h3>Bravin</h3>
+        <p>Dựng video nhiều lớp với keyframe, mask, chỉnh màu kiểu node và trợ lý AI. Dùng trên trình duyệt, điện thoại Android và máy tính Windows.</p>
+        <div class="strip" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <span class="go">Xem toàn bộ tính năng →</span>
+      </a>
+      <a class="proj dim rise" href="micon.html">
+        <span class="st soon">Sắp ra mắt</span>
+        <h3>Micon</h3>
+        <p>Đang phát triển. Thông tin sẽ được công bố sớm.</p>
+        <span class="go">Xem trang →</span>
+      </a>
+      <a class="proj dim rise" href="antifact.html">
+        <span class="st soon">Sắp ra mắt</span>
+        <h3>Antifact</h3>
+        <p>Đang phát triển. Thông tin sẽ được công bố sớm.</p>
+        <span class="go">Xem trang →</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="gioi-thieu">
+    <div class="about">
+      <p class="big rise">Làm công cụ sáng tạo mà ai cũng dùng được, trên chính thiết bị họ đang cầm.</p>
+      <div class="txt">
+        <p>Phạm Việt Hà sống và làm việc ở Hà Nội. Hà tự thiết kế và viết Bravin từ đầu: timeline, bộ dựng hình, trang chỉnh màu, công cụ mask, xử lý âm thanh, trợ lý AI và các bản cho Android, Windows.</p>
+        <p>Bravin chạy ngay trong trình duyệt, không cần máy chủ riêng, và vẫn có các công cụ của phần mềm chuyên nghiệp như keyframe, chỉnh màu theo node, theo dõi chuyển động hay xuất video 4K.</p>
+        <p>Song song với việc làm sản phẩm, Hà đang học Thạc sĩ Trí tuệ nhân tạo tại Đại học Stanford.</p>
+        <dl class="facts">
+          <div><dt>Nơi ở</dt><dd>Hà Nội, Việt Nam</dd></div>
+          <div><dt>Đang học</dt><dd>Thạc sĩ AI · Stanford</dd></div>
+          <div><dt>Sản phẩm chính</dt><dd>Bravin 4.1</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Phạm Việt Hà</span>
+    <a href="bravin.html">Bravin</a><a href="micon.html">Micon</a><a href="antifact.html">Antifact</a>
+    <span class="tc">Bravinall</span>
+  </div>
+</footer>
+<script>
+(function () {
+  const f = tz => new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz });
+  const hn = f("Asia/Ho_Chi_Minh"), sf = f("America/Los_Angeles");
+  function tick() {
+    const d = new Date();
+    document.getElementById("clkHN").textContent = hn.format(d);
+    document.getElementById("clkSF").textContent = sf.format(d);
+    const off = tz => { const p = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(d).find(x => x.type === "timeZoneName"); const m = /GMT([+-]\d+)?/.exec(p ? p.value : ""); return m && m[1] ? +m[1] : 0; };
+    document.getElementById("clkDiff").textContent = "lệch " + Math.abs(off("Asia/Ho_Chi_Minh") - off("America/Los_Angeles")) + " giờ";
+  }
+  tick(); setInterval(tick, 15000);
+})();
+</script>
+</body>
+</html>

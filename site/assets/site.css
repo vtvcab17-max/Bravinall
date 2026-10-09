@@ -1,0 +1,63 @@
+/* Bravinall — studio of Phạm Việt Hà.
+   Layout: dark editing-suite ground; content sits on a 12-col grid; the Bravin
+   deck is a stack of full-height "slides" scrubbed by a timeline at the bottom. */
+:root{
+  --ink:#0f1014;          /* ground, like an editor's canvas */
+  --panel:#17181e;        /* raised surfaces */
+  --line:rgba(231,231,240,.09);
+  --fg:#ecebf3;           /* main text */
+  --muted:#9a99a8;        /* secondary text */
+  --iris:#8b7cff;         /* Bravin accent */
+  --iris-deep:#5b4be0;
+  --gold:#f2c14e;         /* playhead, timecode, keyframes */
+  --clip-a:#2b2552; --clip-b:#1f3a37; --clip-c:#3b2a24;
+  --f-display:"Unbounded","Be Vietnam Pro",system-ui,sans-serif;
+  --f-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --gutter:clamp(16px,4vw,56px);
+  --r:18px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--fg);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:-.02em;line-height:1.08;text-wrap:balance;margin:0}
+p{margin:0}
+.wrap{padding-inline:var(--gutter);max-width:1320px;margin-inline:auto}
+.eyebrow{font:500 12px/1.4 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.muted{color:var(--muted)}
+.tc{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:color-mix(in srgb,var(--ink) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:14px;min-height:62px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:600 17px/1 var(--f-display);letter-spacing:-.01em}
+.logo i{width:26px;height:26px;border-radius:8px;background:conic-gradient(from 210deg,var(--iris),var(--gold),var(--iris-deep),var(--iris));display:block}
+.nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav a{text-decoration:none;font:500 14px/1 var(--f-body);color:var(--muted);padding:10px 14px;border-radius:999px;transition:color .15s,background-color .15s}
+.nav a:hover{color:var(--fg);background:var(--panel)}
+.nav a[aria-current="page"]{color:var(--fg);background:var(--panel)}
+.nav a .soon{font:500 10px/1 var(--f-mono);color:var(--gold);margin-left:6px;letter-spacing:.06em}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font:600 15px/1 var(--f-body);padding:15px 22px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--fg);transition:transform .15s,background-color .15s,border-color .15s}
+.btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--iris) 50%,transparent)}
+.btn.primary{background:var(--iris);border-color:var(--iris);color:#120f2a}
+.btn.primary:hover{background:color-mix(in srgb,var(--iris) 88%,white)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* reveal tied to scroll position where supported; fully visible otherwise */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    .rise{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 30%}
+  }
+}
+@keyframes rise{from{opacity:.4;transform:translateY(32px)}to{opacity:1;transform:none}}
+
+/* footer */
+.foot{border-top:1px solid var(--line);margin-top:40px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;padding-block:28px;color:var(--muted);font-size:13px}
+.foot .wrap>:last-child{margin-left:auto}
+@media (max-width:640px){.foot .wrap>:last-child{margin-left:0}}
