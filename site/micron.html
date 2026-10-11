@@ -10,65 +10,112 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&family=Space+Grotesk:wght@600;700&display=swap">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/deck.css">
 <style>
 body{--iris:#8b6bff;--iris-deep:#6447f0}
-.phero h1{font-family:"Space Grotesk",var(--f-display);letter-spacing:-.06em}
-.phero h1 em{font-style:normal;color:var(--mc-c)}
+.hero h1{font-family:"Space Grotesk",var(--f-display);letter-spacing:-.06em}
+.hero h1 em{font-style:normal;color:var(--mc-c)}
 @keyframes flow{to{stroke-dashoffset:-24}}
-@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
 @keyframes lit{0%,20%{fill:#1b1d27}30%,100%{fill:#3b2f86}}
-@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
 .wire{stroke-dasharray:6 6;animation:flow .8s linear infinite}
+.grid-bg{background:#0e1016;background-image:radial-gradient(rgba(236,235,243,.08) 1px,transparent 1px);background-size:22px 22px;border-radius:14px}
 
 /* canvas thử */
-.cv{position:relative;background:#0e1016;background-image:radial-gradient(rgba(236,235,243,.08) 1px,transparent 1px);background-size:22px 22px;border:1px solid var(--line);border-radius:20px;overflow:hidden}
-.cv .top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;border-bottom:1px solid var(--line);background:#0e1016e6}
-.cv .top .ttl{font:600 14px/1 "Space Grotesk",var(--f-body);margin-right:auto}
-.cv .top select,.cv .top button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:10px;padding:9px 12px;font:600 13px/1 var(--f-body);cursor:pointer}
-.cv .top .run{background:var(--iris);color:#fff;border-color:var(--iris)}
-.cv .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,3vw,40px);padding:clamp(18px,3vw,36px);position:relative}
-.node{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:14px;background:#171923;border:1px solid #2a2d3c;min-height:170px;transition:border-color .3s,box-shadow .3s}
+.cv{position:relative;overflow:hidden}
+.cv .top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 0 12px}
+.cv .top select,.cv .top button{border:1px solid var(--line);background:var(--ink);color:var(--fg);border-radius:10px;padding:9px 12px;font:600 13px/1 var(--f-body);cursor:pointer}
+.cv .top .run{background:var(--iris);color:#fff;border-color:var(--iris);margin-left:auto}
+.cv .flow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:16px}
+.node{position:relative;display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:12px;background:#171923;border:1px solid #2a2d3c;min-height:128px;transition:border-color .3s,box-shadow .3s}
 .node .h{display:flex;align-items:center;gap:8px;font:600 13px/1.2 var(--f-body)}
 .node .h i{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-style:normal;font-size:12px;background:#24263a}
 .node .pr{font:500 11px/1.4 var(--f-mono);color:var(--muted)}
-.node .out{font-size:13px;line-height:1.45;color:var(--fg);min-height:3em}
+.node .out{font-size:13px;line-height:1.45;color:var(--fg);min-height:2.6em}
 .node .st{margin-top:auto;font:500 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .node.run{border-color:var(--iris);box-shadow:0 0 0 3px color-mix(in srgb,var(--iris) 30%,transparent)}
-.node.done{border-color:var(--mc-c)}
-.node.done .st{color:var(--mc-c)}
-.node::after{content:"";position:absolute;right:-8px;top:50%;width:12px;height:12px;border-radius:50%;background:var(--mc-c);transform:translateY(-50%)}
-.node:last-child::after{display:none}
-.node .img{height:64px;border-radius:10px;background:#22243a;transition:background .6s}
-.node .wav{display:flex;gap:2px;align-items:center;height:40px}
+.node.done{border-color:var(--mc-c)}.node.done .st{color:var(--mc-c)}
+.node .img{height:48px;border-radius:8px;background:#22243a;transition:background .6s}
+.node .wav{display:flex;gap:2px;align-items:center;height:34px}
 .node .wav i{flex:1;background:var(--mc-c);border-radius:2px;height:20%;transition:height .4s}
-.cv svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-@media (max-width:860px){.cv .flow{grid-template-columns:1fr 1fr}.node::after{display:none}}
-@media (max-width:520px){.cv .flow{grid-template-columns:1fr}}
 
-/* cửa hàng plugin */
-.store{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
-.pl{display:flex;flex-direction:column;gap:10px;padding:20px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
-.pl .ic{font-size:26px}
-.pl h3{font-size:18px}
-.pl p{font-size:14px;color:color-mix(in srgb,var(--fg) 82%,var(--muted))}
+/* loại ô + {{input}} */
+.ntypes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ntypes button{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:12px;border-radius:12px;background:var(--ink);border:1px solid var(--line);color:var(--fg);font:600 13px/1.2 var(--f-body);cursor:pointer;text-align:left}
+.ntypes button span{font-size:20px}
+.ntypes button[aria-pressed="true"]{border-color:var(--iris);background:color-mix(in srgb,var(--iris) 14%,var(--ink))}
+.ndesc{margin-top:12px;font-size:14px;min-height:3em;color:color-mix(in srgb,var(--fg) 84%,var(--muted))}
+.tmpl{margin-top:14px;display:grid;gap:8px}
+.tmpl label{font:500 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:grid;gap:6px}
+.tmpl input{background:var(--ink);border:1px solid var(--line);border-radius:10px;color:var(--fg);padding:10px 12px;font:500 14px/1.3 var(--f-body)}
+.tmpl .res{background:var(--ink);border:1px dashed var(--iris);border-radius:10px;padding:10px 12px;font:500 13px/1.5 var(--f-mono)}
+.tmpl .res mark{background:color-mix(in srgb,var(--mc-c) 30%,transparent);color:var(--fg);border-radius:4px;padding:0 3px}
+
+/* AI */
+.ais{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ais button{padding:12px;border-radius:12px;background:var(--ink);border:1px solid var(--line);color:var(--fg);font:600 13px/1.25 var(--f-body);cursor:pointer;text-align:left}
+.ais button[aria-pressed="true"]{border-color:var(--iris);background:color-mix(in srgb,var(--iris) 14%,var(--ink))}
+.aiinfo{margin-top:12px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14px}
+.aiinfo dt{font:500 11px/1.6 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.aiinfo dd{margin:0}
+
+/* cửa hàng */
+.store{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-height:440px;overflow:auto;padding-right:4px}
+.pl{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:14px;background:var(--ink);border:1px solid var(--line)}
+.pl h3{font-size:15px}
+.pl p{font-size:13px;color:color-mix(in srgb,var(--fg) 80%,var(--muted))}
 .pl .pr{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.pl .pr b{font:600 15px/1 var(--f-mono);color:var(--gold)}
-.pl .pr button{border:1px solid var(--line);background:var(--ink);color:var(--fg);border-radius:999px;padding:9px 14px;font:600 13px/1 var(--f-body);cursor:pointer}
+.pl .pr b{font:600 14px/1 var(--f-mono);color:var(--gold)}
+.pl .pr button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:8px 12px;font:600 12px/1 var(--f-body);cursor:pointer}
 .pl .pr button.ok{background:var(--mc-c);color:#0e1016;border-color:var(--mc-c)}
-.pl .tag{align-self:flex-start;font:500 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-.filt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.filt button{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:9px 14px;font:600 13px/1 var(--f-body);cursor:pointer}
-.filt button[aria-pressed="true"]{color:var(--fg);border-color:var(--iris);background:color-mix(in srgb,var(--iris) 16%,var(--panel))}
-.ais{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
-.ai{padding:14px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
-.ai b{display:block;font:600 15px/1.3 var(--f-body)}
-.ai span{font-size:13px;color:var(--muted)}
-.plat{width:100%;border-collapse:collapse;font-size:14px}
-.plat th,.plat td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-.plat th{font:500 11px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.pl .tag{align-self:flex-start;font:500 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;padding:5px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+
+/* mua một lần */
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.steps button{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px 10px;border-radius:12px;background:var(--ink);border:1px solid var(--line);color:var(--muted);font:600 12px/1.25 var(--f-body);cursor:pointer;text-align:left}
+.steps button b{font:600 18px/1 var(--f-mono);color:var(--muted)}
+.steps button[aria-pressed="true"]{color:var(--fg);border-color:var(--iris)}
+.steps button[aria-pressed="true"] b,.steps button.done b{color:var(--gold)}
+.stepview{margin-top:14px;min-height:170px;border-radius:14px;padding:18px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;align-items:center}
+.stepview .vis{aspect-ratio:1;border-radius:12px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.stepview h3{font-size:19px}
+.stepview p{font-size:14px;color:color-mix(in srgb,var(--fg) 84%,var(--muted));margin-top:6px}
+
+/* plugin do AI tạo */
+.gen textarea{width:100%;min-height:76px;background:var(--ink);border:1px solid var(--line);border-radius:12px;color:var(--fg);padding:12px;font:500 14px/1.5 var(--f-body);resize:vertical}
+.gen .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.gen .row button.go{margin-left:auto;background:var(--iris);color:#fff;border:0;border-radius:10px;padding:10px 14px;font:600 13px/1 var(--f-body);cursor:pointer}
+.gout{margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.gout div{padding:12px;border-radius:12px;background:var(--ink);border:1px solid var(--line);font-size:13px;opacity:.35;transition:opacity .4s,border-color .4s}
+.gout div.on{opacity:1;border-color:var(--mc-c)}
+.gout b{display:block;font:500 10px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mc-c);margin-bottom:6px}
+
+/* gửi sang Bravin */
+.send{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:12px;align-items:center}
+.res3{display:grid;gap:8px}
+.res3 button{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--ink);border:1px solid var(--line);color:var(--fg);font:600 13px/1.2 var(--f-body);cursor:pointer;text-align:left}
+.res3 button i{width:34px;height:24px;border-radius:6px;flex:none}
+.res3 button span{margin-left:auto;font:600 11px/1 var(--f-body);color:var(--mc-c)}
+.res3 button.sent{opacity:.45;cursor:default}
+.btl{display:grid;gap:6px;padding:12px;border-radius:12px;background:#0f1014;position:relative}
+.btl .ln{position:relative;height:26px;border-radius:6px;background:#17181e}
+.btl .ln i{position:absolute;top:3px;bottom:3px;border-radius:4px;animation:pop .45s both}
+.btl .lb{font:500 10px/1 var(--f-mono);color:var(--muted)}
+.btl .ph{position:absolute;top:24px;bottom:10px;left:35%;width:2px;background:var(--gold)}
+
+/* thiết bị */
+.devs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.devs div{padding:14px 10px;border-radius:12px;background:var(--ink);border:1px solid var(--line);text-align:center;font:600 13px/1.25 var(--f-body)}
+.devs div span{display:block;font-size:24px;margin-bottom:6px}
+.devs div small{display:block;font:400 12px/1.3 var(--f-body);color:var(--muted);margin-top:4px}
+.sec4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sec4 div{padding:16px;border-radius:14px;background:var(--ink);border:1px solid var(--line)}
+.sec4 b{display:block;font:600 15px/1.3 var(--f-body)}
+.sec4 p{font-size:14px;color:color-mix(in srgb,var(--fg) 82%,var(--muted));margin-top:6px}
+@media (max-width:980px){.devs{grid-template-columns:repeat(2,minmax(0,1fr))}.steps{grid-template-columns:repeat(3,minmax(0,1fr))}.send{grid-template-columns:1fr}}
+@media (max-width:560px){.store,.cv .flow,.sec4,.gout{grid-template-columns:1fr}.ntypes,.ais{grid-template-columns:repeat(2,minmax(0,1fr))}.stepview{grid-template-columns:1fr}.stepview .vis{width:120px}}
 </style>
 </head>
-<body>
+<body data-total="130">
 <header class="bar">
   <div class="wrap">
     <a class="logo" href="index.html"><i aria-hidden="true"></i>Bravinall</a>
@@ -81,21 +128,41 @@ body{--iris:#8b6bff;--iris-deep:#6447f0}
   </div>
 </header>
 
-<main>
-  <section class="phero wrap">
-    <div class="grid">
+<main id="deck">
+  <section class="slide hero" id="mo-dau" data-label="Mở đầu">
+    <div class="wrap split">
       <div>
-        <div class="plogo"><img src="assets/brand/micron.svg" alt=""><span class="eyebrow">Micron 1.0 · Web · Windows · macOS · Android · iPad</span></div>
-        <h1>Micron<em>.</em></h1>
-        <p class="body">Canvas AI mở: bạn mang AI của mình, Micron nối chúng thành quy trình sáng tạo. Kèm chợ extension và plugin cho Bravin.</p>
+        <p class="eyebrow">Micron 1.0 · Canvas AI mở · Một sản phẩm của Bravinall</p>
+        <h1 style="margin-top:18px">Micron<em>.</em></h1>
+        <p class="body">Không cài sẵn AI nào. Bạn mang AI của mình, đặt các ô lên canvas, nối dây, bấm Chạy. Kèm chợ extension và plugin cho Bravin.</p>
         <div class="cta">
-          <a class="btn primary" href="https://micron.vtvcab17.workers.dev/" target="_blank" rel="noopener">Mở Micron
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn" href="#tai-ve">Cài như app</a>
+          <a class="btn primary" href="#video">Xem video
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></a>
+          <a class="btn" href="#dung-ngay">Dùng ngay ↓</a>
         </div>
       </div>
+      <div class="stage rise" aria-hidden="true">
+        <svg viewBox="0 0 460 280" class="grid-bg">
+          <g fill="none" stroke="#2fd4e8" stroke-width="2"><path class="wire" d="M120 80 C 160 80, 150 80, 180 80"/><path class="wire" d="M300 80 C 340 80, 320 190, 350 190"/><path class="wire" d="M120 80 C 150 80, 140 190, 180 190"/><path class="wire" d="M300 190 C 320 190, 330 190, 350 190"/></g>
+          <g font-family="Be Vietnam Pro,sans-serif" font-size="13" font-weight="600" fill="#ecebf3">
+            <rect x="20" y="52" width="100" height="56" rx="12" fill="#171923" stroke="#2a2d3c"/><text x="34" y="78">💡 Ý tưởng</text><text x="34" y="96" font-size="10" fill="#9a99a8" font-family="JetBrains Mono,monospace">Ô văn bản</text>
+            <rect x="180" y="52" width="120" height="56" rx="12" fill="#171923" stroke="#2a2d3c"/><text x="194" y="78">✍️ Viết lời</text><text x="194" y="96" font-size="10" fill="#9a99a8" font-family="JetBrains Mono,monospace">Claude</text>
+            <rect x="180" y="162" width="120" height="56" rx="12" fill="#171923" stroke="#2a2d3c"/><text x="194" y="188">🎨 Phong cách</text><text x="194" y="206" font-size="10" fill="#9a99a8" font-family="JetBrains Mono,monospace">Gemini</text>
+            <rect x="350" y="162" width="96" height="56" rx="12" fill="#3b2f86" stroke="#8b6bff"/><text x="362" y="188">🎵 Bài hát</text><text x="362" y="206" font-size="10" fill="#c9c3ff" font-family="JetBrains Mono,monospace">ComfyUI</text>
+          </g>
+          <g fill="#2fd4e8"><circle cx="120" cy="80" r="5"/><circle cx="300" cy="80" r="5"/><circle cx="300" cy="190" r="5"/></g>
+          <rect x="330" y="20" width="110" height="30" rx="10" fill="#8b6bff"/><text x="345" y="40" font-family="Be Vietnam Pro,sans-serif" font-size="12" font-weight="600" fill="#fff">▶ Chạy tất cả</text>
+        </svg>
+      </div>
+    </div>
+  </section>
 
-      <div class="promo" aria-label="Video giới thiệu Micron">
+  <section class="slide" id="video" data-label="Video">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:00:06</span><span class="eyebrow">Video giới thiệu · 29 giây</span></div>
+      <h2 style="max-width:20ch">Micron trong nửa phút. Bấm chương để tua.</h2>
+      <div style="margin-top:26px">
+<div class="promo" aria-label="Video giới thiệu Micron">
         <div class="scr">
           <div class="scene center" data-dur="4" data-label="Canvas AI">
             <div class="cap"><span class="k">Micron</span><h3>Không cài sẵn AI nào.<br>Bạn mang AI của bạn.</h3><p>Claude, OpenAI, Gemini, hay AI chạy ngay trên máy.</p></div>
@@ -143,74 +210,206 @@ body{--iris:#8b6bff;--iris-deep:#6447f0}
           </div>
         </div>
       </div>
+      </div>
     </div>
   </section>
 
-  <section class="sec wrap">
-    <div class="sec-head"><h2>Thử một quy trình</h2><p class="muted">Chọn mẫu rồi bấm ▶ Chạy tất cả. Đây là bản mô phỏng trên trang; trong Micron, mỗi ô gọi đúng AI bạn đã thêm.</p></div>
-    <div class="cv">
-      <div class="top"><span class="ttl">Dự án thử</span>
-        <select id="tpl" aria-label="Chọn mẫu quy trình"><option value="song">Ý tưởng → bài hát</option><option value="review">Review công nghệ 60 giây</option><option value="sale">Bài bán hàng</option></select>
-        <button type="button" id="reset">Làm lại</button><button type="button" class="run" id="run">▶ Chạy tất cả</button></div>
-      <div class="flow" id="flow"></div>
+  <section class="slide" id="canvas" data-label="Canvas">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:00:16</span><span class="eyebrow">Canvas ô và dây</span></div>
+        <h2>Nối các ô AI thành một quy trình.</h2>
+        <p class="body">Kéo dây từ chấm đầu ra: thả lên ô khác để nối, thả ra chỗ trống để mở bảng chọn AI, ô mới tự nối sẵn. Bấm <b>▶ Chạy tất cả</b>, cả chuỗi chạy theo đúng thứ tự.</p>
+        <div class="chips"><span class="chip">Kéo để di chuyển</span><span class="chip">Cuộn để thu phóng</span><span class="chip">Xuất .micron.json</span></div>
+      </div>
+      <div class="stage rise cv">
+        <p class="try">Chọn mẫu rồi bấm Chạy tất cả</p>
+        <div class="top">
+          <select id="tpl" aria-label="Chọn mẫu quy trình"><option value="song">Ý tưởng → bài hát</option><option value="review">Review công nghệ 60 giây</option><option value="sale">Bài bán hàng</option></select>
+          <button type="button" id="reset">Làm lại</button><button type="button" class="run" id="run">▶ Chạy tất cả</button></div>
+        <div class="flow grid-bg" id="flow"></div>
+      </div>
     </div>
   </section>
 
-  <section class="sec wrap">
-    <div class="sec-head"><h2>Chợ Extensions &amp; Plugins</h2><p class="muted">Plugin do đội ngũ Bravinall làm. Trả phí: mua một lần, dùng vĩnh viễn đúng phiên bản đã mua, license chạy offline. Thanh toán bằng mã QR ngân hàng ngay trong Micron.</p></div>
-    <div class="filt" id="filt"><button type="button" data-f="all" aria-pressed="true">Tất cả</button><button type="button" data-f="free" aria-pressed="false">Miễn phí</button><button type="button" data-f="paid" aria-pressed="false">Trả phí</button><button type="button" data-f="bravin" aria-pressed="false">Cho Bravin</button></div>
-    <div class="store" id="store">
-      <div class="pl" data-k="free bravin"><span class="tag">Plugin Bravin · 1.0.0</span><span class="ic">🎯</span><h3>Motion Tracking</h3><p>Theo dõi theo phối cảnh, chống trôi, bị che vẫn bắt lại. Thay màn hình, gắn chữ chạy theo, làm mờ khuôn mặt.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
-      <div class="pl" data-k="free bravin"><span class="tag">Plugin Bravin</span><span class="ic">✨</span><h3>Micron AI</h3><p>Viết chữ rồi đặt thẳng lên timeline Bravin, tạo ảnh lớp phủ, tạo giọng đọc, chuột phải để viết lại chữ trên clip.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
-      <div class="pl" data-k="free bravin"><span class="tag">Extension trình duyệt</span><span class="ic">🎬</span><h3>Micron ↔ Bravin</h3><p>Nút Gửi sang Bravin dưới mỗi kết quả, đưa ảnh, giọng đọc, video vào Thư viện hoặc timeline.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
-      <div class="pl" data-k="paid"><span class="tag">Mẫu quy trình</span><span class="ic">📱</span><h3>Review Công Nghệ Pro</h3><p>Thông số, ưu nhược, kịch bản 60 giây, caption, thumbnail, so sánh A với B, đồng hồ kịch bản và teleprompter.</p><div class="pr"><b>99.000đ</b><button type="button">Mua</button></div></div>
-      <div class="pl" data-k="paid"><span class="tag">Mẫu quy trình</span><span class="ic">🛒</span><h3>Bravin Bán Hàng</h3><p>USP, 3 mẫu quảng cáo, kịch bản livestream 15 phút, tin nhắn chốt đơn, banner, lịch 7 ngày, máy tính giá bán.</p><div class="pr"><b>149.000đ</b><button type="button">Mua</button></div></div>
-      <div class="pl" data-k="free"><span class="tag">Mẫu quy trình</span><span class="ic">⚡</span><h3>Khởi đầu nhanh</h3><p>Tóm tắt, viết lại, dịch, tiêu đề, bài đăng, đếm ký tự mạng xã hội.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
-      <div class="pl" data-k="free"><span class="tag">Mẫu quy trình</span><span class="ic">🎵</span><h3>Nhạc AI: lời &amp; phong cách</h3><p>Lời bài hát có cấu trúc, mô tả phong cách, chuyển sang AI tạo nhạc.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
-    </div>
-    <p class="muted" style="margin-top:14px;font-size:13px">Nút trên trang chỉ để xem thử. Cài và mua thật trong Micron → 🧩 Extensions &amp; Plugins.</p>
-  </section>
-
-  <section class="sec wrap">
-    <div class="sec-head"><h2>AI nào cũng nối được</h2><p class="muted">Thêm trong “⚙ AI của tôi”. API key chỉ lưu trong trình duyệt của bạn và chỉ gửi tới đúng địa chỉ AI bạn nhập.</p></div>
-    <div class="ais">
-      <div class="ai"><b>OpenAI-compatible</b><span>OpenAI, OpenRouter, Groq, DeepSeek, LM Studio, Ollama</span></div>
-      <div class="ai"><b>Anthropic Claude</b><span>Văn bản, đọc được ảnh</span></div>
-      <div class="ai"><b>Google Gemini</b><span>Văn bản, ảnh</span></div>
-      <div class="ai"><b>Ollama</b><span>Chạy ngay trên máy</span></div>
-      <div class="ai"><b>ComfyUI</b><span>Ảnh, nhạc, video trên máy</span></div>
-      <div class="ai"><b>HTTP tuỳ chỉnh</b><span>Bất kỳ API nào</span></div>
+  <section class="slide" id="loai-o" data-label="Loại ô">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:00:28</span><span class="eyebrow">Các loại ô</span></div>
+        <h2>Văn bản, ảnh, âm thanh, video. Ô nào cũng nối được.</h2>
+        <p class="body">Viết <b>{{input}}</b> trong lời nhắc để chèn kết quả của ô phía trước. Một chuỗi có thể đi từ kịch bản, tạo ảnh, tạo giọng đọc, đến tạo nhạc.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Bấm một loại ô, rồi gõ thử lời nhắc</p>
+        <div class="ntypes" id="ntypes"></div>
+        <p class="ndesc" id="ndesc" aria-live="polite"></p>
+        <div class="tmpl">
+          <label>Kết quả của ô trước<input id="prevOut" value="Chiếc xe đạp màu vàng bên hồ Tây lúc hoàng hôn"></label>
+          <label>Lời nhắc của ô này<input id="prompt" value="Vẽ minh hoạ phẳng: {{input}}, tông ấm"></label>
+          <div class="res" id="res" aria-live="polite"></div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="sec wrap">
-    <div class="sec-head"><h2>Khác gì so với canvas AI thường gặp?</h2><p class="muted">Bấm từng dòng để xem chi tiết.</p></div>
-    <div class="vs">
-      <div class="seg" role="group" aria-label="Góc nhìn"><button type="button" data-v="old" aria-pressed="false">App thường gặp</button><button type="button" data-v="new" aria-pressed="true">Micron</button></div>
-      <div class="vh"><span>Tiêu chí</span><span>Nhiều app thường gặp</span><span class="us">Micron</span></div>
-      <details class="vr"><summary><b>AI dùng được</b><span class="old">Chỉ AI có sẵn trong app</span><span class="new">AI nào cũng nối được, kể cả AI trên máy</span></summary><p class="more">Thêm bằng API key hoặc chạy cục bộ qua Ollama, LM Studio, ComfyUI. Đổi AI cho từng ô.</p></details>
-      <details class="vr"><summary><b>Chi phí AI</b><span class="old">Trả theo gói tín dụng của app</span><span class="new">Trả trực tiếp cho nhà cung cấp, hoặc 0đ với AI trên máy</span></summary><p class="more">Micron không bán lượt AI. Bạn dùng khoá của mình, giá đúng giá gốc.</p></details>
-      <details class="vr"><summary><b>Dữ liệu</b><span class="old">Lưu trên máy chủ của app</span><span class="new">Dự án, key, license nằm trên thiết bị của bạn</span></summary><p class="more">Lưu trong trình duyệt (localStorage, IndexedDB). Xuất và nhập dự án bằng file .micron.json.</p></details>
-      <details class="vr"><summary><b>Ra video</b><span class="old">Tải về rồi dựng ở app khác</span><span class="new">Gửi thẳng sang timeline Bravin</span></summary><p class="more">Extension Micron ↔ Bravin và plugin Micron AI nối hai ứng dụng thành một luồng.</p></details>
-      <details class="vr"><summary><b>Plugin</b><span class="old">Thường thuê bao theo tháng</span><span class="new">Mua một lần, license offline</span></summary><p class="more">License có chữ ký số, không cần đăng nhập hay máy chủ. Nhớ bấm Sao lưu license khi đổi máy.</p></details>
-      <p class="note">So sánh theo cách làm phổ biến của nhóm ứng dụng canvas AI, không nhắm tới sản phẩm cụ thể nào. Tính năng từng ứng dụng có thể khác và thay đổi theo thời gian.</p>
+  <section class="slide" id="ai-cua-ban" data-label="AI của bạn">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:00:40</span><span class="eyebrow">⚙ AI của tôi</span></div>
+        <h2>Mang AI của bạn. Đổi AI cho từng ô.</h2>
+        <p class="body">Micron không bán lượt AI. Bạn thêm AI bằng khoá API riêng, hoặc dùng AI chạy ngay trên máy. API key chỉ lưu trong trình duyệt và chỉ gửi tới đúng địa chỉ AI bạn nhập.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Bấm từng loại kết nối</p>
+        <div class="ais" id="ais"></div>
+        <dl class="aiinfo" id="aiinfo" aria-live="polite"></dl>
+      </div>
     </div>
   </section>
 
-  <section class="sec wrap" id="tai-ve">
-    <div class="sec-head"><h2>Dùng Micron</h2><p class="muted">Không cần tải. Mở link, thêm AI của bạn, bấm Chạy tất cả.</p></div>
-    <div class="dl">
+  <section class="slide" id="cho-plugin" data-label="Chợ plugin">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:00:52</span><span class="eyebrow">🧩 Extensions &amp; Plugins</span></div>
+        <h2>Chợ tiện ích cho Micron và Bravin.</h2>
+        <p class="body">Plugin do đội ngũ Bravinall làm: miễn phí thì bấm là dùng, trả phí thì mua một lần. Cài xong, plugin nằm trong menu ＋ của Micron, và cả trong Bravin.</p>
+        <div class="pills" id="filt" style="margin-top:20px"><button type="button" data-f="all" aria-pressed="true">Tất cả</button><button type="button" data-f="free" aria-pressed="false">Miễn phí</button><button type="button" data-f="paid" aria-pressed="false">Trả phí</button><button type="button" data-f="bravin" aria-pressed="false">Cho Bravin</button></div>
+      </div>
+      <div class="stage rise">
+        <div class="store" id="store">
+          <div class="pl" data-k="free bravin"><span class="tag">Plugin Bravin · 1.0.0</span><h3>🎯 Motion Tracking</h3><p>Theo dõi phối cảnh, chống trôi, bị che vẫn bắt lại. Thay màn hình, gắn chữ, làm mờ.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
+          <div class="pl" data-k="free bravin"><span class="tag">Plugin Bravin</span><h3>✨ Micron AI</h3><p>Viết chữ rồi đặt thẳng lên timeline Bravin, tạo ảnh phủ, tạo giọng đọc.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
+          <div class="pl" data-k="free bravin"><span class="tag">Extension trình duyệt</span><h3>🎬 Micron ↔ Bravin</h3><p>Nút Gửi sang Bravin dưới mỗi kết quả của Micron.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
+          <div class="pl" data-k="paid"><span class="tag">Mẫu quy trình</span><h3>📱 Review Công Nghệ Pro</h3><p>Thông số, ưu nhược, kịch bản 60 giây, caption, thumbnail, so sánh A với B, teleprompter.</p><div class="pr"><b>99.000đ</b><button type="button">Mua</button></div></div>
+          <div class="pl" data-k="paid"><span class="tag">Mẫu quy trình</span><h3>🛒 Bravin Bán Hàng</h3><p>USP, 3 mẫu quảng cáo, livestream 15 phút, tin nhắn chốt đơn, lịch 7 ngày, máy tính giá bán.</p><div class="pr"><b>149.000đ</b><button type="button">Mua</button></div></div>
+          <div class="pl" data-k="free"><span class="tag">Mẫu quy trình</span><h3>⚡ Khởi đầu nhanh</h3><p>Tóm tắt, viết lại, dịch, tiêu đề, bài đăng, đếm ký tự mạng xã hội.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
+          <div class="pl" data-k="free"><span class="tag">Mẫu quy trình</span><h3>🎵 Nhạc AI</h3><p>Lời bài hát có cấu trúc, mô tả phong cách, chuyển sang AI tạo nhạc.</p><div class="pr"><b>Miễn phí</b><button type="button">Cài đặt</button></div></div>
+        </div>
+        <p style="margin-top:10px;font-size:12px;color:var(--muted)">Nút trên trang để xem thử; cài và mua thật trong Micron.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="mua-mot-lan" data-label="License">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:04</span><span class="eyebrow">Plugin trả phí</span></div>
+        <h2>Mua một lần, dùng vĩnh viễn.</h2>
+        <p class="body">Quét mã QR ngân hàng (số tiền và nội dung điền sẵn), gửi ảnh giao dịch kèm mã đơn, nhận <b>mã license</b>. License có chữ ký số, chạy offline, không cần đăng nhập hay máy chủ. Dùng vĩnh viễn đúng phiên bản đã mua.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Bấm qua từng bước</p>
+        <div class="steps" id="steps"></div>
+        <div class="stepview grid-bg" id="stepview" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="ai-tao-plugin" data-label="AI tạo plugin">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:01:16</span><span class="eyebrow">Plugin do AI của bạn tạo</span></div>
+        <h2>Mô tả plugin bạn cần. AI dựng cho bạn.</h2>
+        <p class="body">AI của bạn dựng <b>mẫu quy trình</b>, <b>ô AI</b> và <b>artifact</b> (ứng dụng nhỏ chạy trong ô). Sửa bằng AI hoặc sửa JSON, xuất file để chia sẻ. Artifact chạy trong khung cách ly nên không đọc được API key hay dự án của bạn.</p>
+      </div>
+      <div class="stage rise gen">
+        <p class="try">Chọn một ý hoặc tự gõ</p>
+        <textarea id="gtext" aria-label="Mô tả plugin">Plugin viết caption TikTok cho video review điện thoại, kèm đếm ký tự</textarea>
+        <div class="row pills"><button type="button" data-g="Plugin lên lịch đăng bài 7 ngày cho shop quần áo">Lịch đăng bài</button><button type="button" data-g="Plugin đổi kịch bản thành phụ đề SRT">Kịch bản → SRT</button><button type="button" class="go" id="gbtn">Tạo plugin</button></div>
+        <div class="gout" id="gout"><div><b>Mẫu quy trình</b><span>…</span></div><div><b>Ô AI</b><span>…</span></div><div><b>Artifact</b><span>…</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="sang-bravin" data-label="Sang Bravin">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:28</span><span class="eyebrow">Micron ↔ Bravin</span></div>
+        <h2>Kết quả AI bay thẳng vào timeline.</h2>
+        <p class="body">Extension <b>Micron ↔ Bravin</b> thêm nút 🎬 Gửi sang Bravin dưới mỗi kết quả: ảnh, giọng đọc, video vào Thư viện hoặc timeline. Plugin <b>Micron AI</b> chạy ngay trong Bravin: viết chữ, tạo ảnh phủ, tạo giọng đọc, chuột phải để viết lại chữ trên clip.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Bấm để gửi sang Bravin</p>
+        <div class="send">
+          <div class="res3" id="res3">
+            <button type="button" data-t="0" data-c="#3b2f86"><i style="background:linear-gradient(135deg,#8b6bff,#2fd4e8)"></i>Ảnh minh hoạ<span>🎬 Gửi</span></button>
+            <button type="button" data-t="1" data-c="#3b2a24"><i style="background:#3b2a24"></i>Giọng đọc 0:24<span>🎬 Gửi</span></button>
+            <button type="button" data-t="2" data-c="#1f3a37"><i style="background:#1f3a37"></i>Nhạc nền 1:10<span>🎬 Gửi</span></button>
+          </div>
+          <div class="btl" id="btl"><span class="lb">Bravin · timeline</span><div class="ln"></div><div class="ln"></div><div class="ln"></div><span class="ph"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="thiet-bi" data-label="Thiết bị">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:01:40</span><span class="eyebrow">Mọi thiết bị · dữ liệu của bạn</span></div>
+      <h2 style="max-width:20ch">Một Micron cho mọi nơi. Dữ liệu ở lại với bạn.</h2>
+      <div class="split" style="margin-top:30px;align-items:start">
+        <div class="devs">
+          <div><span>🌐</span>Web<small>Cài như app, chạy offline</small></div>
+          <div><span>🪟</span>Windows<small>Gọi AI trên máy không cần chỉnh CORS</small></div>
+          <div><span>🍎</span>macOS<small>Chip Apple và Intel</small></div>
+          <div><span>🤖</span>Android<small>Điện thoại, máy tính bảng</small></div>
+          <div><span>📱</span>iPad, iPhone<small>Thêm vào Màn hình chính</small></div>
+        </div>
+        <div class="sec4">
+          <div><b>Dự án trên máy bạn</b><p>Lưu trong trình duyệt, xuất và nhập bằng file .micron.json.</p></div>
+          <div><b>Key không rời máy</b><p>API key chỉ gửi tới đúng địa chỉ AI bạn nhập.</p></div>
+          <div><b>Artifact cách ly</b><p>Ứng dụng nhỏ trong ô không đọc được key hay dự án.</p></div>
+          <div><b>License offline</b><p>Có chữ ký số; nhớ Sao lưu license khi đổi máy.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="vi-sao" data-label="Vì sao">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:01:52</span><span class="eyebrow">Khác gì canvas AI thường gặp</span></div>
+      <h2 style="max-width:20ch">Bấm từng dòng để xem chi tiết.</h2>
+      <div class="vs" style="margin-top:26px">
+        <div class="seg" role="group" aria-label="Góc nhìn"><button type="button" data-v="old" aria-pressed="false">App thường gặp</button><button type="button" data-v="new" aria-pressed="true">Micron</button></div>
+        <div class="vh"><span>Tiêu chí</span><span>Nhiều app thường gặp</span><span class="us">Micron</span></div>
+        <details class="vr"><summary><b>AI dùng được</b><span class="old">Chỉ AI có sẵn trong app</span><span class="new">AI nào cũng nối được, kể cả AI trên máy</span></summary><p class="more">Thêm bằng API key hoặc chạy cục bộ qua Ollama, LM Studio, ComfyUI. Đổi AI cho từng ô.</p></details>
+        <details class="vr"><summary><b>Chi phí AI</b><span class="old">Trả theo gói tín dụng của app</span><span class="new">Trả thẳng cho nhà cung cấp, hoặc 0đ với AI trên máy</span></summary><p class="more">Micron không bán lượt AI. Bạn dùng khoá của mình, giá đúng giá gốc.</p></details>
+        <details class="vr"><summary><b>Dữ liệu</b><span class="old">Lưu trên máy chủ của app</span><span class="new">Dự án, key, license nằm trên thiết bị của bạn</span></summary><p class="more">Lưu trong trình duyệt. Xuất và nhập dự án bằng file .micron.json.</p></details>
+        <details class="vr"><summary><b>Ra video</b><span class="old">Tải về rồi dựng ở app khác</span><span class="new">Gửi thẳng sang timeline Bravin</span></summary><p class="more">Extension Micron ↔ Bravin và plugin Micron AI nối hai ứng dụng thành một luồng.</p></details>
+        <details class="vr"><summary><b>Plugin</b><span class="old">Thường thuê bao theo tháng</span><span class="new">Mua một lần, license offline</span></summary><p class="more">License có chữ ký số, không cần đăng nhập hay máy chủ.</p></details>
+        <p class="note">So sánh theo cách làm phổ biến của nhóm ứng dụng canvas AI, không nhắm tới sản phẩm cụ thể nào. Tính năng từng ứng dụng có thể khác và thay đổi theo thời gian.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="dung-ngay" data-label="Dùng ngay">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:02:10</span><span class="eyebrow">Dùng ngay</span></div>
+      <h2 style="max-width:18ch">Mở link, thêm AI của bạn, bấm Chạy.</h2>
+      <div class="dl" style="margin-top:30px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
         <a class="get web" href="https://micron.vtvcab17.workers.dev/" target="_blank" rel="noopener">
           <span class="ic"><img src="assets/brand/micron.svg" alt="" width="30" height="30"></span>
-          <h3>Micron</h3><span class="meta">micron.vtvcab17.workers.dev<br>Canvas AI · cài được như app, chạy offline</span><span class="act">Mở Micron</span></a>
-    </div>
-    <div class="notes">
-      <p><b>Không cần cài:</b> mở link là dùng. Dữ liệu và project lưu ngay trên máy bạn.</p>
-      <p><b>Cài như app trên máy tính, Android:</b> mở bằng Chrome hoặc Edge, bấm biểu tượng cài trên thanh địa chỉ (hoặc menu ⋮ → Cài đặt ứng dụng).</p>
-      <p><b>iPhone, iPad:</b> mở bằng Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
+          <h3>Mở Micron</h3><span class="meta">micron.vtvcab17.workers.dev<br>Cài như app · chạy offline</span><span class="act">Mở Micron</span></a>
+      </div>
+      <div class="notes">
+        <p><b>Cài như app trên máy tính, Android:</b> mở bằng Chrome hoặc Edge, bấm ⬇ Cài ứng dụng hoặc biểu tượng cài trên thanh địa chỉ.</p>
+        <p><b>iPhone, iPad:</b> mở bằng Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
+      </div>
+      <p class="eyebrow" style="margin-top:34px;color:var(--muted)">Cùng hệ sinh thái</p>
+      <div class="others">
+        <a href="bravin.html"><img src="assets/brand/bravin.svg" alt=""><span>Bravin<small>Dựng video, chạy plugin từ Micron</small></span></a>
+        <a href="antifact.html"><img src="assets/brand/antifact.svg" alt=""><span>Antifact<small>Thiết kế, gửi sang Bravin</small></span></a>
+      </div>
     </div>
   </section>
 </main>
+
+<nav class="scrub" aria-label="Các trang trình bày">
+  <div class="in">
+    <span class="tcv" id="tcv">00:00:00</span>
+    <div class="track" id="track"><span class="head" id="head"></span></div>
+    <div class="nav2"><button type="button" id="prev" aria-label="Trang trước">‹</button><button type="button" id="next" aria-label="Trang sau">›</button></div>
+  </div>
+</nav>
 
 <footer class="foot">
   <div class="wrap">
@@ -220,39 +419,81 @@ body{--iris:#8b6bff;--iris-deep:#6447f0}
   </div>
 </footer>
 <script src="assets/site.js"></script>
+<script src="assets/deck.js"></script>
 <script>
 (function () {
-  // canvas thử: mô phỏng "Chạy tất cả"
+  const $ = id => document.getElementById(id);
+  // canvas: mô phỏng Chạy tất cả
   const T = {
-    song: [["💡","Ý tưởng","Ô văn bản","Mùa hè ở Hà Nội, đi xe đạp qua hồ Tây lúc chiều."],["✍️","Viết lời","AI Văn bản · {{input}}","Điệp khúc: “Gió hồ Tây thổi qua vai, chiều nay mình đạp xe hoài…”"],["🎨","Phong cách","AI Văn bản","Pop acoustic, 96 BPM, guitar mộc, giọng nữ trong."],["🎵","Tạo bài hát","AI Âm thanh","wave"]],
-    review: [["📦","Thông số","Ô tải tệp","Ảnh hộp máy + bảng thông số."],["🧠","Ưu nhược","AI Văn bản · {{input}}","3 ưu điểm, 2 nhược điểm, ai nên mua."],["🎬","Kịch bản 60s","AI Văn bản","Hook 3 giây → 3 điểm chính → kết luận + CTA."],["🖼️","Thumbnail","AI Ảnh","img"]],
-    sale: [["🏷️","Sản phẩm","Ô văn bản","Bravin: dựng video trên web, Android, Windows."],["🎯","USP","AI Văn bản · {{input}}","Dựng trên mọi thiết bị, AI tự chọn, xuất MP4."],["📣","Quảng cáo","AI Văn bản","3 mẫu quảng cáo ngắn cho TikTok và Facebook."],["🗣️","Giọng đọc","AI Âm thanh","wave"]]
+    song: [["💡","Ý tưởng","Ô văn bản","Mùa hè ở Hà Nội, đạp xe qua hồ Tây lúc chiều."],["✍️","Viết lời","AI Văn bản · {{input}}","“Gió hồ Tây thổi qua vai, chiều nay mình đạp xe hoài…”"],["🎨","Phong cách","AI Văn bản","Pop acoustic, 96 BPM, guitar mộc."],["🎵","Tạo bài hát","AI Âm thanh","wave"]],
+    review: [["📦","Thông số","Ô tải tệp","Ảnh hộp máy + bảng thông số."],["🧠","Ưu nhược","AI Văn bản · {{input}}","3 ưu điểm, 2 nhược điểm, ai nên mua."],["🎬","Kịch bản 60s","AI Văn bản","Hook 3 giây → 3 điểm chính → CTA."],["🖼️","Thumbnail","AI Ảnh","img"]],
+    sale: [["🏷️","Sản phẩm","Ô văn bản","Bravin: dựng video trên web, Android, Windows."],["🎯","USP","AI Văn bản · {{input}}","Dựng mọi thiết bị, AI tự chọn, xuất MP4."],["📣","Quảng cáo","AI Văn bản","3 mẫu quảng cáo ngắn."],["🗣️","Giọng đọc","AI Âm thanh","wave"]]
   };
-  const flow = document.getElementById("flow"), sel = document.getElementById("tpl");
-  let timer = [];
-  function render() {
-    timer.forEach(clearTimeout); timer = [];
-    flow.innerHTML = T[sel.value].map(([ic, h, pr]) => '<div class="node"><div class="h"><i>' + ic + "</i>" + h + '</div><div class="pr">' + pr + '</div><div class="out"></div><span class="st">Chờ</span></div>').join("");
-  }
+  const flow = $("flow"), sel = $("tpl"); let timer = [];
+  function render() { timer.forEach(clearTimeout); timer = []; flow.innerHTML = T[sel.value].map(([ic, h, pr]) => '<div class="node"><div class="h"><i>' + ic + "</i>" + h + '</div><div class="pr">' + pr + '</div><div class="out"></div><span class="st">Chờ</span></div>').join(""); }
   function run() {
-    render();
-    const nodes = [...flow.children], data = T[sel.value];
+    render(); const nodes = [...flow.children], data = T[sel.value];
     nodes.forEach((n, i) => {
-      timer.push(setTimeout(() => { n.classList.add("run"); n.querySelector(".st").textContent = "Đang chạy…"; }, i * 1100));
+      timer.push(setTimeout(() => { n.classList.add("run"); n.querySelector(".st").textContent = "Đang chạy…"; }, i * 1000));
       timer.push(setTimeout(() => {
         n.classList.remove("run"); n.classList.add("done"); n.querySelector(".st").textContent = "Xong";
         const o = n.querySelector(".out"), v = data[i][3];
-        if (v === "wave") { o.innerHTML = '<div class="wav">' + "<i></i>".repeat(24) + "</div>"; requestAnimationFrame(() => o.querySelectorAll("i").forEach(b => b.style.height = (20 + Math.random() * 80) + "%")); }
+        if (v === "wave") { o.innerHTML = '<div class="wav">' + "<i></i>".repeat(22) + "</div>"; requestAnimationFrame(() => o.querySelectorAll("i").forEach(b => b.style.height = (20 + Math.random() * 80) + "%")); }
         else if (v === "img") { o.innerHTML = '<div class="img"></div>'; requestAnimationFrame(() => o.firstChild.style.background = "linear-gradient(135deg,#8b6bff,#2fd4e8)"); }
         else o.textContent = v;
-      }, i * 1100 + 900));
+      }, i * 1000 + 800));
     });
   }
-  sel.onchange = render; document.getElementById("run").onclick = run; document.getElementById("reset").onclick = render; render();
-  // cửa hàng: lọc + nút xem thử
+  sel.onchange = render; $("run").onclick = run; $("reset").onclick = render; render();
+
+  // loại ô
+  const N = [["📝","AI Văn bản","Viết kịch bản, lời bài hát, caption, dịch, tóm tắt."],["🖼️","AI Ảnh","Tạo ảnh minh hoạ, thumbnail từ lời nhắc."],["🔊","AI Âm thanh","Tạo giọng đọc, nhạc."],["🎞️","AI Video","Tạo đoạn video ngắn bằng AI của bạn."],["🗒️","Ô văn bản","Ghi ý tưởng hay dữ liệu đầu vào cho chuỗi."],["📎","Ô tải tệp","Đưa ảnh, tài liệu, âm thanh vào làm đầu vào."]];
+  const nt = $("ntypes"), nd = $("ndesc");
+  N.forEach(([ic, n, d], i) => { const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-pressed", String(i === 1)); b.innerHTML = "<span>" + ic + "</span>" + n; b.onclick = () => { nt.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); nd.innerHTML = "<b>" + n + ":</b> " + d; }; nt.appendChild(b); });
+  nd.innerHTML = "<b>" + N[1][1] + ":</b> " + N[1][2];
+  const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  function sub() { const p = $("prompt").value, v = $("prevOut").value; $("res").innerHTML = "Gửi tới AI: " + esc(p).split("{{input}}").join("<mark>" + esc(v) + "</mark>"); }
+  $("prompt").oninput = sub; $("prevOut").oninput = sub; sub();
+
+  // AI của bạn
+  const A = [["OpenAI-compatible","Văn bản, ảnh, giọng đọc","OpenAI, OpenRouter, Groq, DeepSeek, LM Studio, Ollama /v1"],["Anthropic Claude","Văn bản (đọc được ảnh)","Các model Claude"],["Google Gemini","Văn bản, ảnh","Các model Gemini"],["Ollama","Văn bản, chạy trên máy","llama, qwen…"],["ComfyUI","Ảnh, nhạc, video trên máy","Flux, ACE-Step, Wan…"],["HTTP tuỳ chỉnh","Bất kỳ API nào","API nhạc, video, giọng nói của các hãng"]];
+  const ai = $("ais"), info = $("aiinfo");
+  function pickA(i) { ai.querySelectorAll("button").forEach((x, k) => x.setAttribute("aria-pressed", String(k === i))); info.innerHTML = "<dt>Dùng cho</dt><dd>" + A[i][1] + "</dd><dt>Ví dụ</dt><dd>" + A[i][2] + "</dd>"; }
+  A.forEach((a, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = a[0]; b.onclick = () => pickA(i); ai.appendChild(b); }); pickA(0);
+
+  // chợ plugin
   const fb = [...document.querySelectorAll("#filt button")];
   fb.forEach(b => b.onclick = () => { fb.forEach(x => x.setAttribute("aria-pressed", String(x === b))); document.querySelectorAll("#store .pl").forEach(p => p.hidden = b.dataset.f !== "all" && !p.dataset.k.split(" ").includes(b.dataset.f)); });
-  document.querySelectorAll("#store .pr button").forEach(b => b.onclick = () => { const buy = b.textContent === "Mua"; b.classList.add("ok"); b.textContent = buy ? "Mở trong Micron" : "Đã thêm ✓"; if (buy) window.open("https://micron.vtvcab17.workers.dev/", "_blank", "noopener"); });
+  document.querySelectorAll("#store .pr button").forEach(b => b.onclick = () => { b.classList.add("ok"); b.textContent = b.textContent === "Mua" ? "Mua trong Micron" : "Đã thêm ✓"; });
+
+  // mua một lần
+  const qr = '<svg viewBox="0 0 21 21" width="88" height="88" shape-rendering="crispEdges"><rect width="21" height="21" fill="#fff"/><g fill="#111">' + (() => { let s = "", seed = 9; const r = () => (seed = seed * 16807 % 2147483647) / 2147483647; for (let y = 0; y < 21; y++) for (let x = 0; x < 21; x++) { const f = (x < 7 && y < 7) || (x > 13 && y < 7) || (x < 7 && y > 13); if (f ? ((x % 6 === 0 || y % 6 === 0 || (x > 1 && x < 5 && y > 1 && y < 5)) || (x > 13 && (x === 14 || x === 20 || y === 0 || y === 6 || (x > 15 && x < 19 && y > 1 && y < 5))) || (y > 13 && (y === 14 || y === 20 || x === 0 || x === 6 || (x > 1 && x < 5 && y > 15 && y < 19)))) : r() > .55) s += '<rect x="' + x + '" y="' + y + '" width="1" height="1"/>'; } return s; })() + "</g></svg>";
+  const S = [["Bấm Mua","Chọn plugin trả phí trong 🧩 Extensions & Plugins, bấm Mua.",'<span style="font-size:42px">🛒</span>'],
+             ["Quét QR","Mã QR ngân hàng có sẵn số tiền và nội dung chuyển khoản.",qr],
+             ["Gửi giao dịch","Gửi ảnh giao dịch kèm mã đơn hiện trong Micron.",'<span style="font-size:42px">🧾</span>'],
+             ["Nhận license","Nhận mã license có chữ ký số, dán vào là dùng, chạy offline.",'<span style="font:700 12px/1.3 JetBrains Mono,monospace;color:#111;padding:8px;text-align:center">MCR-7Q4K<br>-2V9P-XA1</span>'],
+             ["Sao lưu","Bấm Sao lưu license để khôi phục khi đổi máy.",'<span style="font-size:42px">💾</span>']];
+  const st = $("steps"), sv = $("stepview");
+  function step(i) { st.querySelectorAll("button").forEach((b, k) => { b.setAttribute("aria-pressed", String(k === i)); b.classList.toggle("done", k < i); }); sv.innerHTML = '<div class="vis">' + S[i][2] + "</div><div><h3>" + (i + 1) + ". " + S[i][0] + "</h3><p>" + S[i][1] + '</p><div class="pills" style="margin-top:12px">' + (i < S.length - 1 ? '<button type="button" id="nx">Bước tiếp →</button>' : '<button type="button" id="nx">Xem lại từ đầu</button>') + "</div></div>"; $("nx").onclick = () => step(i < S.length - 1 ? i + 1 : 0); }
+  S.forEach((s, i) => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = "<b>" + (i + 1) + "</b>" + s[0]; b.onclick = () => step(i); st.appendChild(b); }); step(0);
+
+  // AI tạo plugin
+  const gt = $("gtext"), go = $("gout");
+  document.querySelectorAll(".gen [data-g]").forEach(b => b.onclick = () => { gt.value = b.dataset.g; });
+  $("gbtn").onclick = () => {
+    const t = gt.value.trim() || "Plugin của bạn", short = t.replace(/^Plugin\s*/i, "").slice(0, 60);
+    const outs = ["Chuỗi 3 ô: đầu vào → AI xử lý → kết quả cho: " + short, "Ô AI Văn bản với lời nhắc dựng sẵn và {{input}}", "Ứng dụng nhỏ trong ô để xem, chỉnh và sao chép kết quả"];
+    [...go.children].forEach((d, i) => { d.classList.remove("on"); d.querySelector("span").textContent = "…"; setTimeout(() => { d.classList.add("on"); d.querySelector("span").textContent = outs[i]; }, 500 + i * 600); });
+  };
+
+  // gửi sang Bravin
+  const lanes = document.querySelectorAll("#btl .ln");
+  document.querySelectorAll("#res3 button").forEach(b => b.onclick = () => {
+    if (b.classList.contains("sent")) return;
+    const k = +b.dataset.t, w = [30, 40, 70][k], l = [35, 35, 10][k];
+    lanes[k].innerHTML = '<i style="left:' + l + "%;width:" + w + "%;background:" + b.dataset.c + '"></i>';
+    b.classList.add("sent"); b.querySelector("span").textContent = "Đã gửi ✓";
+  });
 })();
 </script>
 </body>

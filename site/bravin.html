@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="assets/site.css">
+<style>.others{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:22px}.others a{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--panel);text-decoration:none;font:600 15px/1.3 var(--f-body)}.others a img{width:34px;height:34px;border-radius:9px}.others a small{display:block;font:400 13px/1.3 var(--f-body);color:var(--muted)}.others a:hover{border-color:var(--iris)}</style>
 <style>
 html{scroll-snap-type:y proximity;scroll-padding-top:62px}
 body{padding-bottom:76px}
@@ -161,9 +162,9 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <h1 style="margin-top:18px">Bravin<em>.</em></h1>
         <p class="body">Dựng video nhiều lớp với keyframe, mask, chỉnh màu kiểu node và trợ lý AI. Mở trên trình duyệt, cài lên điện thoại, máy tính bảng hay máy tính, rồi dựng ngay.</p>
         <div class="cta">
-          <a class="btn primary" href="https://bravin.vtvcab17.workers.dev/" target="_blank" rel="noopener">Mở bản web
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn" href="#video">Xem video</a>
+          <a class="btn primary" href="#video">Xem video
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></a>
+          <a class="btn" href="#tai-ve">Dùng ngay ↓</a>
         </div>
       </div>
       <div class="ed stage rise" aria-hidden="true">
@@ -554,22 +555,20 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
     <div class="wrap">
       <div class="kicker"><span class="tc">00:02:00</span><span class="eyebrow">Dùng ngay</span></div>
       <h2 style="max-width:18ch">Mở trình duyệt là dựng.</h2>
-      <div class="dl" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+      <div class="dl" style="margin-top:30px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
         <a class="get web" href="https://bravin.vtvcab17.workers.dev/" target="_blank" rel="noopener">
           <span class="ic"><img src="assets/brand/bravin.svg" alt="" width="30" height="30"></span>
-          <h3>Bravin</h3><span class="meta">bravin.vtvcab17.workers.dev<br>Dựng video · Chrome hoặc Edge</span><span class="act">Mở Bravin</span></a>
-        <a class="get web" href="https://antiface.vtvcab17.workers.dev/" target="_blank" rel="noopener">
-          <span class="ic"><img src="assets/brand/antifact.svg" alt="" width="30" height="30"></span>
-          <h3>Antifact</h3><span class="meta">antiface.vtvcab17.workers.dev<br>Thiết kế · cài được như app, chạy offline</span><span class="act">Mở Antifact</span></a>
-        <a class="get web" href="https://micron.vtvcab17.workers.dev/" target="_blank" rel="noopener">
-          <span class="ic"><img src="assets/brand/micron.svg" alt="" width="30" height="30"></span>
-          <h3>Micron</h3><span class="meta">micron.vtvcab17.workers.dev<br>Canvas AI · cài được như app, chạy offline</span><span class="act">Mở Micron</span></a>
+          <h3>Mở Bravin</h3><span class="meta">bravin.vtvcab17.workers.dev<br>Chrome hoặc Edge · không cần cài</span><span class="act">Mở Bravin</span></a>
       </div>
       <div class="notes">
-      <p><b>Không cần cài:</b> mở link là dùng. Dữ liệu và project lưu ngay trên máy bạn.</p>
-      <p><b>Cài như app trên máy tính, Android:</b> mở bằng Chrome hoặc Edge, bấm biểu tượng cài trên thanh địa chỉ (hoặc menu ⋮ → Cài đặt ứng dụng).</p>
-      <p><b>iPhone, iPad:</b> mở bằng Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
-    </div>
+        <p><b>Cài như app trên máy tính, Android:</b> mở bằng Chrome hoặc Edge, bấm biểu tượng cài trên thanh địa chỉ.</p>
+        <p><b>iPhone, iPad:</b> mở bằng Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
+      </div>
+      <p class="eyebrow" style="margin-top:34px;color:var(--muted)">Cùng hệ sinh thái</p>
+      <div class="others">
+        <a href="antifact.html"><img src="assets/brand/antifact.svg" alt=""><span>Antifact<small>Thiết kế rồi gửi sang Bravin</small></span></a>
+        <a href="micron.html"><img src="assets/brand/micron.svg" alt=""><span>Micron<small>AI và plugin cho Bravin</small></span></a>
+      </div>
     </div>
   </section>
 </main>

@@ -10,14 +10,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&family=Bricolage+Grotesque:wght@700;800&display=swap">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/deck.css">
 <style>
 body{--iris:#ff4f99;--iris-deep:#c2306f}
-.phero h1{font-family:"Bricolage Grotesque",var(--f-display);font-weight:800}
-.phero h1 em{font-style:normal;background:linear-gradient(90deg,var(--af-c),var(--af-m) 50%,var(--af-y));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1{font-family:"Bricolage Grotesque",var(--f-display);font-weight:800}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--af-c),var(--af-m) 50%,var(--af-y));-webkit-background-clip:text;background-clip:text;color:transparent}
 .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .badges span{font:500 12px/1 var(--f-mono);padding:8px 10px;border-radius:999px;border:1px solid var(--line);color:var(--fg)}
-
-/* cảnh promo riêng của Antifact */
 .mt{mix-blend-mode:multiply}
 @keyframes wipe{0%,25%{clip-path:inset(0 0 0 0)}70%,100%{clip-path:inset(0 0 0 100%)}}
 @keyframes lasso{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
@@ -25,51 +24,100 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
 @keyframes bg{0%,35%{fill:#2a2550}60%,100%{fill:#0f3d5c}}
 .flyer{animation:fly1 3.6s ease-in-out both}
 
-/* sân chơi hoà trộn */
-.mix{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:center}
+/* mở đầu: editor thu nhỏ */
+.ed{display:grid;grid-template-columns:44px minmax(0,1fr) 150px;gap:8px;height:clamp(260px,32vw,400px)}
+.ed .rail,.ed .insp{background:var(--ink);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px}
+.ed .rail i{display:block;aspect-ratio:1;border-radius:8px;background:#20222c}
+.ed .rail i:nth-child(2){background:var(--iris)}
+.ed .cvs{position:relative;border-radius:12px;background:#f4f1ea;overflow:hidden;display:grid;place-items:center}
+.ed .cvs svg{width:70%;height:auto}
+.ed .insp b{font:500 10px/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ed .insp .l{display:flex;align-items:center;gap:6px;padding:6px;border-radius:8px;background:#171923;font:600 11px/1 var(--f-body)}
+.ed .insp .l s{width:14px;height:14px;border-radius:4px;display:block}
+.ed .insp .l.on{outline:1px solid var(--iris)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.ed .cvs .p1{animation:bob 4s ease-in-out infinite}.ed .cvs .p2{animation:bob 4s .4s ease-in-out infinite}.ed .cvs .p3{animation:bob 4s .8s ease-in-out infinite}
+
+/* hoà trộn */
 .mixbox{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:#f4f1ea}
 .mixbox.dark{background:#0c0d12}
-.mixbox .lyr{position:absolute;width:52%;aspect-ratio:1.15;bottom:10%;clip-path:path("M20 160Q0 160 8 142L80 14Q90 0 100 14L172 142Q180 160 160 160Z");transition:transform .3s,opacity .3s}
+.mixbox .lyr{position:absolute;width:52%;aspect-ratio:1.15;bottom:10%;clip-path:polygon(50% 4%,98% 98%,2% 98%);border-radius:10px;transition:transform .3s,opacity .3s}
 .mixbox .lyr.c{left:4%;background:var(--af-c)}.mixbox .lyr.m{left:24%;background:var(--af-m)}.mixbox .lyr.y{left:44%;background:var(--af-y)}
 .mixbox .lyr.off{opacity:0;transform:translateY(20px)}
-.lyrs{display:grid;gap:8px}
-.lrow{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--ink);border:1px solid var(--line)}
+.lyrs{display:grid;gap:8px;margin-top:20px}
+.lrow{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
 .lrow .sw{width:22px;height:22px;border-radius:6px}
 .lrow label{font:600 14px/1 var(--f-body)}
-.lrow select{background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:7px 8px;font:500 13px/1 var(--f-body);justify-self:end}
+.lrow select{background:var(--ink);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:7px 8px;font:500 13px/1 var(--f-body)}
 .lrow input[type=checkbox]{width:18px;height:18px;accent-color:var(--iris)}
-.lrow input[type=range]{accent-color:var(--iris);width:100%}
-.ctlrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.ctlrow button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:9px 14px;font:600 13px/1 var(--f-body);cursor:pointer}
-.ctlrow button[aria-pressed="true"]{background:var(--iris);color:#120f2a;border-color:var(--iris)}
+.lrow input[type=range]{accent-color:var(--iris);width:100%;display:block;margin-top:8px}
+
+/* công cụ */
+.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tool{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:14px;border-radius:12px;background:var(--ink);border:1px solid var(--line);font:600 13px/1.2 var(--f-body);cursor:pointer;color:var(--fg);text-align:left}
+.tool svg{width:22px;height:22px;color:var(--iris)}
+.tool[aria-pressed="true"]{border-color:var(--iris);background:color-mix(in srgb,var(--iris) 14%,var(--ink))}
+.tooltip{margin-top:12px;min-height:3em;font-size:14px;color:color-mix(in srgb,var(--fg) 84%,var(--muted))}
 
 /* trước / sau */
 .ba{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;user-select:none;touch-action:pan-y}
 .ba svg{position:absolute;inset:0;width:100%;height:100%}
 .ba .after{clip-path:inset(0 0 0 var(--x,50%))}
-.ba .handle{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.2);pointer-events:none}
-.ba .handle::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font:700 16px/40px var(--f-body);text-align:center}
+.ba .handle{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:#fff;pointer-events:none}
+.ba .handle::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;color:#111;font:700 16px/40px var(--f-body);text-align:center}
 .ba .lb{position:absolute;top:12px;font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;background:rgba(0,0,0,.55);color:#fff;padding:7px 9px;border-radius:999px}
 .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
 
-/* khung bắt đầu nhanh */
-.frames{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(20px,4vw,48px);align-items:center}
+/* chữ & màu */
+.typebox{border-radius:16px;min-height:200px;display:grid;place-items:center;padding:24px;text-align:center;transition:background .3s}
+.typebox .t{font:800 clamp(28px,4vw,52px)/1.1 "Bricolage Grotesque",var(--f-display);word-break:break-word}
+.fields{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px;margin-top:14px}
+.fields label{display:grid;gap:6px;font:500 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fields input,.fields select{background:var(--ink);border:1px solid var(--line);border-radius:10px;color:var(--fg);padding:10px 12px;font:500 15px/1.2 var(--f-body);min-width:0}
+.cols{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.cols button{width:32px;height:32px;border-radius:9px;border:2px solid transparent;cursor:pointer}
+.cols button[aria-pressed="true"]{border-color:#fff}
+.codes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px;font:500 12px/1.4 var(--f-mono)}
+.codes div{background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px}
+.codes b{display:block;color:var(--muted);font-weight:500;font-size:10px;letter-spacing:.1em}
+
+/* trợ lý AI */
+.aiwrap{display:grid;gap:12px}
+.design{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;display:grid;place-items:center;transition:background .5s}
+.design .ttl{font:800 28px/1 "Bricolage Grotesque",var(--f-display);color:#fff;transition:font-size .5s,text-shadow .5s,letter-spacing .5s}
+.design .sub{position:absolute;bottom:10%;font:600 13px/1 var(--f-body);color:#ffffffcc}
+.chat{display:grid;gap:8px;max-height:150px;overflow:auto;padding:4px}
+.chat p{max-width:80%;padding:9px 12px;border-radius:12px;font-size:14px}
+.chat .u{justify-self:end;background:var(--iris);color:#120f2a}
+.chat .a{background:var(--ink);border:1px solid var(--line)}
+
+/* khung */
 .fpick{display:grid;gap:8px}
-.fpick button{display:flex;justify-content:space-between;gap:12px;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:14px;padding:14px 16px;font:600 15px/1.2 var(--f-body);cursor:pointer}
+.fpick button{display:flex;justify-content:space-between;gap:12px;text-align:left;border:1px solid var(--line);background:var(--ink);color:var(--fg);border-radius:14px;padding:14px 16px;font:600 15px/1.2 var(--f-body);cursor:pointer}
 .fpick button small{font:500 12px/1.2 var(--f-mono);color:var(--muted)}
-.fpick button[aria-pressed="true"]{border-color:var(--iris);background:color-mix(in srgb,var(--iris) 14%,var(--panel))}
-.fview{height:340px;display:grid;place-items:center;background:var(--ink);border-radius:16px;border:1px solid var(--line)}
+.fpick button[aria-pressed="true"]{border-color:var(--iris);background:color-mix(in srgb,var(--iris) 14%,var(--ink))}
+.fview{height:340px;display:grid;place-items:center;background:var(--ink);border-radius:16px}
 .fbox{position:relative;max-height:300px;max-width:92%;border-radius:8px;background:linear-gradient(135deg,#1b1440,#0f3d5c);box-shadow:0 20px 50px -20px #000;transition:aspect-ratio .4s,height .4s,width .4s;display:grid;place-items:center;overflow:hidden}
 .fbox b{font:800 clamp(16px,2.4vw,28px)/1 "Bricolage Grotesque",var(--f-display);color:#fff;text-align:center;padding:10px}
 .fbox i{position:absolute;bottom:8px;right:10px;font:500 11px var(--f-mono);color:#ffffffaa;font-style:normal}
 
-.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.tool{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font:600 14px/1.2 var(--f-body)}
-.tool svg{width:20px;height:20px;flex:none;color:var(--iris)}
-@media (max-width:900px){.mix,.frames{grid-template-columns:1fr}}
+/* camera 2.5D */
+.para{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;background:linear-gradient(#251a4d,#ff8a4c 140%);cursor:crosshair}
+.para .ly{position:absolute;inset:-8%;transition:transform .15s ease-out;pointer-events:none}
+.para .ly svg{width:100%;height:100%}
+.para .hud{position:absolute;left:14px;bottom:12px;font:500 11px/1 var(--f-mono);color:#fff;background:rgba(0,0,0,.4);padding:7px 9px;border-radius:999px}
+
+/* xuất */
+.exp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.exp button{border:1px solid var(--line);background:var(--ink);color:var(--fg);border-radius:12px;padding:14px 10px;font:600 14px/1.2 var(--f-body);cursor:pointer}
+.exp button[aria-pressed="true"]{border-color:var(--iris);background:color-mix(in srgb,var(--iris) 14%,var(--ink))}
+.expinfo{margin-top:12px;font-size:14px;color:color-mix(in srgb,var(--fg) 84%,var(--muted));min-height:3em}
+
+@media (max-width:980px){.ed{grid-template-columns:36px minmax(0,1fr)}.ed .insp{display:none}.tools{grid-template-columns:repeat(2,minmax(0,1fr))}.exp{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){.ed .cvs .p1,.ed .cvs .p2,.ed .cvs .p3{animation:none}}
 </style>
 </head>
-<body>
+<body data-total="120">
 <header class="bar">
   <div class="wrap">
     <a class="logo" href="index.html"><i aria-hidden="true"></i>Bravinall</a>
@@ -82,23 +130,36 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   </div>
 </header>
 
-<main>
-  <section class="phero wrap">
-    <div class="grid">
+<main id="deck">
+  <section class="slide hero" id="mo-dau" data-label="Mở đầu">
+    <div class="wrap split">
       <div>
-        <div class="plogo"><img src="assets/brand/antifact.svg" alt=""><span class="eyebrow">Antifact 1.1 · Trình duyệt · PWA</span></div>
-        <h1>Anti<em>fact</em></h1>
+        <p class="eyebrow">Antifact 1.1 · Trình duyệt · Cài như app</p>
+        <h1 style="margin-top:18px">Anti<em>fact</em></h1>
         <p class="body">Chỉnh ảnh và thiết kế ngay trên trình duyệt. Thumbnail, story, bài đăng, bản in A4. Xong thì gửi thẳng sang Bravin, mỗi layer thành một track video.</p>
         <div class="badges"><span>Không cần cài đặt</span><span>Không cần tài khoản</span><span>Dữ liệu ở máy bạn</span></div>
         <div class="cta">
-          <a class="btn primary" href="https://antiface.vtvcab17.workers.dev/" target="_blank" rel="noopener">Mở Antifact
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn" href="#tai-ve">Cài như app</a>
+          <a class="btn primary" href="#video">Xem video
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></a>
+          <a class="btn" href="#dung-ngay">Dùng ngay ↓</a>
         </div>
       </div>
+      <div class="stage rise" aria-hidden="true">
+        <div class="ed">
+          <div class="rail"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="cvs"><svg viewBox="0 4 96 88"><path class="mt p1" d="M7 86Q0 86 2.8 79.6L25.2 28.4Q28 22 30.8 28.4L53.2 79.6Q56 86 49 86Z" fill="#2fd0ee"/><path class="mt p2" d="M27 86Q20 86 22.8 79.6L45.2 28.4Q48 22 50.8 28.4L73.2 79.6Q76 86 69 86Z" fill="#ff4f99"/><path class="mt p3" d="M47 86Q40 86 42.8 79.6L65.2 28.4Q68 22 70.8 28.4L93.2 79.6Q96 86 89 86Z" fill="#ffd43b"/></svg></div>
+          <div class="insp"><b>Layer</b><span class="l on"><s style="background:#ffd43b"></s>Vàng · Multiply</span><span class="l"><s style="background:#ff4f99"></s>Magenta · Multiply</span><span class="l"><s style="background:#2fd0ee"></s>Cyan · Thường</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <!-- Video giới thiệu: dựng bằng HTML, bấm chương để tua -->
-      <div class="promo" aria-label="Video giới thiệu Antifact">
+  <section class="slide" id="video" data-label="Video">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:00:06</span><span class="eyebrow">Video giới thiệu · 34 giây</span></div>
+      <h2 style="max-width:20ch">Antifact trong nửa phút. Bấm chương để tua.</h2>
+      <div style="margin-top:26px">
+<div class="promo" aria-label="Video giới thiệu Antifact">
         <div class="scr">
           <div class="scene center" data-dur="4" data-label="Mở là dùng">
             <div class="cap"><span class="k">Antifact 1.1</span><h3>Thiết kế đẹp.<br>Không cần cài đặt.<br>Không cần tài khoản.</h3></div>
@@ -144,97 +205,220 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
           </div>
         </div>
       </div>
+      </div>
     </div>
   </section>
 
-  <section class="sec wrap">
-    <div class="sec-head"><h2>Thử ngay: chồng layer và hoà trộn</h2><p class="muted">Bật tắt từng layer, đổi chế độ hoà trộn, kéo độ mờ. Đây là cách Antifact ghép mọi thiết kế, và cũng là ý tưởng của logo Antifact.</p></div>
-    <div class="mix">
-      <div class="mixbox" id="mixbox"><div class="lyr c" id="lc"></div><div class="lyr m" id="lm"></div><div class="lyr y" id="ly"></div></div>
+  <section class="slide" id="layer" data-label="Layer">
+    <div class="wrap split">
       <div>
+        <div class="kicker"><span class="tc">00:00:18</span><span class="eyebrow">Layer và hoà trộn</span></div>
+        <h2>Mỗi thứ một layer. Chồng lên là thành tác phẩm.</h2>
+        <p class="body">Chỉnh vị trí, xoay, độ mờ, chín chế độ hoà trộn, khoá, ẩn, gộp layer, và hoàn tác bất cứ lúc nào. Logo Antifact cũng là ba layer chồng nhau theo kiểu Multiply.</p>
         <div class="lyrs" id="lyrs"></div>
-        <div class="ctlrow"><button type="button" id="bgL" aria-pressed="true">Nền sáng</button><button type="button" id="bgD" aria-pressed="false">Nền tối</button><button type="button" id="rnd">Ngẫu nhiên</button></div>
+        <div class="pills" style="margin-top:12px"><button type="button" id="bgL" aria-pressed="true">Nền sáng</button><button type="button" id="bgD" aria-pressed="false">Nền tối</button><button type="button" id="rnd">Ngẫu nhiên</button></div>
       </div>
+      <div class="stage rise"><p class="try">Thử ngay</p><div class="mixbox" id="mixbox"><div class="lyr c" id="lc"></div><div class="lyr m" id="lm"></div><div class="lyr y" id="ly"></div></div></div>
     </div>
   </section>
 
-  <section class="sec wrap">
-    <div class="split2">
+  <section class="slide" id="cong-cu" data-label="Công cụ">
+    <div class="wrap split rev">
       <div>
-        <p class="eyebrow">Xoá vật thể</p>
-        <h2 style="font-size:clamp(28px,4vw,48px);margin-top:12px">Ảnh dính vật thừa? Kéo để xem trước và sau.</h2>
-        <p style="margin-top:16px;max-width:46ch;color:color-mix(in srgb,var(--fg) 84%,var(--muted))">Khoanh vùng bằng Lasso, bấm content-aware fill. Antifact xoá vật thể và tự lấp bằng nền xung quanh. Hình bên là minh hoạ; mở Antifact để thử trên ảnh của bạn.</p>
-        <div class="chips"><span class="chip">Marquee</span><span class="chip">Lasso</span><span class="chip">Quick Selection</span><span class="chip">Magic Wand</span></div>
+        <div class="kicker"><span class="tc">00:00:30</span><span class="eyebrow">Thanh công cụ</span></div>
+        <h2>Mười sáu công cụ, quen tay ngay từ đầu.</h2>
+        <p class="body">Bộ chọn vùng đủ mạnh như phần mềm chuyên nghiệp, thêm dao cắt layer, cọ, tẩy và chuyển màu. Mỗi công cụ có phím tắt riêng.</p>
       </div>
-      <div class="ba" id="ba" style="--x:50%">
-        <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc8f5"/><stop offset="1" stop-color="#ffe2b8"/></linearGradient></defs>
-          <rect width="320" height="200" fill="url(#sky)"/><circle cx="250" cy="60" r="18" fill="#fff4c9"/><rect y="108" width="320" height="38" fill="#2b8fc0"/><path d="M0 120q40-6 80 0t80 0 80 0 80 0" stroke="#9fd8f0" fill="none"/><rect y="146" width="320" height="54" fill="#f0cf96"/>
-          <g><rect x="128" y="90" width="22" height="36" rx="5" fill="#ff5a3c"/><rect x="133" y="78" width="12" height="15" rx="3" fill="#fff"/><path d="M60 170h40l-6-14H66z" fill="#7a5a3a"/></g>
+      <div class="stage rise">
+        <p class="try">Bấm từng công cụ</p>
+        <div class="tools" id="tools"></div>
+        <p class="tooltip" id="tooltip" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="xoa-vat-the" data-label="Xoá vật thể">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:00:42</span><span class="eyebrow">Xoá vật thể</span></div>
+        <h2>Ảnh dính vật thừa? Khoanh, bấm, biến mất.</h2>
+        <p class="body">Khoanh vùng bằng Lasso, bấm <b>content-aware fill</b>. Antifact xoá vật thể và tự lấp bằng nền xung quanh. Kéo thanh bên để xem trước và sau (hình minh hoạ).</p>
+        <div class="chips"><span class="chip">Lasso</span><span class="chip">Content-aware fill</span><span class="chip">Hoàn tác từng bước</span></div>
+      </div>
+      <div class="stage rise">
+        <p class="try">Kéo để so sánh</p>
+        <div class="ba" id="ba" style="--x:50%">
+          <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc8f5"/><stop offset="1" stop-color="#ffe2b8"/></linearGradient></defs>
+            <rect width="320" height="200" fill="url(#sky)"/><circle cx="250" cy="60" r="18" fill="#fff4c9"/><rect y="108" width="320" height="38" fill="#2b8fc0"/><path d="M0 120q40-6 80 0t80 0 80 0 80 0" stroke="#9fd8f0" fill="none"/><rect y="146" width="320" height="54" fill="#f0cf96"/>
+            <g><rect x="128" y="90" width="22" height="36" rx="5" fill="#ff5a3c"/><rect x="133" y="78" width="12" height="15" rx="3" fill="#fff"/><path d="M60 170h40l-6-14H66z" fill="#7a5a3a"/></g>
+          </svg>
+          <svg class="after" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="320" height="200" fill="url(#sky)"/><circle cx="250" cy="60" r="18" fill="#fff4c9"/><rect y="108" width="320" height="38" fill="#2b8fc0"/><path d="M0 120q40-6 80 0t80 0 80 0 80 0" stroke="#9fd8f0" fill="none"/><rect y="146" width="320" height="54" fill="#f0cf96"/>
+          </svg>
+          <span class="lb" style="left:12px">Trước</span><span class="lb" style="right:12px">Sau</span>
+          <div class="handle"></div>
+          <input type="range" min="0" max="100" value="50" aria-label="Kéo để so sánh trước và sau">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="chu-mau" data-label="Chữ &amp; màu">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:00:54</span><span class="eyebrow">Chữ và màu</span></div>
+        <h2>Tiếng Việt chuẩn từng dấu. Màu chính xác tới từng mã.</h2>
+        <p class="body">Chọn phông có sẵn hoặc nhập font riêng; chỉnh viền, cỡ, giãn chữ. Chọn màu bằng HEX, RGB, CMYK. Bộ lọc một chạm: trắng đen, cổ điển, ấm, lạnh, thêm bóng đổ.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Gõ chữ, chọn màu</p>
+        <div class="typebox" id="tbox"><span class="t" id="ttxt">Ước mơ đầu đời</span></div>
+        <div class="fields">
+          <label>Chữ<input id="tin" value="Ước mơ đầu đời" maxlength="40"></label>
+          <label>Phông<select id="tfont"><option value='"Bricolage Grotesque",sans-serif'>Bricolage Grotesque</option><option value='"Be Vietnam Pro",sans-serif'>Be Vietnam Pro</option><option value='Georgia,serif'>Có chân</option><option value='"JetBrains Mono",monospace'>Đơn cách</option></select></label>
+        </div>
+        <div class="cols" id="cols"></div>
+        <div class="codes"><div><b>HEX</b><span id="cHex"></span></div><div><b>RGB</b><span id="cRgb"></span></div><div><b>CMYK</b><span id="cCmyk"></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="tro-ly-ai" data-label="Trợ lý AI">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:06</span><span class="eyebrow">Trợ lý AI</span></div>
+        <h2>Ngại thao tác? Gõ cho trợ lý AI.</h2>
+        <p class="body">“Làm tiêu đề to hơn”, “đổi nền xanh đậm”: trợ lý sửa thẳng trên thiết kế. AI là của bạn: <b>Claude</b>, <b>OpenAI</b>, hay <b>Ollama</b> chạy ngay trên máy.</p>
+        <div class="chips"><span class="chip">Claude</span><span class="chip">OpenAI</span><span class="chip">Ollama</span><span class="chip">Khoá API của bạn</span></div>
+      </div>
+      <div class="stage rise aiwrap">
+        <p class="try">Bấm một câu lệnh</p>
+        <div class="design" id="design" style="background:#2a2550"><span class="ttl" id="dttl">SALE 50%</span><span class="sub">Chỉ trong tuần này</span></div>
+        <div class="pills" id="cmds">
+          <button type="button" data-c="big">Làm tiêu đề to hơn</button>
+          <button type="button" data-c="blue">Đổi nền xanh đậm</button>
+          <button type="button" data-c="shadow">Thêm bóng đổ</button>
+          <button type="button" data-c="wide">Giãn chữ rộng ra</button>
+          <button type="button" data-c="undo">Hoàn tác tất cả</button>
+        </div>
+        <div class="chat" id="chat" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="khung" data-label="Khung">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:01:18</span><span class="eyebrow">Bắt đầu nhanh</span></div>
+        <h2>Khung có sẵn cho mọi nơi bạn đăng.</h2>
+        <p class="body">Thumbnail YouTube, story, bài đăng Instagram, cả bản in A4. Chọn khung là Antifact mở đúng kích thước. Project lưu luôn trên máy bạn.</p>
+      </div>
+      <div class="stage rise">
+        <div class="split" style="grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px">
+          <div class="fpick" id="fpick">
+            <button type="button" data-r="16/9" data-s="1280 × 720" aria-pressed="true">Thumbnail YouTube<small>16:9</small></button>
+            <button type="button" data-r="9/16" data-s="1080 × 1920" aria-pressed="false">Story<small>9:16</small></button>
+            <button type="button" data-r="4/5" data-s="1080 × 1350" aria-pressed="false">Instagram<small>4:5</small></button>
+            <button type="button" data-r="210/297" data-s="A4 · in ấn" aria-pressed="false">Bản in A4<small>A4</small></button>
+          </div>
+          <div class="fview"><div class="fbox" id="fbox" style="aspect-ratio:16/9;width:92%"><b>Tiêu đề của bạn</b><i id="fsz">1280 × 720</i></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="camera" data-label="Camera">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:30</span><span class="eyebrow">Slide và camera</span></div>
+        <h2>Ảnh tĩnh, chuyển động như phim.</h2>
+        <p class="body">Dựng slide có camera 2D và 2.5D: lớp gần đi nhanh, lớp xa đi chậm, tạo chiều sâu. Xuất thành video hoặc GIF, hoặc gửi sang Bravin để dựng tiếp.</p>
+        <div class="chips"><span class="chip">Camera 2D</span><span class="chip">Parallax 2.5D</span><span class="chip">Xuất video, GIF</span></div>
+      </div>
+      <div class="stage rise">
+        <p class="try">Rê chuột hoặc chạm vào khung</p>
+        <div class="para" id="para">
+          <div class="ly" data-d="6"><svg viewBox="0 0 320 200" preserveAspectRatio="none"><circle cx="230" cy="70" r="28" fill="#ffd43b" opacity=".9"/></svg></div>
+          <div class="ly" data-d="14"><svg viewBox="0 0 320 200" preserveAspectRatio="none"><path d="M0 150L60 90L120 140L190 70L260 130L320 95V200H0Z" fill="#5b3a8f"/></svg></div>
+          <div class="ly" data-d="26"><svg viewBox="0 0 320 200" preserveAspectRatio="none"><path d="M0 175L80 120L150 165L230 110L320 160V200H0Z" fill="#2a1d4f"/></svg></div>
+          <div class="ly" data-d="44"><svg viewBox="0 0 320 200" preserveAspectRatio="none"><text x="24" y="60" fill="#fff" font-family="Bricolage Grotesque,sans-serif" font-weight="800" font-size="30">Đà Lạt</text><text x="26" y="80" fill="#ffffffcc" font-family="Be Vietnam Pro,sans-serif" font-size="11">Lớp gần nhất đi nhanh nhất</text></svg></div>
+          <span class="hud" id="phud">Camera · x 0 · y 0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="xuat" data-label="Xuất &amp; Bravin">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:01:42</span><span class="eyebrow">Xuất và Gửi sang Bravin</span></div>
+        <h2>Một cú thả, thiết kế thành video.</h2>
+        <p class="body">Xuất PNG trong suốt, JPG, WebP, hoặc lưu project để sửa tiếp. Bấm <b>Gửi sang Bravin</b>: mỗi layer thành một track video, đúng vị trí, đúng thứ tự.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Chọn cách xuất</p>
+        <div class="exp" id="exp">
+          <button type="button" data-k="png" aria-pressed="true">PNG</button><button type="button" data-k="jpg" aria-pressed="false">JPG</button><button type="button" data-k="webp" aria-pressed="false">WebP</button><button type="button" data-k="bravin" aria-pressed="false">Sang Bravin</button>
+        </div>
+        <p class="expinfo" id="expinfo" aria-live="polite"></p>
+        <svg viewBox="0 0 320 120" style="margin-top:8px" id="expsvg" aria-hidden="true">
+          <rect width="320" height="120" rx="12" fill="#0f1014"/>
+          <g id="expTracks" opacity=".25"><rect x="12" y="20" width="296" height="22" rx="5" fill="none" stroke="rgba(236,235,243,.2)"/><rect x="12" y="48" width="296" height="22" rx="5" fill="none" stroke="rgba(236,235,243,.2)"/><rect x="12" y="76" width="296" height="22" rx="5" fill="none" stroke="rgba(236,235,243,.2)"/>
+            <rect x="14" y="22" width="120" height="18" rx="4" fill="#ffd43b"/><rect x="40" y="50" width="160" height="18" rx="4" fill="#ff4f99"/><rect x="14" y="78" width="290" height="18" rx="4" fill="#2fd0ee"/>
+            <text x="20" y="35" font-family="Be Vietnam Pro,sans-serif" font-size="9" fill="#111">Chữ</text><text x="46" y="63" font-family="Be Vietnam Pro,sans-serif" font-size="9" fill="#fff">Logo</text><text x="20" y="91" font-family="Be Vietnam Pro,sans-serif" font-size="9" fill="#111">Nền</text></g>
+          <text x="160" y="114" text-anchor="middle" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="8" id="expLbl">Bravin · 3 track</text>
         </svg>
-        <svg class="after" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <rect width="320" height="200" fill="url(#sky)"/><circle cx="250" cy="60" r="18" fill="#fff4c9"/><rect y="108" width="320" height="38" fill="#2b8fc0"/><path d="M0 120q40-6 80 0t80 0 80 0 80 0" stroke="#9fd8f0" fill="none"/><rect y="146" width="320" height="54" fill="#f0cf96"/>
-        </svg>
-        <span class="lb" style="left:12px">Trước</span><span class="lb" style="right:12px">Sau</span>
-        <div class="handle"></div>
-        <input type="range" min="0" max="100" value="50" aria-label="Kéo để so sánh trước và sau">
       </div>
     </div>
   </section>
 
-  <section class="sec wrap">
-    <div class="sec-head"><h2>Khung có sẵn, bắt đầu trong một chạm</h2><p class="muted">Chọn khung, Antifact mở đúng kích thước. Project lưu luôn trên máy bạn.</p></div>
-    <div class="frames">
-      <div class="fpick" id="fpick">
-        <button type="button" data-r="16/9" data-s="1280 × 720" aria-pressed="true">Thumbnail YouTube<small>16:9</small></button>
-        <button type="button" data-r="9/16" data-s="1080 × 1920" aria-pressed="false">Story<small>9:16</small></button>
-        <button type="button" data-r="4/5" data-s="1080 × 1350" aria-pressed="false">Bài đăng Instagram<small>4:5</small></button>
-        <button type="button" data-r="210/297" data-s="A4 · in ấn" aria-pressed="false">Bản in A4<small>210 × 297 mm</small></button>
+  <section class="slide" id="vi-sao" data-label="Vì sao">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:01:54</span><span class="eyebrow">Khác gì app thiết kế thường gặp</span></div>
+      <h2 style="max-width:20ch">Bấm từng dòng để xem chi tiết.</h2>
+      <div class="vs" style="margin-top:26px">
+        <div class="seg" role="group" aria-label="Góc nhìn"><button type="button" data-v="old" aria-pressed="false">App thường gặp</button><button type="button" data-v="new" aria-pressed="true">Antifact</button></div>
+        <div class="vh"><span>Tiêu chí</span><span>Nhiều app thường gặp</span><span class="us">Antifact</span></div>
+        <details class="vr"><summary><b>Bắt đầu</b><span class="old">Tải bộ cài hoặc tạo tài khoản trước</span><span class="new">Mở link là dùng, không cần tài khoản</span></summary><p class="more">Antifact là ứng dụng web. Mở trên trình duyệt là dùng, muốn thì cài như app để chạy cả khi mất mạng.</p></details>
+        <details class="vr"><summary><b>Dữ liệu</b><span class="old">Thường lưu trên máy chủ của hãng</span><span class="new">Project lưu ngay trên máy bạn</span></summary><p class="more">Ảnh và project nằm trong trình duyệt của bạn. Bạn tự quyết khi nào xuất file hay gửi đi.</p></details>
+        <details class="vr"><summary><b>AI</b><span class="old">Gắn với AI của hãng, tính theo gói</span><span class="new">Chọn AI của bạn: Claude, OpenAI, Ollama</span></summary><p class="more">Dùng khoá API của bạn hoặc AI chạy trên máy qua Ollama. Không khoá vào một nhà cung cấp.</p></details>
+        <details class="vr"><summary><b>Tiếng Việt</b><span class="old">Lỗi dấu với một số phông</span><span class="new">Làm từ đầu cho tiếng Việt</span></summary><p class="more">Giao diện tiếng Việt, chữ chuẩn từng dấu, nhập font riêng khi cần.</p></details>
+        <details class="vr"><summary><b>Làm video</b><span class="old">Xuất ảnh rồi dựng lại từ đầu</span><span class="new">Gửi sang Bravin, mỗi layer một track</span></summary><p class="more">Thiết kế giữ nguyên lớp khi sang Bravin, thêm chuyển động và nhạc là thành video.</p></details>
+        <p class="note">So sánh theo cách làm phổ biến của nhóm ứng dụng thiết kế, không nhắm tới sản phẩm cụ thể nào. Tính năng từng ứng dụng có thể khác và thay đổi theo thời gian.</p>
       </div>
-      <div class="fview"><div class="fbox" id="fbox" style="aspect-ratio:16/9;width:92%"><b>Tiêu đề của bạn</b><i id="fsz">1280 × 720</i></div></div>
     </div>
   </section>
 
-  <section class="sec wrap">
-    <div class="sec-head"><h2>Đủ công cụ cho người làm nội dung</h2><p class="muted">Mười sáu công cụ kèm phím tắt, bộ lọc một chạm, xuất PNG trong suốt, JPG, WebP, hoặc lưu project để sửa tiếp.</p></div>
-    <div class="feat">
-      <div class="fc"><span class="n">01 · Layer</span><h3>Chồng layer như phần mềm chuyên nghiệp</h3><p>Vị trí, xoay, độ mờ, chín chế độ hoà trộn, khoá, ẩn, gộp layer, hoàn tác bất cứ lúc nào.</p></div>
-      <div class="fc"><span class="n">02 · Chọn vùng</span><h3>Chọn vùng và xoá vật thể</h3><p>Marquee, Lasso, Quick Selection, Magic Wand, dao cắt layer, rồi content-aware fill.</p></div>
-      <div class="fc"><span class="n">03 · Chữ &amp; màu</span><h3>Chữ tiếng Việt, màu chính xác</h3><p>Phông có sẵn hoặc font riêng; viền, giãn chữ; màu HEX, RGB, CMYK; bộ lọc trắng đen, cổ điển, ấm, lạnh, bóng đổ.</p></div>
-      <div class="fc"><span class="n">04 · AI của bạn</span><h3>Trợ lý AI tự chọn</h3><p>Gõ lệnh bằng lời; dùng Claude, OpenAI hoặc Ollama chạy trên máy. Không bị khoá vào một nhà cung cấp.</p></div>
-      <div class="fc"><span class="n">05 · Slide &amp; camera</span><h3>Slide camera 2D, 2.5D</h3><p>Dựng slide có chuyển động camera ngay trong Antifact, xuất video hoặc GIF.</p></div>
-      <div class="fc"><span class="n">06 · Bravin</span><h3>Gửi sang Bravin</h3><p>Một nút, mỗi layer thành một track video trong Bravin, giữ đúng vị trí và thứ tự.</p></div>
-    </div>
-  </section>
-
-  <section class="sec wrap">
-    <div class="sec-head"><h2>Khác gì so với app thiết kế thường gặp?</h2><p class="muted">Bấm từng dòng để xem chi tiết.</p></div>
-    <div class="vs">
-      <div class="seg" role="group" aria-label="Góc nhìn"><button type="button" data-v="old" aria-pressed="false">App thường gặp</button><button type="button" data-v="new" aria-pressed="true">Antifact</button></div>
-      <div class="vh"><span>Tiêu chí</span><span>Nhiều app thường gặp</span><span class="us">Antifact</span></div>
-      <details class="vr"><summary><b>Bắt đầu</b><span class="old">Tải bộ cài hoặc tạo tài khoản trước</span><span class="new">Mở link là dùng, không cần tài khoản</span></summary><p class="more">Antifact là ứng dụng web (PWA). Mở trên trình duyệt là dùng, muốn thì cài như app để chạy cả khi mất mạng.</p></details>
-      <details class="vr"><summary><b>Dữ liệu</b><span class="old">Thường lưu trên máy chủ của hãng</span><span class="new">Project lưu ngay trên máy bạn</span></summary><p class="more">Ảnh và project nằm trong trình duyệt của bạn. Bạn tự quyết khi nào xuất file hay gửi đi.</p></details>
-      <details class="vr"><summary><b>AI</b><span class="old">Gắn với AI của hãng, tính theo gói</span><span class="new">Chọn AI của bạn: Claude, OpenAI, Ollama</span></summary><p class="more">Dùng khoá API của bạn hoặc AI chạy trên máy qua Ollama. Không khoá vào một nhà cung cấp.</p></details>
-      <details class="vr"><summary><b>Tiếng Việt</b><span class="old">Lỗi dấu với một số phông</span><span class="new">Làm từ đầu cho tiếng Việt</span></summary><p class="more">Giao diện tiếng Việt, chữ chuẩn từng dấu, nhập font riêng khi cần.</p></details>
-      <details class="vr"><summary><b>Làm video</b><span class="old">Xuất ảnh rồi dựng lại từ đầu</span><span class="new">Gửi sang Bravin, mỗi layer một track</span></summary><p class="more">Thiết kế giữ nguyên lớp khi sang Bravin, thêm chuyển động và nhạc là thành video.</p></details>
-      <p class="note">So sánh theo cách làm phổ biến của nhóm ứng dụng thiết kế, không nhắm tới sản phẩm cụ thể nào. Tính năng từng ứng dụng có thể khác và thay đổi theo thời gian.</p>
-    </div>
-  </section>
-
-  <section class="sec wrap" id="tai-ve">
-    <div class="sec-head"><h2>Dùng Antifact</h2><p class="muted">Không cần tải. Mở link là thiết kế.</p></div>
-    <div class="dl">
+  <section class="slide" id="dung-ngay" data-label="Dùng ngay">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:02:00</span><span class="eyebrow">Dùng ngay</span></div>
+      <h2 style="max-width:18ch">Mở trình duyệt là thiết kế.</h2>
+      <div class="dl" style="margin-top:30px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
         <a class="get web" href="https://antiface.vtvcab17.workers.dev/" target="_blank" rel="noopener">
           <span class="ic"><img src="assets/brand/antifact.svg" alt="" width="30" height="30"></span>
-          <h3>Antifact</h3><span class="meta">antiface.vtvcab17.workers.dev<br>Thiết kế · cài được như app, chạy offline</span><span class="act">Mở Antifact</span></a>
-    </div>
-    <div class="notes">
-      <p><b>Không cần cài:</b> mở link là dùng. Dữ liệu và project lưu ngay trên máy bạn.</p>
-      <p><b>Cài như app trên máy tính, Android:</b> mở bằng Chrome hoặc Edge, bấm biểu tượng cài trên thanh địa chỉ (hoặc menu ⋮ → Cài đặt ứng dụng).</p>
-      <p><b>iPhone, iPad:</b> mở bằng Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
+          <h3>Mở Antifact</h3><span class="meta">antiface.vtvcab17.workers.dev<br>Không cần cài · không cần tài khoản</span><span class="act">Mở Antifact</span></a>
+      </div>
+      <div class="notes">
+        <p><b>Cài như app trên máy tính, Android:</b> mở bằng Chrome hoặc Edge, bấm biểu tượng cài trên thanh địa chỉ.</p>
+        <p><b>iPhone, iPad:</b> mở bằng Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
+      </div>
+      <p class="eyebrow" style="margin-top:34px;color:var(--muted)">Cùng hệ sinh thái</p>
+      <div class="others">
+        <a href="bravin.html"><img src="assets/brand/bravin.svg" alt=""><span>Bravin<small>Dựng video từ thiết kế của bạn</small></span></a>
+        <a href="micron.html"><img src="assets/brand/micron.svg" alt=""><span>Micron<small>Mở rộng bằng AI và plugin</small></span></a>
+      </div>
     </div>
   </section>
 </main>
+
+<nav class="scrub" aria-label="Các trang trình bày">
+  <div class="in">
+    <span class="tcv" id="tcv">00:00:00</span>
+    <div class="track" id="track"><span class="head" id="head"></span></div>
+    <div class="nav2"><button type="button" id="prev" aria-label="Trang trước">‹</button><button type="button" id="next" aria-label="Trang sau">›</button></div>
+  </div>
+</nav>
 
 <footer class="foot">
   <div class="wrap">
@@ -244,17 +428,18 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   </div>
 </footer>
 <script src="assets/site.js"></script>
+<script src="assets/deck.js"></script>
 <script>
 (function () {
-  // sân chơi hoà trộn
+  // layer & hoà trộn
   const modes = [["normal","Thường"],["multiply","Multiply"],["screen","Screen"],["overlay","Overlay"],["darken","Darken"],["lighten","Lighten"],["difference","Difference"],["color-burn","Color burn"],["color-dodge","Color dodge"]];
-  const L = [["lc","Cyan","#2fd0ee"],["lm","Magenta","#ff4f99"],["ly","Vàng","#ffd43b"]];
+  const L = [["ly","Vàng","#ffd43b"],["lm","Magenta","#ff4f99"],["lc","Cyan","#2fd0ee"]];
   const box = document.getElementById("lyrs");
   L.forEach(([id, name, col]) => {
     const el = document.getElementById(id); el.style.mixBlendMode = "multiply";
     const r = document.createElement("div"); r.className = "lrow";
-    r.innerHTML = '<input type="checkbox" checked aria-label="Hiện ' + name + '"><span class="sw" style="background:' + col + '"></span><label>' + name + '<input type="range" min="0" max="100" value="100" aria-label="Độ mờ ' + name + '" style="display:block;margin-top:8px"></label><select aria-label="Chế độ hoà trộn ' + name + '">' + modes.map(m => '<option value="' + m[0] + '"' + (m[0] === "multiply" ? " selected" : "") + ">" + m[1] + "</option>").join("") + "</select>";
-    const [cb, rg, sel] = [r.querySelector("input[type=checkbox]"), r.querySelector("input[type=range]"), r.querySelector("select")];
+    r.innerHTML = '<input type="checkbox" checked aria-label="Hiện ' + name + '"><span class="sw" style="background:' + col + '"></span><label>' + name + '<input type="range" min="0" max="100" value="100" aria-label="Độ mờ ' + name + '"></label><select aria-label="Chế độ hoà trộn ' + name + '">' + modes.map(m => '<option value="' + m[0] + '"' + (m[0] === "multiply" ? " selected" : "") + ">" + m[1] + "</option>").join("") + "</select>";
+    const cb = r.querySelector("input[type=checkbox]"), rg = r.querySelector("input[type=range]"), sel = r.querySelector("select");
     cb.onchange = () => el.classList.toggle("off", !cb.checked);
     rg.oninput = () => el.style.opacity = rg.value / 100;
     sel.onchange = () => el.style.mixBlendMode = sel.value;
@@ -264,9 +449,63 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   bl.onclick = () => { mb.classList.remove("dark"); bl.setAttribute("aria-pressed","true"); bd.setAttribute("aria-pressed","false"); };
   bd.onclick = () => { mb.classList.add("dark"); bd.setAttribute("aria-pressed","true"); bl.setAttribute("aria-pressed","false"); };
   document.getElementById("rnd").onclick = () => box.querySelectorAll("select").forEach(s => { s.selectedIndex = Math.floor(Math.random() * modes.length); s.onchange(); });
+
+  // công cụ
+  const T = [
+    ["Marquee","Chọn vùng chữ nhật hoặc elip.",'<rect x="4" y="5" width="16" height="14" rx="1" stroke-dasharray="3 2"/>'],
+    ["Lasso","Khoanh tay một vùng bất kỳ, dùng cùng content-aware fill để xoá vật thể.",'<path d="M6 15c-3-3 0-9 6-9s9 4 7 7-6 4-9 3l-3 4"/>'],
+    ["Quick Selection","Quét nhanh qua vùng cần chọn, tự bám theo cạnh.",'<circle cx="10" cy="10" r="6" stroke-dasharray="3 2"/><path d="M15 15l5 5"/>'],
+    ["Magic Wand","Chọn theo màu giống nhau chỉ với một cú bấm.",'<path d="M4 20L15 9M14 4v3M18 6l-2 2M20 10h-3"/>'],
+    ["Dao cắt layer","Cắt một layer thành nhiều phần riêng.",'<path d="M4 20L20 4M12 4l8 8"/>'],
+    ["Cọ","Vẽ tự do lên layer với cỡ và độ cứng tuỳ chỉnh.",'<path d="M4 20c3 0 4-2 4-4l9-9 3 3-9 9c-2 0-4 1-4 4"/>'],
+    ["Tẩy","Xoá từng phần của layer.",'<path d="M4 16l8-8 6 6-6 6H8zM12 20h8"/>'],
+    ["Chuyển màu","Tô gradient tuyến tính hoặc toả tròn.",'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 20L20 4"/>']
+  ];
+  const tg = document.getElementById("tools"), tip = document.getElementById("tooltip");
+  T.forEach(([n, d, ic], i) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "tool"; b.setAttribute("aria-pressed", String(i === 0));
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ic + "</svg>" + n;
+    b.onclick = () => { tg.querySelectorAll(".tool").forEach(x => x.setAttribute("aria-pressed", String(x === b))); tip.innerHTML = "<b>" + n + ":</b> " + d; };
+    tg.appendChild(b);
+  });
+  tip.innerHTML = "<b>" + T[0][0] + ":</b> " + T[0][1] + " Cùng tám công cụ khác, tổng cộng mười sáu công cụ.";
+
   // trước / sau
-  const ba = document.getElementById("ba"), rg = ba.querySelector("input");
-  rg.oninput = () => ba.style.setProperty("--x", rg.value + "%");
+  const ba = document.getElementById("ba"), bar = ba.querySelector("input");
+  bar.oninput = () => ba.style.setProperty("--x", bar.value + "%");
+
+  // chữ & màu
+  const C = ["#ffd43b","#ffffff","#ff4f99","#2fd0ee","#4fd88a","#ff8a4c","#1b1440"];
+  const BG = { "#1b1440": "#f4f1ea" };
+  const tb = document.getElementById("tbox"), tt = document.getElementById("ttxt"), tin = document.getElementById("tin"), tf = document.getElementById("tfont"), cols = document.getElementById("cols");
+  const hex2 = h => [1,3,5].map(i => parseInt(h.slice(i, i + 2), 16));
+  function setCol(h) {
+    tt.style.color = h; tb.style.background = BG[h] || "#1b1440";
+    const [r, g, b] = hex2(h), k = 1 - Math.max(r, g, b) / 255, f = v => k >= 1 ? 0 : Math.round(((1 - v / 255 - k) / (1 - k)) * 100);
+    document.getElementById("cHex").textContent = h.toUpperCase();
+    document.getElementById("cRgb").textContent = r + ", " + g + ", " + b;
+    document.getElementById("cCmyk").textContent = f(r) + ", " + f(g) + ", " + f(b) + ", " + Math.round(k * 100);
+    cols.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.h === h)));
+  }
+  C.forEach(h => { const b = document.createElement("button"); b.type = "button"; b.dataset.h = h; b.style.background = h; b.setAttribute("aria-label", "Màu " + h); b.onclick = () => setCol(h); cols.appendChild(b); });
+  tin.oninput = () => tt.textContent = tin.value || " ";
+  tf.onchange = () => tt.style.fontFamily = tf.value;
+  setCol(C[0]);
+
+  // trợ lý AI
+  const dz = document.getElementById("design"), dt = document.getElementById("dttl"), chat = document.getElementById("chat");
+  const R = { big: ["Làm tiêu đề to hơn", "Đã tăng cỡ chữ tiêu đề lên 56 px.", () => dt.style.fontSize = "56px"],
+              blue: ["Đổi nền xanh đậm", "Đã đổi nền sang #0F3D5C.", () => dz.style.background = "#0f3d5c"],
+              shadow: ["Thêm bóng đổ", "Đã thêm bóng đổ cho tiêu đề.", () => dt.style.textShadow = "0 8px 24px rgba(0,0,0,.55)"],
+              wide: ["Giãn chữ rộng ra", "Đã giãn chữ tiêu đề 0,08 em.", () => dt.style.letterSpacing = ".08em"],
+              undo: ["Hoàn tác tất cả", "Đã hoàn tác về thiết kế ban đầu.", () => { dt.style.fontSize = ""; dt.style.textShadow = ""; dt.style.letterSpacing = ""; dz.style.background = "#2a2550"; }] };
+  document.querySelectorAll("#cmds button").forEach(b => b.onclick = () => {
+    const [q, a, fn] = R[b.dataset.c];
+    chat.insertAdjacentHTML("beforeend", '<p class="u">' + q + "</p>");
+    setTimeout(() => { fn(); chat.insertAdjacentHTML("beforeend", '<p class="a">' + a + "</p>"); chat.scrollTop = chat.scrollHeight; }, 450);
+    chat.scrollTop = chat.scrollHeight;
+  });
+
   // khung
   const fb = document.getElementById("fbox"), fs = document.getElementById("fsz");
   document.querySelectorAll("#fpick button").forEach(b => b.onclick = () => {
@@ -276,6 +515,21 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
     if (w >= h) { fb.style.width = "92%"; fb.style.height = "auto"; } else { fb.style.height = "300px"; fb.style.width = "auto"; }
     fs.textContent = b.dataset.s;
   });
+
+  // camera 2.5D
+  const pa = document.getElementById("para"), hud = document.getElementById("phud"), lys = [...pa.querySelectorAll(".ly")];
+  function cam(x, y) { lys.forEach(l => { const d = +l.dataset.d; l.style.transform = "translate(" + (-x * d) + "px," + (-y * d * .5) + "px)"; }); hud.textContent = "Camera · x " + Math.round(x * 100) + " · y " + Math.round(y * 100); }
+  pa.addEventListener("pointermove", e => { const r = pa.getBoundingClientRect(); cam((e.clientX - r.left) / r.width - .5, (e.clientY - r.top) / r.height - .5); });
+  pa.addEventListener("pointerleave", () => cam(0, 0));
+
+  // xuất
+  const EX = { png: ["PNG trong suốt: giữ nền trong suốt để chèn vào video hay trang web.", .25, "PNG · nền trong suốt"],
+               jpg: ["JPG: nhẹ, hợp để đăng mạng xã hội.", .25, "JPG · nhẹ"],
+               webp: ["WebP: nhỏ hơn nữa, hợp cho website.", .25, "WebP · nhỏ gọn"],
+               bravin: ["Gửi sang Bravin: mỗi layer thành một track video, đúng vị trí, đúng thứ tự.", 1, "Bravin · 3 track"] };
+  const eb = [...document.querySelectorAll("#exp button")], ei = document.getElementById("expinfo"), et = document.getElementById("expTracks"), el = document.getElementById("expLbl");
+  function ex(k) { eb.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === k))); ei.textContent = EX[k][0]; et.style.transition = "opacity .5s"; et.setAttribute("opacity", EX[k][1]); el.textContent = EX[k][2]; }
+  eb.forEach(b => b.onclick = () => ex(b.dataset.k)); ex("png");
 })();
 </script>
 </body>

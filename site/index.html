@@ -255,7 +255,7 @@
   const info = document.getElementById("ecoInfo");
   function pick(k) {
     const [t, sub, li, page, app] = D[k];
-    info.innerHTML = '<p class="eyebrow">' + sub + "</p><h3>" + t + "</h3><ul>" + li.map(x => "<li>" + x + "</li>").join("") + '</ul><div class="act"><a class="btn primary" href="' + page + '">Tìm hiểu</a>' + (app ? '<a class="btn" href="' + app + '" target="_blank" rel="noopener">Mở ứng dụng</a>' : "") + "</div>";
+    info.innerHTML = '<p class="eyebrow">' + sub + "</p><h3>" + t + "</h3><ul>" + li.map(x => "<li>" + x + "</li>").join("") + '</ul><div class="act"><a class="btn primary" href="' + page + '">Xem trang giới thiệu →</a>' + "" + "</div>";
     document.querySelectorAll(".enode").forEach(n => n.classList.toggle("on", n.dataset.k === k));
     document.querySelectorAll(".link").forEach(l => l.classList.toggle("on", l.dataset.k === k || (k === "br")));
   }
