@@ -178,3 +178,4 @@ p{margin:0}
 .promo .scene svg [data-anim]{transform-box:fill-box;transform-origin:center}
 @keyframes typing{from{width:0}to{width:100%}}
 .typer{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;animation:typing 1.8s steps(28) both}
+.get .ic img{display:block;border-radius:8px}
