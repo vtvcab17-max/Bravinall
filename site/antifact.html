@@ -4,21 +4,69 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Antifact</title>
-<meta name="description" content="Antifact: sản phẩm sắp ra mắt của Bravinall.">
-<link rel="icon" href="assets/icon-32.png">
+<meta name="description" content="Antifact: chỉnh ảnh và thiết kế ngay trên trình duyệt. Không cần cài, không cần tài khoản. Gửi thẳng sang Bravin, mỗi layer một track.">
+<link rel="icon" href="assets/brand/antifact.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&family=Bricolage+Grotesque:wght@700;800&display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <style>
-.soon-hero{min-height:calc(100svh - 62px - 120px);display:flex;align-items:center;padding-block:56px}
-.soon-hero .wrap{width:100%;display:grid;gap:22px}
-.big{font-size:clamp(56px,13vw,190px);font-weight:700;letter-spacing:-.05em;line-height:.9}
-.slate{display:inline-grid;grid-template-columns:auto auto;gap:6px 22px;padding:18px 22px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);font:500 13px/1.4 var(--f-mono);color:var(--muted);justify-self:start}
-.slate b{color:var(--fg);font-weight:500}
-.bars{display:flex;gap:4px;height:10px;max-width:520px}
-.bars i{flex:1;border-radius:3px;background:var(--panel)}
-.bars i:nth-child(-n+3){background:var(--iris)}
+body{--iris:#ff4f99;--iris-deep:#c2306f}
+.phero h1{font-family:"Bricolage Grotesque",var(--f-display);font-weight:800}
+.phero h1 em{font-style:normal;background:linear-gradient(90deg,var(--af-c),var(--af-m) 50%,var(--af-y));-webkit-background-clip:text;background-clip:text;color:transparent}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.badges span{font:500 12px/1 var(--f-mono);padding:8px 10px;border-radius:999px;border:1px solid var(--line);color:var(--fg)}
+
+/* cảnh promo riêng của Antifact */
+.mt{mix-blend-mode:multiply}
+@keyframes wipe{0%,25%{clip-path:inset(0 0 0 0)}70%,100%{clip-path:inset(0 0 0 100%)}}
+@keyframes lasso{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
+@keyframes grow{0%,35%{font-size:22px}60%,100%{font-size:40px}}
+@keyframes bg{0%,35%{fill:#2a2550}60%,100%{fill:#0f3d5c}}
+.flyer{animation:fly1 3.6s ease-in-out both}
+
+/* sân chơi hoà trộn */
+.mix{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:center}
+.mixbox{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:#f4f1ea}
+.mixbox.dark{background:#0c0d12}
+.mixbox .lyr{position:absolute;width:52%;aspect-ratio:1.15;bottom:10%;clip-path:path("M20 160Q0 160 8 142L80 14Q90 0 100 14L172 142Q180 160 160 160Z");transition:transform .3s,opacity .3s}
+.mixbox .lyr.c{left:4%;background:var(--af-c)}.mixbox .lyr.m{left:24%;background:var(--af-m)}.mixbox .lyr.y{left:44%;background:var(--af-y)}
+.mixbox .lyr.off{opacity:0;transform:translateY(20px)}
+.lyrs{display:grid;gap:8px}
+.lrow{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--ink);border:1px solid var(--line)}
+.lrow .sw{width:22px;height:22px;border-radius:6px}
+.lrow label{font:600 14px/1 var(--f-body)}
+.lrow select{background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:7px 8px;font:500 13px/1 var(--f-body);justify-self:end}
+.lrow input[type=checkbox]{width:18px;height:18px;accent-color:var(--iris)}
+.lrow input[type=range]{accent-color:var(--iris);width:100%}
+.ctlrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.ctlrow button{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:9px 14px;font:600 13px/1 var(--f-body);cursor:pointer}
+.ctlrow button[aria-pressed="true"]{background:var(--iris);color:#120f2a;border-color:var(--iris)}
+
+/* trước / sau */
+.ba{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;user-select:none;touch-action:pan-y}
+.ba svg{position:absolute;inset:0;width:100%;height:100%}
+.ba .after{clip-path:inset(0 0 0 var(--x,50%))}
+.ba .handle{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.2);pointer-events:none}
+.ba .handle::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font:700 16px/40px var(--f-body);text-align:center}
+.ba .lb{position:absolute;top:12px;font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;background:rgba(0,0,0,.55);color:#fff;padding:7px 9px;border-radius:999px}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+
+/* khung bắt đầu nhanh */
+.frames{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(20px,4vw,48px);align-items:center}
+.fpick{display:grid;gap:8px}
+.fpick button{display:flex;justify-content:space-between;gap:12px;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:14px;padding:14px 16px;font:600 15px/1.2 var(--f-body);cursor:pointer}
+.fpick button small{font:500 12px/1.2 var(--f-mono);color:var(--muted)}
+.fpick button[aria-pressed="true"]{border-color:var(--iris);background:color-mix(in srgb,var(--iris) 14%,var(--panel))}
+.fview{height:340px;display:grid;place-items:center;background:var(--ink);border-radius:16px;border:1px solid var(--line)}
+.fbox{position:relative;max-height:300px;max-width:92%;border-radius:8px;background:linear-gradient(135deg,#1b1440,#0f3d5c);box-shadow:0 20px 50px -20px #000;transition:aspect-ratio .4s,height .4s,width .4s;display:grid;place-items:center;overflow:hidden}
+.fbox b{font:800 clamp(16px,2.4vw,28px)/1 "Bricolage Grotesque",var(--f-display);color:#fff;text-align:center;padding:10px}
+.fbox i{position:absolute;bottom:8px;right:10px;font:500 11px var(--f-mono);color:#ffffffaa;font-style:normal}
+
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.tool{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font:600 14px/1.2 var(--f-body)}
+.tool svg{width:20px;height:20px;flex:none;color:var(--iris)}
+@media (max-width:900px){.mix,.frames{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -27,34 +75,211 @@
     <a class="logo" href="index.html"><i aria-hidden="true"></i>Bravinall</a>
     <nav class="nav" aria-label="Sản phẩm">
       <a href="bravin.html">Bravin</a>
-      <a href="micon.html">Micon<span class="soon">sắp có</span></a>
-      <a href="antifact.html" aria-current="page">Antifact<span class="soon">sắp có</span></a>
+      <a href="antifact.html" aria-current="page">Antifact</a>
+      <a href="micron.html">Micron</a>
+      <a href="index.html#tai-ve">Tải về</a>
     </nav>
   </div>
 </header>
-<main class="soon-hero">
-  <div class="wrap">
-    <p class="eyebrow">Bravinall · Sắp ra mắt</p>
-    <h1 class="big">Antifact</h1>
-    <p class="muted" style="max-width:46ch;font-size:18px">Antifact đang được phát triển. Thông tin và bản dùng thử sẽ được đăng tại đây khi sẵn sàng.</p>
-    <div class="slate" aria-label="Trạng thái">
-      <span>Dự án</span><b>Antifact</b>
-      <span>Trạng thái</span><b>Đang phát triển</b>
-      <span>Người làm</span><b>Phạm Việt Hà</b>
+
+<main>
+  <section class="phero wrap">
+    <div class="grid">
+      <div>
+        <div class="plogo"><img src="assets/brand/antifact.svg" alt=""><span class="eyebrow">Antifact 1.1 · Trình duyệt · PWA</span></div>
+        <h1>Anti<em>fact</em></h1>
+        <p class="body">Chỉnh ảnh và thiết kế ngay trên trình duyệt. Thumbnail, story, bài đăng, bản in A4. Xong thì gửi thẳng sang Bravin, mỗi layer thành một track video.</p>
+        <div class="badges"><span>Không cần cài đặt</span><span>Không cần tài khoản</span><span>Dữ liệu ở máy bạn</span></div>
+        <div class="cta">
+          <a class="btn primary" href="https://antiface.vtvcab17.workers.dev/" target="_blank" rel="noopener">Mở Antifact
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn" href="#tai-ve">Tải về</a>
+        </div>
+      </div>
+
+      <!-- Video giới thiệu: dựng bằng HTML, bấm chương để tua -->
+      <div class="promo" aria-label="Video giới thiệu Antifact">
+        <div class="scr">
+          <div class="scene center" data-dur="4" data-label="Mở là dùng">
+            <div class="cap"><span class="k">Antifact 1.1</span><h3>Thiết kế đẹp.<br>Không cần cài đặt.<br>Không cần tài khoản.</h3></div>
+          </div>
+          <div class="scene" data-dur="5" data-label="Layer">
+            <div class="cap"><span class="k">Layer &amp; hoà trộn</span><h3>Mỗi thứ một layer.</h3><p>Vị trí, xoay, độ mờ, 9 chế độ hoà trộn, khoá, ẩn, gộp và hoàn tác bất cứ lúc nào.</p></div>
+            <div class="art"><svg viewBox="0 0 200 150"><rect width="200" height="150" rx="12" fill="#f4f1ea"/>
+              <g data-anim style="animation:up .7s .1s both"><path class="mt" d="M30 130Q20 130 25 120L60 50Q65 40 70 50L105 120Q110 130 100 130Z" fill="#2fd0ee"/></g>
+              <g data-anim style="animation:up .7s .5s both"><path class="mt" d="M60 130Q50 130 55 120L90 50Q95 40 100 50L135 120Q140 130 130 130Z" fill="#ff4f99"/></g>
+              <g data-anim style="animation:up .7s .9s both"><path class="mt" d="M90 130Q80 130 85 120L120 50Q125 40 130 50L165 120Q170 130 160 130Z" fill="#ffd43b"/></g></svg></div>
+          </div>
+          <div class="scene" data-dur="6" data-label="Xoá vật thể">
+            <div class="cap"><span class="k">Xoá vật thể</span><h3>Khoanh vùng. Bấm. Biến mất.</h3><p>Khoanh bằng Lasso, bấm content-aware fill: Antifact xoá vật thể và lấp bằng nền xung quanh.</p></div>
+            <div class="art"><svg viewBox="0 0 200 130">
+              <defs><linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3ff"/><stop offset="1" stop-color="#ffe7c2"/></linearGradient></defs>
+              <rect width="200" height="130" rx="10" fill="url(#skyA)"/><rect y="70" width="200" height="25" fill="#2a8fbf"/><rect y="95" width="200" height="35" fill="#f2d39b"/>
+              <g data-anim style="animation:wipe 5s both"><rect x="118" y="58" width="14" height="22" rx="3" fill="#ff5a3c"/><rect x="121" y="50" width="8" height="10" rx="2" fill="#fff"/></g>
+              <ellipse cx="125" cy="66" rx="20" ry="22" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="4 3" data-anim style="stroke-dasharray:400;animation:lasso 1.4s both"/></svg></div>
+          </div>
+          <div class="scene" data-dur="4" data-label="Chữ Việt">
+            <div class="cap"><span class="k">Chữ</span><h3>Tiếng Việt chuẩn từng dấu.</h3><p>Phông có sẵn hoặc nhập font riêng. Màu HEX, RGB, CMYK.</p></div>
+            <div class="art"><div class="box" style="background:#1b1440;border-radius:12px;aspect-ratio:4/3;display:grid;place-items:center;padding:8%"><span class="typer" data-anim style="font:800 clamp(16px,3.2vw,40px)/1.1 'Bricolage Grotesque',sans-serif;color:#ffd43b">Ước mơ đầu đời</span></div></div>
+          </div>
+          <div class="scene" data-dur="5" data-label="Trợ lý AI">
+            <div class="cap"><span class="k">Trợ lý AI</span><h3>Gõ một câu, AI sửa thiết kế.</h3><p>AI là của bạn: Claude, OpenAI, hay Ollama chạy ngay trên máy.</p></div>
+            <div class="art"><svg viewBox="0 0 200 140"><rect width="200" height="140" rx="12" data-anim style="animation:bg 4s both" fill="#2a2550"/>
+              <text x="16" y="56" fill="#fff" font-family="Bricolage Grotesque,sans-serif" font-weight="800" data-anim style="animation:grow 4s both;font-size:22px">SALE 50%</text>
+              <rect x="16" y="96" width="168" height="30" rx="15" fill="#0c0d12" stroke="#ff4f99"/><text x="28" y="115" fill="#ecebf3" font-family="Be Vietnam Pro,sans-serif" font-size="10">“làm tiêu đề to hơn, đổi nền xanh đậm”</text></svg></div>
+          </div>
+          <div class="scene" data-dur="6" data-label="Sang Bravin">
+            <div class="cap"><span class="k">Gửi sang Bravin</span><h3>Thiết kế tĩnh thành video.</h3><p>Mỗi layer thành một track video, đúng vị trí, đúng thứ tự.</p></div>
+            <div class="art"><svg viewBox="0 0 200 150"><rect width="200" height="150" rx="12" fill="#0f1014"/>
+              <g font-family="Be Vietnam Pro,sans-serif" font-size="8" fill="#fff">
+              <g class="flyer" data-anim style="--dy:66px"><rect x="14" y="14" width="56" height="18" rx="4" fill="#2fd0ee"/><text x="20" y="26">Nền</text></g>
+              <g class="flyer" data-anim style="--dy:46px;animation-delay:.2s"><rect x="74" y="14" width="56" height="18" rx="4" fill="#ff4f99"/><text x="80" y="26">Logo</text></g>
+              <g class="flyer" data-anim style="--dy:26px;animation-delay:.4s"><rect x="134" y="14" width="52" height="18" rx="4" fill="#ffd43b"/><text x="140" y="26" fill="#111">Chữ</text></g></g>
+              <g fill="none" stroke="rgba(236,235,243,.12)"><rect x="10" y="56" width="180" height="22" rx="5"/><rect x="10" y="78" width="180" height="22" rx="5"/><rect x="10" y="100" width="180" height="22" rx="5"/></g>
+              <rect x="60" y="54" width="2" height="72" fill="#f2c14e"/><text x="12" y="140" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="7">Bravin · 3 track</text></svg></div>
+          </div>
+          <div class="scene center" data-dur="4" data-label="Dùng thử">
+            <div class="cap"><span class="k">Hệ sinh thái Bravin</span><h3>Antifact. Bravin. Micron.</h3><p>Một hệ sinh thái, một luồng làm việc. Dùng thử ngay hôm nay.</p>
+              <div style="display:flex;gap:14px;justify-content:center;margin-top:8px"><img src="assets/brand/antifact.svg" alt="" width="44" height="44"><img src="assets/brand/bravin.svg" alt="" width="44" height="44"><img src="assets/brand/micron.svg" alt="" width="44" height="44"></div></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px">
-      <a class="btn primary" href="bravin.html">Xem Bravin trong lúc chờ</a>
-      <a class="btn" href="index.html">Về Bravinall</a>
+  </section>
+
+  <section class="sec wrap">
+    <div class="sec-head"><h2>Thử ngay: chồng layer và hoà trộn</h2><p class="muted">Bật tắt từng layer, đổi chế độ hoà trộn, kéo độ mờ. Đây là cách Antifact ghép mọi thiết kế, và cũng là ý tưởng của logo Antifact.</p></div>
+    <div class="mix">
+      <div class="mixbox" id="mixbox"><div class="lyr c" id="lc"></div><div class="lyr m" id="lm"></div><div class="lyr y" id="ly"></div></div>
+      <div>
+        <div class="lyrs" id="lyrs"></div>
+        <div class="ctlrow"><button type="button" id="bgL" aria-pressed="true">Nền sáng</button><button type="button" id="bgD" aria-pressed="false">Nền tối</button><button type="button" id="rnd">Ngẫu nhiên</button></div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="sec wrap">
+    <div class="split2">
+      <div>
+        <p class="eyebrow">Xoá vật thể</p>
+        <h2 style="font-size:clamp(28px,4vw,48px);margin-top:12px">Ảnh dính vật thừa? Kéo để xem trước và sau.</h2>
+        <p style="margin-top:16px;max-width:46ch;color:color-mix(in srgb,var(--fg) 84%,var(--muted))">Khoanh vùng bằng Lasso, bấm content-aware fill. Antifact xoá vật thể và tự lấp bằng nền xung quanh. Hình bên là minh hoạ; mở Antifact để thử trên ảnh của bạn.</p>
+        <div class="chips"><span class="chip">Marquee</span><span class="chip">Lasso</span><span class="chip">Quick Selection</span><span class="chip">Magic Wand</span></div>
+      </div>
+      <div class="ba" id="ba" style="--x:50%">
+        <svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc8f5"/><stop offset="1" stop-color="#ffe2b8"/></linearGradient></defs>
+          <rect width="320" height="200" fill="url(#sky)"/><circle cx="250" cy="60" r="18" fill="#fff4c9"/><rect y="108" width="320" height="38" fill="#2b8fc0"/><path d="M0 120q40-6 80 0t80 0 80 0 80 0" stroke="#9fd8f0" fill="none"/><rect y="146" width="320" height="54" fill="#f0cf96"/>
+          <g><rect x="128" y="90" width="22" height="36" rx="5" fill="#ff5a3c"/><rect x="133" y="78" width="12" height="15" rx="3" fill="#fff"/><path d="M60 170h40l-6-14H66z" fill="#7a5a3a"/></g>
+        </svg>
+        <svg class="after" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="320" height="200" fill="url(#sky)"/><circle cx="250" cy="60" r="18" fill="#fff4c9"/><rect y="108" width="320" height="38" fill="#2b8fc0"/><path d="M0 120q40-6 80 0t80 0 80 0 80 0" stroke="#9fd8f0" fill="none"/><rect y="146" width="320" height="54" fill="#f0cf96"/>
+        </svg>
+        <span class="lb" style="left:12px">Trước</span><span class="lb" style="right:12px">Sau</span>
+        <div class="handle"></div>
+        <input type="range" min="0" max="100" value="50" aria-label="Kéo để so sánh trước và sau">
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap">
+    <div class="sec-head"><h2>Khung có sẵn, bắt đầu trong một chạm</h2><p class="muted">Chọn khung, Antifact mở đúng kích thước. Project lưu luôn trên máy bạn.</p></div>
+    <div class="frames">
+      <div class="fpick" id="fpick">
+        <button type="button" data-r="16/9" data-s="1280 × 720" aria-pressed="true">Thumbnail YouTube<small>16:9</small></button>
+        <button type="button" data-r="9/16" data-s="1080 × 1920" aria-pressed="false">Story<small>9:16</small></button>
+        <button type="button" data-r="4/5" data-s="1080 × 1350" aria-pressed="false">Bài đăng Instagram<small>4:5</small></button>
+        <button type="button" data-r="210/297" data-s="A4 · in ấn" aria-pressed="false">Bản in A4<small>210 × 297 mm</small></button>
+      </div>
+      <div class="fview"><div class="fbox" id="fbox" style="aspect-ratio:16/9;width:92%"><b>Tiêu đề của bạn</b><i id="fsz">1280 × 720</i></div></div>
+    </div>
+  </section>
+
+  <section class="sec wrap">
+    <div class="sec-head"><h2>Đủ công cụ cho người làm nội dung</h2><p class="muted">Mười sáu công cụ kèm phím tắt, bộ lọc một chạm, xuất PNG trong suốt, JPG, WebP, hoặc lưu project để sửa tiếp.</p></div>
+    <div class="feat">
+      <div class="fc"><span class="n">01 · Layer</span><h3>Chồng layer như phần mềm chuyên nghiệp</h3><p>Vị trí, xoay, độ mờ, chín chế độ hoà trộn, khoá, ẩn, gộp layer, hoàn tác bất cứ lúc nào.</p></div>
+      <div class="fc"><span class="n">02 · Chọn vùng</span><h3>Chọn vùng và xoá vật thể</h3><p>Marquee, Lasso, Quick Selection, Magic Wand, dao cắt layer, rồi content-aware fill.</p></div>
+      <div class="fc"><span class="n">03 · Chữ &amp; màu</span><h3>Chữ tiếng Việt, màu chính xác</h3><p>Phông có sẵn hoặc font riêng; viền, giãn chữ; màu HEX, RGB, CMYK; bộ lọc trắng đen, cổ điển, ấm, lạnh, bóng đổ.</p></div>
+      <div class="fc"><span class="n">04 · AI của bạn</span><h3>Trợ lý AI tự chọn</h3><p>Gõ lệnh bằng lời; dùng Claude, OpenAI hoặc Ollama chạy trên máy. Không bị khoá vào một nhà cung cấp.</p></div>
+      <div class="fc"><span class="n">05 · Slide &amp; camera</span><h3>Slide camera 2D, 2.5D</h3><p>Dựng slide có chuyển động camera ngay trong Antifact, xuất video hoặc GIF.</p></div>
+      <div class="fc"><span class="n">06 · Bravin</span><h3>Gửi sang Bravin</h3><p>Một nút, mỗi layer thành một track video trong Bravin, giữ đúng vị trí và thứ tự.</p></div>
+    </div>
+  </section>
+
+  <section class="sec wrap">
+    <div class="sec-head"><h2>Khác gì so với app thiết kế thường gặp?</h2><p class="muted">Bấm từng dòng để xem chi tiết.</p></div>
+    <div class="vs">
+      <div class="seg" role="group" aria-label="Góc nhìn"><button type="button" data-v="old" aria-pressed="false">App thường gặp</button><button type="button" data-v="new" aria-pressed="true">Antifact</button></div>
+      <div class="vh"><span>Tiêu chí</span><span>Nhiều app thường gặp</span><span class="us">Antifact</span></div>
+      <details class="vr"><summary><b>Bắt đầu</b><span class="old">Tải bộ cài hoặc tạo tài khoản trước</span><span class="new">Mở link là dùng, không cần tài khoản</span></summary><p class="more">Antifact là ứng dụng web (PWA). Mở trên trình duyệt là dùng, muốn thì cài như app để chạy cả khi mất mạng.</p></details>
+      <details class="vr"><summary><b>Dữ liệu</b><span class="old">Thường lưu trên máy chủ của hãng</span><span class="new">Project lưu ngay trên máy bạn</span></summary><p class="more">Ảnh và project nằm trong trình duyệt của bạn. Bạn tự quyết khi nào xuất file hay gửi đi.</p></details>
+      <details class="vr"><summary><b>AI</b><span class="old">Gắn với AI của hãng, tính theo gói</span><span class="new">Chọn AI của bạn: Claude, OpenAI, Ollama</span></summary><p class="more">Dùng khoá API của bạn hoặc AI chạy trên máy qua Ollama. Không khoá vào một nhà cung cấp.</p></details>
+      <details class="vr"><summary><b>Tiếng Việt</b><span class="old">Lỗi dấu với một số phông</span><span class="new">Làm từ đầu cho tiếng Việt</span></summary><p class="more">Giao diện tiếng Việt, chữ chuẩn từng dấu, nhập font riêng khi cần.</p></details>
+      <details class="vr"><summary><b>Làm video</b><span class="old">Xuất ảnh rồi dựng lại từ đầu</span><span class="new">Gửi sang Bravin, mỗi layer một track</span></summary><p class="more">Thiết kế giữ nguyên lớp khi sang Bravin, thêm chuyển động và nhạc là thành video.</p></details>
+      <p class="note">So sánh theo cách làm phổ biến của nhóm ứng dụng thiết kế, không nhắm tới sản phẩm cụ thể nào. Tính năng từng ứng dụng có thể khác và thay đổi theo thời gian.</p>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="tai-ve">
+    <div class="sec-head"><h2>Dùng Antifact</h2><p class="muted">Không cần cài. Muốn dùng như app thì cài từ trình duyệt.</p></div>
+    <div class="dl">
+      <a class="get web" href="https://antiface.vtvcab17.workers.dev/" target="_blank" rel="noopener" data-os="windows mac other android ios">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></span>
+        <h3>Bản web</h3><span class="meta">antiface.vtvcab17.workers.dev<br>Chrome, Edge, Safari · cài được như app</span><span class="act">Mở ngay</span></a>
+      <a class="get" href="downloads/Antifact-1.1.html" download>
+        <span class="host">Cloudflare</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14l3 3 3-3"/></svg></span>
+        <h3>Bản một file</h3><span class="meta">Antifact-1.1.html · 0,4 MB<br>Mở trực tiếp bằng trình duyệt</span><span class="act">Tải file</span></a>
+    </div>
+    <div class="notes">
+      <p><b>Cài như app:</b> mở bản web bằng Chrome hoặc Edge, bấm biểu tượng cài trên thanh địa chỉ. Trên iPhone, iPad: Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
+      <p><b>Bản một file:</b> tiện mang đi, mở bằng trình duyệt là dùng; bản này không chạy offline như bản cài.</p>
+    </div>
+  </section>
 </main>
+
 <footer class="foot">
   <div class="wrap">
     <span>© 2026 Phạm Việt Hà</span>
-    <a href="index.html">Bravinall</a><a href="bravin.html">Bravin</a>
-    <span class="tc">Antifact</span>
+    <a href="index.html">Bravinall</a><a href="bravin.html">Bravin</a><a href="micron.html">Micron</a>
+    <span class="tc">Antifact 1.1</span>
   </div>
 </footer>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  // sân chơi hoà trộn
+  const modes = [["normal","Thường"],["multiply","Multiply"],["screen","Screen"],["overlay","Overlay"],["darken","Darken"],["lighten","Lighten"],["difference","Difference"],["color-burn","Color burn"],["color-dodge","Color dodge"]];
+  const L = [["lc","Cyan","#2fd0ee"],["lm","Magenta","#ff4f99"],["ly","Vàng","#ffd43b"]];
+  const box = document.getElementById("lyrs");
+  L.forEach(([id, name, col]) => {
+    const el = document.getElementById(id); el.style.mixBlendMode = "multiply";
+    const r = document.createElement("div"); r.className = "lrow";
+    r.innerHTML = '<input type="checkbox" checked aria-label="Hiện ' + name + '"><span class="sw" style="background:' + col + '"></span><label>' + name + '<input type="range" min="0" max="100" value="100" aria-label="Độ mờ ' + name + '" style="display:block;margin-top:8px"></label><select aria-label="Chế độ hoà trộn ' + name + '">' + modes.map(m => '<option value="' + m[0] + '"' + (m[0] === "multiply" ? " selected" : "") + ">" + m[1] + "</option>").join("") + "</select>";
+    const [cb, rg, sel] = [r.querySelector("input[type=checkbox]"), r.querySelector("input[type=range]"), r.querySelector("select")];
+    cb.onchange = () => el.classList.toggle("off", !cb.checked);
+    rg.oninput = () => el.style.opacity = rg.value / 100;
+    sel.onchange = () => el.style.mixBlendMode = sel.value;
+    box.appendChild(r);
+  });
+  const mb = document.getElementById("mixbox"), bl = document.getElementById("bgL"), bd = document.getElementById("bgD");
+  bl.onclick = () => { mb.classList.remove("dark"); bl.setAttribute("aria-pressed","true"); bd.setAttribute("aria-pressed","false"); };
+  bd.onclick = () => { mb.classList.add("dark"); bd.setAttribute("aria-pressed","true"); bl.setAttribute("aria-pressed","false"); };
+  document.getElementById("rnd").onclick = () => box.querySelectorAll("select").forEach(s => { s.selectedIndex = Math.floor(Math.random() * modes.length); s.onchange(); });
+  // trước / sau
+  const ba = document.getElementById("ba"), rg = ba.querySelector("input");
+  rg.oninput = () => ba.style.setProperty("--x", rg.value + "%");
+  // khung
+  const fb = document.getElementById("fbox"), fs = document.getElementById("fsz");
+  document.querySelectorAll("#fpick button").forEach(b => b.onclick = () => {
+    document.querySelectorAll("#fpick button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    const [w, h] = b.dataset.r.split("/").map(Number);
+    fb.style.aspectRatio = b.dataset.r;
+    if (w >= h) { fb.style.width = "92%"; fb.style.height = "auto"; } else { fb.style.height = "300px"; fb.style.width = "auto"; }
+    fs.textContent = b.dataset.s;
+  });
+})();
+</script>
 </body>
 </html>

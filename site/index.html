@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bravinall</title>
-<meta name="description" content="Bravinall: các sản phẩm của Phạm Việt Hà, người làm Bravin, ở Hà Nội.">
+<meta name="description" content="Bravinall: hệ sinh thái công cụ sáng tạo của Phạm Việt Hà. Antifact để thiết kế, Bravin để dựng video, Micron để mở rộng bằng AI.">
 <link rel="icon" href="assets/icon-32.png">
+<meta property="og:title" content="Bravinall: Antifact, Bravin, Micron">
+<meta property="og:description" content="Hệ sinh thái công cụ sáng tạo: Antifact để thiết kế, Bravin để dựng video, Micron để mở rộng bằng AI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&display=swap">
@@ -46,6 +48,24 @@
 .proj.featured .strip i:nth-child(2){background:var(--clip-b);flex:1.6}
 .proj.featured .strip i:nth-child(3){background:var(--clip-c)}
 .proj.featured .strip i{flex:1}
+.proj .pic{width:48px;height:48px;display:block}
+.proj.af{background:linear-gradient(160deg,color-mix(in srgb,#ff4f99 22%,var(--panel)) 0%,var(--panel) 60%)}
+.proj.af .go{color:#ff7db3}
+.proj.mc{background:linear-gradient(160deg,color-mix(in srgb,#8b6bff 26%,var(--panel)) 0%,var(--panel) 60%)}
+.proj.mc .go{color:#2fd4e8}
+.eco{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.eco-map svg{display:block;width:100%;height:auto}
+.enode{cursor:pointer;outline:none}
+.enode rect{transition:stroke .2s,filter .2s}
+.enode:hover rect,.enode:focus-visible rect,.enode.on rect{stroke:#f2c14e;stroke-width:2}
+.link{stroke-dasharray:6 7;animation:dash 1s linear infinite;opacity:.55;transition:opacity .2s}
+.link.on{opacity:1;stroke-width:5}
+.hit path{cursor:pointer}
+@keyframes dash{to{stroke-dashoffset:-26}}
+.eco-info{display:flex;flex-direction:column;gap:12px}
+.eco-info h3{font-size:24px}
+.eco-info ul{margin:0;padding-left:18px;display:grid;gap:6px;color:color-mix(in srgb,var(--fg) 86%,var(--muted));font-size:15px}
+.eco-info .act{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}
 .proj.dim{background:repeating-linear-gradient(135deg,var(--panel) 0 14px,color-mix(in srgb,var(--panel) 86%,var(--fg)) 14px 15px)}
 
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,5vw,72px)}
@@ -59,10 +79,11 @@
 @media (max-width:900px){
   .hero .grid,.about{grid-template-columns:1fr}
   .projects{grid-template-columns:1fr}
+  .eco{grid-template-columns:1fr}
   .proj{min-height:0}
   .facts{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){.route .dot{display:none}}
+@media (prefers-reduced-motion:reduce){.route .dot{display:none}.link{animation:none}}
 </style>
 </head>
 <body>
@@ -71,8 +92,9 @@
     <a class="logo" href="index.html" aria-current="page"><i aria-hidden="true"></i>Bravinall</a>
     <nav class="nav" aria-label="Sản phẩm">
       <a href="bravin.html">Bravin</a>
-      <a href="micon.html">Micon<span class="soon">sắp có</span></a>
-      <a href="antifact.html">Antifact<span class="soon">sắp có</span></a>
+      <a href="antifact.html">Antifact</a>
+      <a href="micron.html">Micron</a>
+      <a href="#tai-ve">Tải về</a>
     </nav>
   </div>
 </header>
@@ -83,11 +105,11 @@
       <div>
         <p class="eyebrow">Hà Nội · 21.0285° N, 105.8542° E</p>
         <h1 class="name" style="margin-top:18px">Phạm<br>Việt <span>Hà</span></h1>
-        <p class="lede">Người thiết kế và tự xây <b>Bravin</b>, trình dựng video chạy trên web, Android và Windows. Hiện đang học Thạc sĩ Trí tuệ nhân tạo tại Đại học Stanford.</p>
+        <p class="lede">Người thiết kế và tự xây hệ sinh thái <b>Bravin</b>: Antifact để thiết kế, Bravin để dựng video, Micron để mở rộng bằng AI. Hiện đang học Thạc sĩ Trí tuệ nhân tạo tại Đại học Stanford.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px">
-          <a class="btn primary" href="bravin.html">Xem Bravin
+          <a class="btn primary" href="#he-sinh-thai">Xem hệ sinh thái
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn" href="#du-an">Các dự án</a>
+          <a class="btn" href="#tai-ve">Tải về</a>
         </div>
       </div>
       <aside class="route rise" aria-label="Hà Nội và Stanford">
@@ -95,7 +117,7 @@
           <defs><linearGradient id="arc" x1="0" x2="1"><stop offset="0" stop-color="#f2c14e"/><stop offset="1" stop-color="#8b7cff"/></linearGradient></defs>
           <path id="routePath" d="M30 120 C 120 10, 280 10, 370 120" fill="none" stroke="url(#arc)" stroke-width="2" stroke-dasharray="4 7"/>
           <circle cx="30" cy="120" r="6" fill="#f2c14e"/><circle cx="370" cy="120" r="6" fill="#8b7cff"/>
-          <circle class="dot" r="4.5" fill="#ecebf3"><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#routePath"/></animateMotion></circle>
+          <circle class="dot" r="4.2" fill="#ecebf3"><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#routePath"/></animateMotion></circle>
         </svg>
         <div class="cities">
           <div class="city"><div class="lbl">Đang sống</div><div class="nm">Hà Nội</div><div class="clock" id="clkHN">--:--</div></div>
@@ -108,29 +130,104 @@
 
   <section class="sec wrap" id="du-an">
     <div class="sec-head">
-      <h2>Dự án</h2>
-      <p class="muted">Ba sản phẩm dưới tên Bravinall. Bravin đã phát hành, hai dự án còn lại đang được làm.</p>
+      <h2>Sản phẩm</h2>
+      <p class="muted">Ba ứng dụng dưới tên Bravinall, đều đã phát hành và nối với nhau thành một luồng làm việc.</p>
     </div>
     <div class="projects">
       <a class="proj featured rise" href="bravin.html">
-        <span class="st live">Đã phát hành · v4.1</span>
+        <span class="st live">Đã phát hành · v4.9.1</span>
+        <img class="pic" src="assets/brand/bravin.svg" alt="">
         <h3>Bravin</h3>
-        <p>Dựng video nhiều lớp với keyframe, mask, chỉnh màu kiểu node và trợ lý AI. Dùng trên trình duyệt, điện thoại Android và máy tính Windows.</p>
+        <p>Dựng video trên web, Android, Windows: timeline chuyên nghiệp, keyframe, mask, chỉnh màu kiểu node, hơn 40 hiệu ứng, trợ lý AI, chạy plugin.</p>
         <div class="strip" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <span class="go">Xem toàn bộ tính năng →</span>
+        <span class="go">Xem Bravin →</span>
       </a>
-      <a class="proj dim rise" href="micon.html">
-        <span class="st soon">Sắp ra mắt</span>
-        <h3>Micon</h3>
-        <p>Đang phát triển. Thông tin sẽ được công bố sớm.</p>
-        <span class="go">Xem trang →</span>
-      </a>
-      <a class="proj dim rise" href="antifact.html">
-        <span class="st soon">Sắp ra mắt</span>
+      <a class="proj af rise" href="antifact.html">
+        <span class="st live">Đã phát hành · v1.1</span>
+        <img class="pic" src="assets/brand/antifact.svg" alt="">
         <h3>Antifact</h3>
-        <p>Đang phát triển. Thông tin sẽ được công bố sớm.</p>
-        <span class="go">Xem trang →</span>
+        <p>Chỉnh ảnh và thiết kế ngay trên trình duyệt. Không cần cài, không cần tài khoản. Gửi sang Bravin, mỗi layer một track.</p>
+        <span class="go">Xem Antifact →</span>
       </a>
+      <a class="proj mc rise" href="micron.html">
+        <span class="st live">Đã phát hành · v1.0</span>
+        <img class="pic" src="assets/brand/micron.svg" alt="">
+        <h3>Micron</h3>
+        <p>Canvas AI mở: nối AI của bạn thành quy trình. Kèm chợ plugin cho Bravin, có Motion Tracking miễn phí.</p>
+        <span class="go">Xem Micron →</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="he-sinh-thai">
+    <div class="sec-head">
+      <h2>Một hệ sinh thái, một luồng làm việc</h2>
+      <p class="muted">Bấm vào từng ứng dụng hoặc từng đường nối để xem chúng làm việc với nhau thế nào.</p>
+    </div>
+    <div class="eco">
+      <div class="eco-map stage">
+        <svg viewBox="0 0 600 300" role="img" aria-label="Sơ đồ: Antifact gửi thiết kế sang Bravin, Micron gửi kết quả AI và plugin sang Bravin">
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f2c14e"/></marker></defs>
+          <g fill="none" stroke-width="3">
+            <path class="link" data-k="af-br" d="M168 150 C 220 150, 220 150, 238 150" stroke="#f2c14e" marker-end="url(#ah)"/>
+            <path class="link" data-k="mc-br" d="M432 150 C 380 150, 380 150, 362 150" stroke="#f2c14e" marker-end="url(#ah)"/>
+          </g>
+          <g class="hit" fill="transparent"><path data-k="af-br" d="M168 136H238V164H168z"/><path data-k="mc-br" d="M362 136H432V164H362z"/></g>
+          <g class="enode" data-k="af" tabindex="0" role="button" aria-label="Antifact"><rect x="20" y="80" width="148" height="140" rx="24" fill="#15161e" stroke="#262834"/><image href="assets/brand/antifact.svg" x="64" y="98" width="60" height="60"/><text x="94" y="186" text-anchor="middle" fill="#ecebf3" font-family="Unbounded,sans-serif" font-size="17" font-weight="600">Antifact</text><text x="94" y="206" text-anchor="middle" fill="#9a99a8" font-family="Be Vietnam Pro,sans-serif" font-size="12">Thiết kế</text></g>
+          <g class="enode" data-k="br" tabindex="0" role="button" aria-label="Bravin"><rect x="238" y="60" width="124" height="180" rx="26" fill="#1c1838" stroke="#8b7cff"/><image href="assets/brand/bravin.svg" x="268" y="84" width="64" height="64"/><text x="300" y="180" text-anchor="middle" fill="#ecebf3" font-family="Unbounded,sans-serif" font-size="18" font-weight="600">Bravin</text><text x="300" y="202" text-anchor="middle" fill="#9a99a8" font-family="Be Vietnam Pro,sans-serif" font-size="12">Dựng video</text></g>
+          <g class="enode" data-k="mc" tabindex="0" role="button" aria-label="Micron"><rect x="432" y="80" width="148" height="140" rx="24" fill="#15161e" stroke="#262834"/><image href="assets/brand/micron.svg" x="476" y="98" width="60" height="60"/><text x="506" y="186" text-anchor="middle" fill="#ecebf3" font-family="Unbounded,sans-serif" font-size="17" font-weight="600">Micron</text><text x="506" y="206" text-anchor="middle" fill="#9a99a8" font-family="Be Vietnam Pro,sans-serif" font-size="12">Mở rộng bằng AI</text></g>
+          <circle r="5" fill="#ecebf3"><animateMotion dur="2.4s" repeatCount="indefinite" path="M168 150 L238 150"/></circle>
+          <circle r="5" fill="#ecebf3"><animateMotion dur="2.4s" begin="-1.2s" repeatCount="indefinite" path="M432 150 L362 150"/></circle>
+        </svg>
+      </div>
+      <div class="eco-info stage" id="ecoInfo" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="sec wrap dlhub" id="tai-ve">
+    <div class="sec-head"><h2>Tải về</h2><p class="muted">Tải thẳng từ Cloudflare và GitHub, không qua Google Drive. Bản hợp với máy bạn được đánh dấu sẵn.</p></div>
+    <div class="tabs" role="tablist" aria-label="Chọn ứng dụng">
+      <button type="button" role="tab" data-p="p-bravin" aria-selected="true"><img src="assets/brand/bravin.svg" alt="">Bravin</button>
+      <button type="button" role="tab" data-p="p-antifact" aria-selected="false" tabindex="-1"><img src="assets/brand/antifact.svg" alt="">Antifact</button>
+      <button type="button" role="tab" data-p="p-micron" aria-selected="false" tabindex="-1"><img src="assets/brand/micron.svg" alt="">Micron</button>
+    </div>
+    <div role="tabpanel" id="p-bravin">
+      <div class="dl">
+        <a class="get" href="https://github.com/vtvcab17-max/Bravin/releases/download/v4.9.1/Bravin_4.9.1.apk" data-os="android"><span class="host">GitHub Releases</span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></span>
+          <h3>Android</h3><span class="meta">Bravin_4.9.1.apk · 28,4 MB<br>Android 7 trở lên</span><span class="act">Tải APK</span></a>
+        <a class="get" href="downloads/Bravin_Setup_4.9.1.exe" download data-os="windows"><span class="host">Cloudflare</span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
+          <h3>Windows</h3><span class="meta">Bravin_Setup_4.9.1.exe · 4,3 MB<br>Windows 10 và 11 · chạy không cần mạng</span><span class="act">Tải bộ cài</span></a>
+        <a class="get web" href="https://bravin.vtvcab17.workers.dev/" target="_blank" rel="noopener" data-os="mac other ios">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></span>
+          <h3>Bản web</h3><span class="meta">bravin.vtvcab17.workers.dev<br>Chrome hoặc Edge · không cần cài</span><span class="act">Mở ngay</span></a>
+      </div>
+    </div>
+    <div role="tabpanel" id="p-antifact" hidden>
+      <div class="dl">
+        <a class="get web" href="https://antiface.vtvcab17.workers.dev/" target="_blank" rel="noopener" data-os="windows mac other android ios">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></span>
+          <h3>Bản web</h3><span class="meta">antiface.vtvcab17.workers.dev<br>Cài được như app, chạy offline</span><span class="act">Mở ngay</span></a>
+        <a class="get" href="downloads/Antifact-1.1.html" download><span class="host">Cloudflare</span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14l3 3 3-3"/></svg></span>
+          <h3>Bản một file</h3><span class="meta">Antifact-1.1.html · 0,4 MB<br>Mở trực tiếp bằng trình duyệt</span><span class="act">Tải file</span></a>
+      </div>
+    </div>
+    <div role="tabpanel" id="p-micron" hidden>
+      <div class="dl">
+        <a class="get web" href="https://micron.vtvcab17.workers.dev/" target="_blank" rel="noopener" data-os="other ios">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></span>
+          <h3>Bản web</h3><span class="meta">micron.vtvcab17.workers.dev<br>Cài như app (PWA), chạy offline</span><span class="act">Mở ngay</span></a>
+        <a class="get" href="https://github.com/vtvcab17-max/micron/releases/download/v1.0.0-b1/Micron-1.0.0.zip" data-os="windows mac android"><span class="host">GitHub Releases</span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg></span>
+          <h3>Gói mọi nền tảng</h3><span class="meta">Micron-1.0.0.zip · 518 MB<br>Windows · macOS · Android · iPad</span><span class="act">Tải gói</span></a>
+      </div>
+    </div>
+    <div class="notes">
+      <p><b>Android:</b> mở file APK bằng My Files, cho phép cài từ nguồn này. Máy Samsung bật Chặn tự động thì tắt tạm khi cài.</p>
+      <p><b>Windows:</b> nếu hiện SmartScreen, chọn More info rồi Run anyway.</p>
+      <p><b>iPhone, iPad:</b> mở bản web bằng Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
     </div>
   </section>
 
@@ -139,12 +236,12 @@
       <p class="big rise">Làm công cụ sáng tạo mà ai cũng dùng được, trên chính thiết bị họ đang cầm.</p>
       <div class="txt">
         <p>Phạm Việt Hà sống và làm việc ở Hà Nội. Hà tự thiết kế và viết Bravin từ đầu: timeline, bộ dựng hình, trang chỉnh màu, công cụ mask, xử lý âm thanh, trợ lý AI và các bản cho Android, Windows.</p>
-        <p>Bravin chạy ngay trong trình duyệt, không cần máy chủ riêng, và vẫn có các công cụ của phần mềm chuyên nghiệp như keyframe, chỉnh màu theo node, theo dõi chuyển động hay xuất video 4K.</p>
+        <p>Bravin chạy ngay trong trình duyệt, không cần máy chủ riêng, và vẫn có các công cụ của phần mềm chuyên nghiệp như keyframe, chỉnh màu theo node, theo dõi chuyển động hay xuất video 4K. Antifact và Micron mở rộng luồng làm việc đó: thiết kế trước, mở rộng bằng AI, rồi dựng thành video.</p>
         <p>Song song với việc làm sản phẩm, Hà đang học Thạc sĩ Trí tuệ nhân tạo tại Đại học Stanford.</p>
         <dl class="facts">
           <div><dt>Nơi ở</dt><dd>Hà Nội, Việt Nam</dd></div>
           <div><dt>Đang học</dt><dd>Thạc sĩ AI · Stanford</dd></div>
-          <div><dt>Sản phẩm chính</dt><dd>Bravin 4.1</dd></div>
+          <div><dt>Hệ sinh thái</dt><dd>Antifact · Bravin · Micron</dd></div>
         </dl>
       </div>
     </div>
@@ -154,10 +251,11 @@
 <footer class="foot">
   <div class="wrap">
     <span>© 2026 Phạm Việt Hà</span>
-    <a href="bravin.html">Bravin</a><a href="micon.html">Micon</a><a href="antifact.html">Antifact</a>
+    <a href="bravin.html">Bravin</a><a href="antifact.html">Antifact</a><a href="micron.html">Micron</a><a href="#tai-ve">Tải về</a>
     <span class="tc">Bravinall</span>
   </div>
 </footer>
+<script src="assets/site.js"></script>
 <script>
 (function () {
   const f = tz => new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz });
@@ -170,6 +268,26 @@
     document.getElementById("clkDiff").textContent = "lệch " + Math.abs(off("Asia/Ho_Chi_Minh") - off("America/Los_Angeles")) + " giờ";
   }
   tick(); setInterval(tick, 15000);
+})();
+</script>
+<script>
+(function () {
+  const D = {
+    af: ["Antifact", "Thiết kế ngay trên trình duyệt", ["Không cần cài, không cần tài khoản, dữ liệu ở máy bạn", "Layer, 16 công cụ, xoá vật thể, chữ tiếng Việt", "Trợ lý AI tự chọn: Claude, OpenAI, Ollama", "Xuất PNG, JPG, WebP hoặc gửi sang Bravin"], "antifact.html", "https://antiface.vtvcab17.workers.dev/"],
+    br: ["Bravin", "Dựng video trên web, Android, Windows", ["Timeline chuyên nghiệp, keyframe, speed ramp", "Chỉnh màu kiểu node, mask, Motion Tracking", "Hơn 40 hiệu ứng, âm thanh chuẩn LUFS, phụ đề tự động", "Trợ lý AI sửa timeline, chạy plugin từ Micron"], "bravin.html", "https://bravin.vtvcab17.workers.dev/"],
+    mc: ["Micron", "Canvas AI và chợ tiện ích", ["Nối các ô AI thành quy trình, Chạy tất cả", "Mang AI của bạn: API key hoặc AI chạy trên máy", "Chợ plugin cho Bravin: Motion Tracking, Micron AI…", "Web, Windows, macOS, Android, iPad"], "micron.html", "https://micron.vtvcab17.workers.dev/"],
+    "af-br": ["Antifact → Bravin", "Thiết kế tĩnh thành video", ["Nút Gửi sang Bravin trong Antifact", "Mỗi layer thành một track, đúng vị trí và thứ tự", "Giữ keyframe, chuyển cảnh, camera 2D và parallax", "Bravin hiện báo cáo nhập để kiểm tra"], "bravin.html#he-sinh-thai", null],
+    "mc-br": ["Micron → Bravin", "AI và plugin cho trình dựng", ["Extension: 🎬 Gửi sang Bravin dưới mỗi kết quả", "Plugin Micron AI viết chữ, tạo ảnh, giọng đọc trên timeline", "Plugin Motion Tracking miễn phí", "Cài từ chợ Extensions & Plugins"], "micron.html", null]
+  };
+  const info = document.getElementById("ecoInfo");
+  function pick(k) {
+    const [t, sub, li, page, app] = D[k];
+    info.innerHTML = '<p class="eyebrow">' + sub + "</p><h3>" + t + "</h3><ul>" + li.map(x => "<li>" + x + "</li>").join("") + '</ul><div class="act"><a class="btn primary" href="' + page + '">Tìm hiểu</a>' + (app ? '<a class="btn" href="' + app + '" target="_blank" rel="noopener">Mở ứng dụng</a>' : "") + "</div>";
+    document.querySelectorAll(".enode").forEach(n => n.classList.toggle("on", n.dataset.k === k));
+    document.querySelectorAll(".link").forEach(l => l.classList.toggle("on", l.dataset.k === k || (k === "br")));
+  }
+  document.querySelectorAll(".enode,.hit path").forEach(n => { n.addEventListener("click", () => pick(n.dataset.k)); n.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(n.dataset.k); } }); });
+  pick("br");
 })();
 </script>
 </body>
