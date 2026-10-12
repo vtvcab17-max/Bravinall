@@ -23,6 +23,7 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
 @keyframes grow{0%,35%{font-size:22px}60%,100%{font-size:40px}}
 @keyframes bg{0%,35%{fill:#2a2550}60%,100%{fill:#0f3d5c}}
 .flyer{animation:fly1 3.6s ease-in-out both}
+@keyframes orbit3{from{transform:rotateY(-34deg) rotateX(8deg) scale(.9)}to{transform:rotateY(30deg) rotateX(-4deg) scale(1)}}
 
 /* mở đầu: editor thu nhỏ */
 .ed{display:grid;grid-template-columns:44px minmax(0,1fr) 150px;gap:8px;height:clamp(260px,32vw,400px)}
@@ -113,11 +114,59 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
 .exp button[aria-pressed="true"]{border-color:var(--iris);background:color-mix(in srgb,var(--iris) 14%,var(--ink))}
 .expinfo{margin-top:12px;font-size:14px;color:color-mix(in srgb,var(--fg) 84%,var(--muted));min-height:3em}
 
+
+/* cọ vẽ */
+.paintbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:10px;font:500 12px/1 var(--f-mono);color:var(--muted)}
+.paintbar label{display:flex;align-items:center;gap:8px}
+.paintbar input[type=color]{width:34px;height:28px;border:0;background:none;padding:0}
+.paintbar input[type=range]{accent-color:var(--iris)}
+.paintbar button,.camctl button{border:1px solid var(--line);background:var(--ink);color:var(--fg);border-radius:10px;padding:9px 12px;font:600 13px/1 var(--f-body);cursor:pointer}
+.camctl .go{background:var(--iris);color:#120f2a;border-color:var(--iris)}
+/* điều chỉnh */
+.adjimg{border-radius:14px;overflow:hidden;aspect-ratio:16/9.5}
+.adjimg svg{display:block;width:100%;height:100%;transition:filter .25s}
+.sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 16px;margin-top:12px}
+.sliders label{display:grid;gap:6px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.sliders input{accent-color:var(--iris);width:100%}
+/* 3D */
+.v3{position:relative;margin-top:10px;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#07060f;perspective:900px;cursor:grab;touch-action:none;user-select:none}
+.v3:active{cursor:grabbing}
+.world{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.pl3{position:absolute;inset:6%;border-radius:10px;transform-style:preserve-3d;backface-visibility:visible}
+.pl3 svg{width:100%;height:100%;display:block}
+.p-sky{inset:0;background:linear-gradient(#1b1440,#ff8a4c 120%)}
+.p-sun{inset:auto;width:18%;aspect-ratio:1;left:62%;top:16%;border-radius:50%;background:radial-gradient(#fff3c4,#ffd43b 60%,#ff8a4c00 72%)}
+.p-far,.p-near{inset:auto 0 0 0;height:70%}
+.p-title{inset:auto;left:8%;top:14%;display:grid;gap:4px;color:#fff;text-shadow:0 6px 20px rgba(0,0,0,.45)}
+.p-title b{font:800 clamp(26px,4.4vw,52px)/1 "Bricolage Grotesque",var(--f-display)}
+.p-title small{font:500 11px/1 var(--f-mono);letter-spacing:.1em;color:#ffffffcc}
+.v3.show-planes .pl3{outline:1px dashed #ffffff55}
+.v3hud{position:absolute;left:12px;bottom:10px;font:500 11px/1 var(--f-mono);color:#fff;background:rgba(0,0,0,.45);padding:7px 9px;border-radius:999px;pointer-events:none}
+.camctl{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:12px}
+.camctl label{display:flex;flex-direction:column;gap:6px;font:500 11px/1 var(--f-mono);color:var(--muted)}
+.camctl input[type=range]{accent-color:var(--iris);width:130px}
+/* chuyển động */
+.anstage{position:relative;height:220px;border-radius:14px;background:linear-gradient(135deg,#1b1440,#0f3d5c);display:grid;place-content:center;gap:10px;perspective:700px;overflow:hidden}
+.an-card{justify-self:center;font:700 16px/1 var(--f-body);color:#fff;background:#ffffff1f;border:1px solid #ffffff33;padding:10px 16px;border-radius:999px;transform-style:preserve-3d}
+.an-card.big{font:800 clamp(30px,4vw,46px)/1 "Bricolage Grotesque",var(--f-display);background:none;border:0;padding:0;color:#ffd43b}
+.anrow{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start;margin-top:10px}
+.anrow>span{font:500 11px/32px var(--f-mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.anrow .pills button{padding:7px 11px;font-size:12px}
+/* chuyển cảnh */
+.trstage{position:relative;aspect-ratio:16/8;border-radius:14px;overflow:hidden;perspective:900px;background:#000}
+.ts{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font:800 clamp(26px,4vw,44px)/1.1 "Bricolage Grotesque",var(--f-display);color:#fff;backface-visibility:hidden}
+.ts small{display:block;font:500 12px/1 var(--f-mono);color:#ffffffbb;margin-top:8px}
+.ts.a{background:linear-gradient(135deg,#ff4f99,#ffd43b)}
+.ts.b{background:linear-gradient(135deg,#2fd0ee,#1b1440)}
+.ts:not(.on){visibility:hidden}
+@media (max-width:640px){.camctl input[type=range]{width:100px}.anrow{grid-template-columns:1fr}.anrow>span{line-height:1}}
+
+.tool span{display:flex;justify-content:space-between;gap:6px;width:100%}.tool kbd{font:500 10px/1 var(--f-mono);color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:3px 5px}
 @media (max-width:980px){.ed{grid-template-columns:36px minmax(0,1fr)}.ed .insp{display:none}.tools{grid-template-columns:repeat(2,minmax(0,1fr))}.exp{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:reduce){.ed .cvs .p1,.ed .cvs .p2,.ed .cvs .p3{animation:none}}
 </style>
 </head>
-<body data-total="120">
+<body data-total="128">
 <header class="bar">
   <div class="wrap">
     <a class="logo" href="index.html"><i aria-hidden="true"></i>Bravinall</a>
@@ -125,7 +174,6 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
       <a href="bravin.html">Bravin</a>
       <a href="antifact.html" aria-current="page">Antifact</a>
       <a href="micron.html">Micron</a>
-      <a href="index.html#tai-ve">Dùng ngay</a>
     </nav>
   </div>
 </header>
@@ -156,7 +204,7 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
 
   <section class="slide" id="video" data-label="Video">
     <div class="wrap">
-      <div class="kicker"><span class="tc">00:00:06</span><span class="eyebrow">Video giới thiệu · 34 giây</span></div>
+      <div class="kicker"><span class="tc">00:00:08</span><span class="eyebrow">Video giới thiệu · 40 giây</span></div>
       <h2 style="max-width:20ch">Antifact trong nửa phút. Bấm chương để tua.</h2>
       <div style="margin-top:26px">
 <div class="promo" aria-label="Video giới thiệu Antifact">
@@ -189,6 +237,17 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
               <text x="16" y="56" fill="#fff" font-family="Bricolage Grotesque,sans-serif" font-weight="800" data-anim style="animation:grow 4s both;font-size:22px">SALE 50%</text>
               <rect x="16" y="96" width="168" height="30" rx="15" fill="#0c0d12" stroke="#ff4f99"/><text x="28" y="115" fill="#ecebf3" font-family="Be Vietnam Pro,sans-serif" font-size="10">“làm tiêu đề to hơn, đổi nền xanh đậm”</text></svg></div>
           </div>
+          <div class="scene" data-dur="6" data-label="Slide 3D">
+            <div class="cap"><span class="k">Slide · camera 3D</span><h3>Ảnh tĩnh, bay như phim.</h3><p>Mỗi layer một độ sâu. Camera 2D, 2.5D hoặc 3D tự do, xuất video hay GIF.</p></div>
+            <div class="art"><div class="box" style="aspect-ratio:16/10;perspective:600px;border-radius:12px;overflow:hidden;background:#07060f;position:relative">
+              <div data-anim style="position:absolute;inset:0;transform-style:preserve-3d;animation:orbit3 5s ease-in-out both">
+                <div style="position:absolute;inset:0;background:linear-gradient(#1b1440,#ff8a4c 120%);transform:translateZ(-120px) scale(1.2)"></div>
+                <div style="position:absolute;width:18%;aspect-ratio:1;left:64%;top:14%;border-radius:50%;background:#ffd43b;transform:translateZ(-60px)"></div>
+                <svg viewBox="0 0 320 180" preserveAspectRatio="none" style="position:absolute;inset:auto 0 0 0;height:70%;width:100%;transform:translateZ(0)"><path d="M0 130L60 80L110 115L170 60L230 110L280 85L320 100V180H0Z" fill="#6b4fa8"/></svg>
+                <svg viewBox="0 0 320 180" preserveAspectRatio="none" style="position:absolute;inset:auto 0 0 0;height:70%;width:100%;transform:translateZ(60px)"><path d="M0 160L80 112L150 150L220 104L320 150V180H0Z" fill="#2a1d4f"/></svg>
+                <b style="position:absolute;left:8%;top:14%;font:800 clamp(16px,2.6vw,30px)/1 'Bricolage Grotesque',sans-serif;color:#fff;transform:translateZ(120px)">Đà Lạt</b>
+              </div></div></div>
+          </div>
           <div class="scene" data-dur="6" data-label="Sang Bravin">
             <div class="cap"><span class="k">Gửi sang Bravin</span><h3>Thiết kế tĩnh thành video.</h3><p>Mỗi layer thành một track video, đúng vị trí, đúng thứ tự.</p></div>
             <div class="art"><svg viewBox="0 0 200 150"><rect width="200" height="150" rx="12" fill="#0f1014"/>
@@ -212,7 +271,7 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   <section class="slide" id="layer" data-label="Layer">
     <div class="wrap split">
       <div>
-        <div class="kicker"><span class="tc">00:00:18</span><span class="eyebrow">Layer và hoà trộn</span></div>
+        <div class="kicker"><span class="tc">00:00:16</span><span class="eyebrow">Layer và hoà trộn</span></div>
         <h2>Mỗi thứ một layer. Chồng lên là thành tác phẩm.</h2>
         <p class="body">Chỉnh vị trí, xoay, độ mờ, chín chế độ hoà trộn, khoá, ẩn, gộp layer, và hoàn tác bất cứ lúc nào. Logo Antifact cũng là ba layer chồng nhau theo kiểu Multiply.</p>
         <div class="lyrs" id="lyrs"></div>
@@ -225,9 +284,10 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   <section class="slide" id="cong-cu" data-label="Công cụ">
     <div class="wrap split rev">
       <div>
-        <div class="kicker"><span class="tc">00:00:30</span><span class="eyebrow">Thanh công cụ</span></div>
-        <h2>Mười sáu công cụ, quen tay ngay từ đầu.</h2>
-        <p class="body">Bộ chọn vùng đủ mạnh như phần mềm chuyên nghiệp, thêm dao cắt layer, cọ, tẩy và chuyển màu. Mỗi công cụ có phím tắt riêng.</p>
+        <div class="kicker"><span class="tc">00:00:24</span><span class="eyebrow">Thanh công cụ</span></div>
+        <h2>26 công cụ, đủ để chọn, vẽ và sửa ảnh.</h2>
+        <p class="body">Bộ chọn vùng, chữ, hình, chuyển màu, cọ, tẩy; thêm bộ sửa ảnh như phần mềm chuyên nghiệp: Clone Stamp, Healing, Dodge, Burn, Liquify. Mỗi công cụ có phím tắt riêng.</p>
+        <div class="pills" id="toolTabs" style="margin-top:22px"><button type="button" data-g="0" aria-pressed="true">Chọn &amp; vẽ · 16</button><button type="button" data-g="1" aria-pressed="false">Sửa ảnh · 10</button></div>
       </div>
       <div class="stage rise">
         <p class="try">Bấm từng công cụ</p>
@@ -237,10 +297,31 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
     </div>
   </section>
 
+  <section class="slide" id="ve" data-label="Cọ &amp; sửa ảnh">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:00:32</span><span class="eyebrow">Cọ vẽ và sửa ảnh</span></div>
+        <h2>Vẽ bằng năm loại cọ. Làm sáng, làm tối, làm mờ từng vùng.</h2>
+        <p class="body">Cọ cứng, cọ mềm, bút lá, phấn, tán xạ; có cảm biến lực bút trên máy tính bảng. Dodge làm sáng, Burn làm tối, Sponge tăng bão hoà, Blur làm mờ ngay trên điểm ảnh.</p>
+        <div class="chips"><span class="chip">Cảm biến lực bút</span><span class="chip">Cọ của tôi</span><span class="chip">Mask: cọ trắng hiện, cọ đen ẩn</span></div>
+      </div>
+      <div class="stage rise">
+        <p class="try">Vẽ thử lên khung</p>
+        <canvas id="paint" width="720" height="440" style="display:block;width:100%;height:auto;border-radius:14px;touch-action:none;cursor:crosshair;background:#fff"></canvas>
+        <div class="pills" id="brushes" style="margin-top:12px"></div>
+        <div class="paintbar">
+          <label>Màu <input type="color" id="pcol" value="#ff4f99"></label>
+          <label>Cỡ <input type="range" id="psize" min="4" max="60" value="22"></label>
+          <button type="button" id="pclear">Làm lại ảnh</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="slide" id="xoa-vat-the" data-label="Xoá vật thể">
     <div class="wrap split">
       <div>
-        <div class="kicker"><span class="tc">00:00:42</span><span class="eyebrow">Xoá vật thể</span></div>
+        <div class="kicker"><span class="tc">00:00:40</span><span class="eyebrow">Xoá vật thể</span></div>
         <h2>Ảnh dính vật thừa? Khoanh, bấm, biến mất.</h2>
         <p class="body">Khoanh vùng bằng Lasso, bấm <b>content-aware fill</b>. Antifact xoá vật thể và tự lấp bằng nền xung quanh. Kéo thanh bên để xem trước và sau (hình minh hoạ).</p>
         <div class="chips"><span class="chip">Lasso</span><span class="chip">Content-aware fill</span><span class="chip">Hoàn tác từng bước</span></div>
@@ -264,10 +345,31 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
     </div>
   </section>
 
+  <section class="slide" id="dieu-chinh" data-label="Điều chỉnh">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:00:48</span><span class="eyebrow">Layer điều chỉnh và bộ lọc</span></div>
+        <h2>Chỉnh màu không phá ảnh gốc.</h2>
+        <p class="body">Mười layer điều chỉnh đặt chồng lên ảnh: Levels, Curves, Hue / Saturation, Color Balance, Exposure, nhiệt độ màu và hơn thế. Tắt đi là ảnh về như cũ. Kèm tám bộ lọc một chạm.</p>
+        <div class="chips" id="adjNames"></div>
+      </div>
+      <div class="stage rise">
+        <p class="try">Chọn bộ lọc hoặc kéo thanh chỉnh</p>
+        <div class="adjimg" id="adjimg"><svg viewBox="0 0 320 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs><linearGradient id="ask" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5aa9e6"/><stop offset=".6" stop-color="#ffd6a5"/><stop offset="1" stop-color="#ff9f68"/></linearGradient></defs>
+          <rect width="320" height="190" fill="url(#ask)"/><circle cx="230" cy="78" r="22" fill="#fff3c4"/>
+          <path d="M0 150L70 96L120 132L190 82L250 128L320 104V190H0Z" fill="#3d6b4f"/><path d="M0 172L90 128L160 168L240 132L320 160V190H0Z" fill="#24442f"/>
+          <rect x="40" y="120" width="40" height="52" rx="4" fill="#c44536"/><path d="M36 122L60 100L84 122Z" fill="#7a2a22"/></svg></div>
+        <div class="pills" id="fp" style="margin-top:12px"></div>
+        <div class="sliders" id="fsl"></div>
+      </div>
+    </div>
+  </section>
+
   <section class="slide" id="chu-mau" data-label="Chữ &amp; màu">
     <div class="wrap split rev">
       <div>
-        <div class="kicker"><span class="tc">00:00:54</span><span class="eyebrow">Chữ và màu</span></div>
+        <div class="kicker"><span class="tc">00:00:56</span><span class="eyebrow">Chữ và màu</span></div>
         <h2>Tiếng Việt chuẩn từng dấu. Màu chính xác tới từng mã.</h2>
         <p class="body">Chọn phông có sẵn hoặc nhập font riêng; chỉnh viền, cỡ, giãn chữ. Chọn màu bằng HEX, RGB, CMYK. Bộ lọc một chạm: trắng đen, cổ điển, ấm, lạnh, thêm bóng đổ.</p>
       </div>
@@ -287,10 +389,10 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   <section class="slide" id="tro-ly-ai" data-label="Trợ lý AI">
     <div class="wrap split">
       <div>
-        <div class="kicker"><span class="tc">00:01:06</span><span class="eyebrow">Trợ lý AI</span></div>
+        <div class="kicker"><span class="tc">00:01:04</span><span class="eyebrow">Trợ lý AI</span></div>
         <h2>Ngại thao tác? Gõ cho trợ lý AI.</h2>
-        <p class="body">“Làm tiêu đề to hơn”, “đổi nền xanh đậm”: trợ lý sửa thẳng trên thiết kế. AI là của bạn: <b>Claude</b>, <b>OpenAI</b>, hay <b>Ollama</b> chạy ngay trên máy.</p>
-        <div class="chips"><span class="chip">Claude</span><span class="chip">OpenAI</span><span class="chip">Ollama</span><span class="chip">Khoá API của bạn</span></div>
+        <p class="body">“Làm tiêu đề to hơn”, “đổi nền xanh đậm”: trợ lý tự thêm, sửa, sắp xếp, xoá layer và đổi khung ngay trên thiết kế. AI là của bạn: <b>Claude</b>, <b>OpenAI</b>, hay <b>Ollama</b>, <b>LM Studio</b> chạy ngay trên máy.</p>
+        <div class="chips"><span class="chip">Claude</span><span class="chip">Anthropic API</span><span class="chip">OpenAI</span><span class="chip">OpenRouter, Groq</span><span class="chip">Ollama</span><span class="chip">LM Studio</span></div>
       </div>
       <div class="stage rise aiwrap">
         <p class="try">Bấm một câu lệnh</p>
@@ -310,41 +412,80 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   <section class="slide" id="khung" data-label="Khung">
     <div class="wrap split rev">
       <div>
-        <div class="kicker"><span class="tc">00:01:18</span><span class="eyebrow">Bắt đầu nhanh</span></div>
-        <h2>Khung có sẵn cho mọi nơi bạn đăng.</h2>
-        <p class="body">Thumbnail YouTube, story, bài đăng Instagram, cả bản in A4. Chọn khung là Antifact mở đúng kích thước. Project lưu luôn trên máy bạn.</p>
+        <div class="kicker"><span class="tc">00:01:12</span><span class="eyebrow">Bắt đầu nhanh</span></div>
+        <h2>Tám khung có sẵn cho mọi nơi bạn đăng.</h2>
+        <p class="body">Từ bản trình bày 16:9 tới thumbnail YouTube, bài Instagram, Story, ảnh bìa Facebook, banner, bản in A4. Chọn khung là Antifact mở đúng kích thước. Project lưu luôn trên máy bạn.</p>
       </div>
       <div class="stage rise">
-        <div class="split" style="grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px">
-          <div class="fpick" id="fpick">
-            <button type="button" data-r="16/9" data-s="1280 × 720" aria-pressed="true">Thumbnail YouTube<small>16:9</small></button>
-            <button type="button" data-r="9/16" data-s="1080 × 1920" aria-pressed="false">Story<small>9:16</small></button>
-            <button type="button" data-r="4/5" data-s="1080 × 1350" aria-pressed="false">Instagram<small>4:5</small></button>
-            <button type="button" data-r="210/297" data-s="A4 · in ấn" aria-pressed="false">Bản in A4<small>A4</small></button>
-          </div>
-          <div class="fview"><div class="fbox" id="fbox" style="aspect-ratio:16/9;width:92%"><b>Tiêu đề của bạn</b><i id="fsz">1280 × 720</i></div></div>
+        <div class="split" style="grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:16px">
+          <div class="fpick" id="fpick"></div>
+          <div class="fview"><div class="fbox" id="fbox" style="aspect-ratio:16/9;width:92%"><b>Tiêu đề của bạn</b><i id="fsz">1920 × 1080</i></div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="slide" id="camera" data-label="Camera">
+  <section class="slide" id="slide-3d" data-label="Slide 3D">
     <div class="wrap split">
       <div>
-        <div class="kicker"><span class="tc">00:01:30</span><span class="eyebrow">Slide và camera</span></div>
-        <h2>Ảnh tĩnh, chuyển động như phim.</h2>
-        <p class="body">Dựng slide có camera 2D và 2.5D: lớp gần đi nhanh, lớp xa đi chậm, tạo chiều sâu. Xuất thành video hoặc GIF, hoặc gửi sang Bravin để dựng tiếp.</p>
-        <div class="chips"><span class="chip">Camera 2D</span><span class="chip">Parallax 2.5D</span><span class="chip">Xuất video, GIF</span></div>
+        <div class="kicker"><span class="tc">00:01:20</span><span class="eyebrow">Slide · camera 2D / 2.5D / 3D</span></div>
+        <h2>Biến thiết kế thành slide có camera bay trong không gian.</h2>
+        <p class="body">Mỗi layer là một tấm phẳng có <b>độ sâu Z</b>. Chọn <b>2D</b> để lia và thu phóng kiểu Ken Burns, <b>2.5D</b> để có parallax chiều sâu nhẹ, <b>3D tự do</b> để camera xoay, tiến, lùi. Đặt điểm đầu, điểm cuối, bấm chạy.</p>
+        <div class="chips"><span class="chip">Tự chia độ sâu Z</span><span class="chip">Key camera trên timeline</span><span class="chip">Chế độ Không gian</span><span class="chip">Trình chiếu</span></div>
       </div>
       <div class="stage rise">
-        <p class="try">Rê chuột hoặc chạm vào khung</p>
-        <div class="para" id="para">
-          <div class="ly" data-d="6"><svg viewBox="0 0 320 200" preserveAspectRatio="none"><circle cx="230" cy="70" r="28" fill="#ffd43b" opacity=".9"/></svg></div>
-          <div class="ly" data-d="14"><svg viewBox="0 0 320 200" preserveAspectRatio="none"><path d="M0 150L60 90L120 140L190 70L260 130L320 95V200H0Z" fill="#5b3a8f"/></svg></div>
-          <div class="ly" data-d="26"><svg viewBox="0 0 320 200" preserveAspectRatio="none"><path d="M0 175L80 120L150 165L230 110L320 160V200H0Z" fill="#2a1d4f"/></svg></div>
-          <div class="ly" data-d="44"><svg viewBox="0 0 320 200" preserveAspectRatio="none"><text x="24" y="60" fill="#fff" font-family="Bricolage Grotesque,sans-serif" font-weight="800" font-size="30">Đà Lạt</text><text x="26" y="80" fill="#ffffffcc" font-family="Be Vietnam Pro,sans-serif" font-size="11">Lớp gần nhất đi nhanh nhất</text></svg></div>
-          <span class="hud" id="phud">Camera · x 0 · y 0</span>
+        <p class="try">Kéo trong khung để xoay camera</p>
+        <div class="pills" id="camMode"><button type="button" data-m="2d" aria-pressed="false">2D phẳng</button><button type="button" data-m="2.5d" aria-pressed="false">2.5D chiều sâu nhẹ</button><button type="button" data-m="3d" aria-pressed="true">3D tự do</button></div>
+        <div class="v3" id="v3">
+          <div class="world" id="world">
+            <div class="pl3 p-sky" data-z="0"></div>
+            <div class="pl3 p-sun" data-z="1"></div>
+            <div class="pl3 p-far" data-z="2"><svg viewBox="0 0 320 180" preserveAspectRatio="none"><path d="M0 130L60 80L110 115L170 60L230 110L280 85L320 100V180H0Z" fill="#6b4fa8"/></svg></div>
+            <div class="pl3 p-near" data-z="3"><svg viewBox="0 0 320 180" preserveAspectRatio="none"><path d="M0 160L80 112L150 150L220 104L320 150V180H0Z" fill="#2a1d4f"/></svg></div>
+            <div class="pl3 p-title" data-z="4"><b>Đà Lạt</b><small>Slide 1 · camera 3D</small></div>
+          </div>
+          <span class="v3hud" id="v3hud"></span>
         </div>
+        <div class="pills" id="camPre" style="margin-top:10px"></div>
+        <div class="camctl">
+          <label>Độ sâu <input type="range" id="depth" min="0" max="160" value="90"></label>
+          <label>Thu phóng <input type="range" id="zoomR" min="60" max="160" value="100"></label>
+          <button type="button" id="kStart">Đặt điểm đầu</button><button type="button" id="kEnd">Đặt điểm cuối</button><button type="button" class="go" id="kPlay">▶ Chạy camera</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="chuyen-dong" data-label="Chuyển động">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:01:28</span><span class="eyebrow">Chuyển động layer</span></div>
+        <h2>Mười hai kiểu xuất hiện, sáu kiểu chuyển động lặp.</h2>
+        <p class="body">Gán cho từng layer: hiện dần, trượt, phóng, nảy, <b>bay từ chiều sâu</b>, <b>lật 3D</b>, rơi xuống… rồi lặp trôi nổi, nhịp đập, <b>lắc 3D</b>, nhấp nhô chiều sâu. Bật “lần lượt” để các layer vào theo thứ tự.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Chọn kiểu rồi bấm Xem lại</p>
+        <div class="anstage" id="anstage"><div class="an-card" data-i="0">Ưu đãi</div><div class="an-card big" data-i="1">SALE 50%</div><div class="an-card" data-i="2">Chỉ tuần này</div></div>
+        <div class="anrow"><span>Vào</span><div class="pills" id="anIn"></div></div>
+        <div class="anrow"><span>Lặp</span><div class="pills" id="anLoop"></div></div>
+        <div class="anrow"><span>Nhịp</span><div class="pills" id="anEase"></div></div>
+        <div class="camctl"><label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="anStag" checked> Lần lượt</label><button type="button" class="go" id="anPlay">▶ Xem lại</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="chuyen-canh" data-label="Chuyển cảnh">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:36</span><span class="eyebrow">Chuyển cảnh và trình chiếu</span></div>
+        <h2>Nối các slide thành một bài trình chiếu.</h2>
+        <p class="body">Cắt thẳng, mờ dần, trượt, phóng, lật 3D giữa các slide, chỉnh thời gian chuyển. Xem cả bài trong <b>bảng tổng quan</b>, rồi trình chiếu toàn màn hình hoặc xuất thành video.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Chọn kiểu chuyển rồi bấm Chuyển</p>
+        <div class="trstage" id="trstage"><div class="ts a on">Slide 1<small>Giới thiệu</small></div><div class="ts b">Slide 2<small>Sản phẩm</small></div></div>
+        <div class="pills" id="trs" style="margin-top:12px"></div>
+        <div class="camctl"><label>Thời gian <input type="range" id="trd" min="200" max="1600" value="700"></label><span class="tc" id="trdv" style="color:var(--gold)">0,7 s</span><button type="button" class="go" id="trGo">▶ Chuyển</button></div>
       </div>
     </div>
   </section>
@@ -352,22 +493,22 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   <section class="slide" id="xuat" data-label="Xuất &amp; Bravin">
     <div class="wrap split rev">
       <div>
-        <div class="kicker"><span class="tc">00:01:42</span><span class="eyebrow">Xuất và Gửi sang Bravin</span></div>
-        <h2>Một cú thả, thiết kế thành video.</h2>
-        <p class="body">Xuất PNG trong suốt, JPG, WebP, hoặc lưu project để sửa tiếp. Bấm <b>Gửi sang Bravin</b>: mỗi layer thành một track video, đúng vị trí, đúng thứ tự.</p>
+        <div class="kicker"><span class="tc">00:01:44</span><span class="eyebrow">Xuất và Gửi sang Bravin</span></div>
+        <h2>Xuất ảnh, video, GIF. Hoặc một cú thả sang Bravin.</h2>
+        <p class="body">Xuất PNG trong suốt, JPG, WebP; xuất cả bài slide thành <b>video MP4</b> hoặc <b>GIF động</b> với camera và chuyển cảnh. Bấm <b>Gửi sang Bravin</b>: mỗi layer thành một track video, đúng vị trí, đúng thứ tự.</p>
       </div>
       <div class="stage rise">
         <p class="try">Chọn cách xuất</p>
         <div class="exp" id="exp">
-          <button type="button" data-k="png" aria-pressed="true">PNG</button><button type="button" data-k="jpg" aria-pressed="false">JPG</button><button type="button" data-k="webp" aria-pressed="false">WebP</button><button type="button" data-k="bravin" aria-pressed="false">Sang Bravin</button>
+          <button type="button" data-k="png" aria-pressed="true">PNG</button><button type="button" data-k="mp4" aria-pressed="false">Video MP4</button><button type="button" data-k="gif" aria-pressed="false">GIF động</button><button type="button" data-k="bravin" aria-pressed="false">Sang Bravin</button>
         </div>
         <p class="expinfo" id="expinfo" aria-live="polite"></p>
-        <svg viewBox="0 0 320 120" style="margin-top:8px" id="expsvg" aria-hidden="true">
+        <svg viewBox="0 0 320 120" style="margin-top:8px" aria-hidden="true">
           <rect width="320" height="120" rx="12" fill="#0f1014"/>
           <g id="expTracks" opacity=".25"><rect x="12" y="20" width="296" height="22" rx="5" fill="none" stroke="rgba(236,235,243,.2)"/><rect x="12" y="48" width="296" height="22" rx="5" fill="none" stroke="rgba(236,235,243,.2)"/><rect x="12" y="76" width="296" height="22" rx="5" fill="none" stroke="rgba(236,235,243,.2)"/>
             <rect x="14" y="22" width="120" height="18" rx="4" fill="#ffd43b"/><rect x="40" y="50" width="160" height="18" rx="4" fill="#ff4f99"/><rect x="14" y="78" width="290" height="18" rx="4" fill="#2fd0ee"/>
             <text x="20" y="35" font-family="Be Vietnam Pro,sans-serif" font-size="9" fill="#111">Chữ</text><text x="46" y="63" font-family="Be Vietnam Pro,sans-serif" font-size="9" fill="#fff">Logo</text><text x="20" y="91" font-family="Be Vietnam Pro,sans-serif" font-size="9" fill="#111">Nền</text></g>
-          <text x="160" y="114" text-anchor="middle" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="8" id="expLbl">Bravin · 3 track</text>
+          <text x="160" y="114" text-anchor="middle" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="8" id="expLbl"></text>
         </svg>
       </div>
     </div>
@@ -375,7 +516,7 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
 
   <section class="slide" id="vi-sao" data-label="Vì sao">
     <div class="wrap">
-      <div class="kicker"><span class="tc">00:01:54</span><span class="eyebrow">Khác gì app thiết kế thường gặp</span></div>
+      <div class="kicker"><span class="tc">00:01:52</span><span class="eyebrow">Khác gì app thiết kế thường gặp</span></div>
       <h2 style="max-width:20ch">Bấm từng dòng để xem chi tiết.</h2>
       <div class="vs" style="margin-top:26px">
         <div class="seg" role="group" aria-label="Góc nhìn"><button type="button" data-v="old" aria-pressed="false">App thường gặp</button><button type="button" data-v="new" aria-pressed="true">Antifact</button></div>
@@ -450,26 +591,6 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
   bd.onclick = () => { mb.classList.add("dark"); bd.setAttribute("aria-pressed","true"); bl.setAttribute("aria-pressed","false"); };
   document.getElementById("rnd").onclick = () => box.querySelectorAll("select").forEach(s => { s.selectedIndex = Math.floor(Math.random() * modes.length); s.onchange(); });
 
-  // công cụ
-  const T = [
-    ["Marquee","Chọn vùng chữ nhật hoặc elip.",'<rect x="4" y="5" width="16" height="14" rx="1" stroke-dasharray="3 2"/>'],
-    ["Lasso","Khoanh tay một vùng bất kỳ, dùng cùng content-aware fill để xoá vật thể.",'<path d="M6 15c-3-3 0-9 6-9s9 4 7 7-6 4-9 3l-3 4"/>'],
-    ["Quick Selection","Quét nhanh qua vùng cần chọn, tự bám theo cạnh.",'<circle cx="10" cy="10" r="6" stroke-dasharray="3 2"/><path d="M15 15l5 5"/>'],
-    ["Magic Wand","Chọn theo màu giống nhau chỉ với một cú bấm.",'<path d="M4 20L15 9M14 4v3M18 6l-2 2M20 10h-3"/>'],
-    ["Dao cắt layer","Cắt một layer thành nhiều phần riêng.",'<path d="M4 20L20 4M12 4l8 8"/>'],
-    ["Cọ","Vẽ tự do lên layer với cỡ và độ cứng tuỳ chỉnh.",'<path d="M4 20c3 0 4-2 4-4l9-9 3 3-9 9c-2 0-4 1-4 4"/>'],
-    ["Tẩy","Xoá từng phần của layer.",'<path d="M4 16l8-8 6 6-6 6H8zM12 20h8"/>'],
-    ["Chuyển màu","Tô gradient tuyến tính hoặc toả tròn.",'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 20L20 4"/>']
-  ];
-  const tg = document.getElementById("tools"), tip = document.getElementById("tooltip");
-  T.forEach(([n, d, ic], i) => {
-    const b = document.createElement("button"); b.type = "button"; b.className = "tool"; b.setAttribute("aria-pressed", String(i === 0));
-    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ic + "</svg>" + n;
-    b.onclick = () => { tg.querySelectorAll(".tool").forEach(x => x.setAttribute("aria-pressed", String(x === b))); tip.innerHTML = "<b>" + n + ":</b> " + d; };
-    tg.appendChild(b);
-  });
-  tip.innerHTML = "<b>" + T[0][0] + ":</b> " + T[0][1] + " Cùng tám công cụ khác, tổng cộng mười sáu công cụ.";
-
   // trước / sau
   const ba = document.getElementById("ba"), bar = ba.querySelector("input");
   bar.oninput = () => ba.style.setProperty("--x", bar.value + "%");
@@ -506,29 +627,186 @@ body{--iris:#ff4f99;--iris-deep:#c2306f}
     chat.scrollTop = chat.scrollHeight;
   });
 
-  // khung
-  const fb = document.getElementById("fbox"), fs = document.getElementById("fsz");
-  document.querySelectorAll("#fpick button").forEach(b => b.onclick = () => {
-    document.querySelectorAll("#fpick button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    const [w, h] = b.dataset.r.split("/").map(Number);
-    fb.style.aspectRatio = b.dataset.r;
-    if (w >= h) { fb.style.width = "92%"; fb.style.height = "auto"; } else { fb.style.height = "300px"; fb.style.width = "auto"; }
-    fs.textContent = b.dataset.s;
+})();
+</script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const press = (wrap, el) => wrap.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b === el)));
+
+  // ---- 26 công cụ ----
+  const ICO = { box: '<rect x="4" y="5" width="16" height="14" rx="1" stroke-dasharray="3 2"/>', lasso: '<path d="M6 15c-3-3 0-9 6-9s9 4 7 7-6 4-9 3l-3 4"/>', q: '<circle cx="10" cy="10" r="6" stroke-dasharray="3 2"/><path d="M15 15l5 5"/>', wand: '<path d="M4 20L15 9M14 4v3M18 6l-2 2M20 10h-3"/>', knife: '<path d="M4 20L20 4M12 4l8 8"/>', brush: '<path d="M4 20c3 0 4-2 4-4l9-9 3 3-9 9c-2 0-4 1-4 4"/>', erase: '<path d="M4 16l8-8 6 6-6 6H8zM12 20h8"/>', grad: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 20L20 4"/>', move: '<path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3"/>', crop: '<path d="M6 2v16h16M2 6h16v16"/>', drop: '<path d="M14 4l6 6-9 9H5v-6z"/>', text: '<path d="M5 5h14M12 5v14"/>', rect: '<rect x="4" y="6" width="16" height="12" rx="2"/>', ell: '<ellipse cx="12" cy="12" rx="8" ry="6"/>', hand: '<path d="M8 12V5a2 2 0 0 1 4 0v6M12 10V4a2 2 0 0 1 4 0v8M16 10a2 2 0 0 1 4 0v4a7 7 0 0 1-14 0v-3a2 2 0 0 1 4 0"/>', zoom: '<circle cx="10" cy="10" r="6"/><path d="M15 15l5 5M8 10h4M10 8v4"/>', stamp: '<path d="M9 4h6v6l3 3H6l3-3zM5 17h14v3H5z"/>', heal: '<rect x="4" y="9" width="16" height="6" rx="3" transform="rotate(-45 12 12)"/><path d="M11 11h2v2h-2z"/>', sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>', moon: '<path d="M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z"/>', sponge: '<rect x="4" y="7" width="16" height="10" rx="3"/><circle cx="9" cy="12" r="1"/><circle cx="14" cy="11" r="1"/>', blur: '<path d="M12 3c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z"/>', sharp: '<path d="M12 3l8 16H4z"/>', smudge: '<path d="M5 19c4-1 6-4 7-8s4-7 7-7"/>', liq: '<path d="M4 12c3-4 5 4 8 0s5 4 8 0"/>' };
+  const G = [
+    [["Di chuyển","V","move","Kéo layer, gióng thông minh với các layer khác."],["Marquee","M","box","Chọn vùng chữ nhật hoặc elip."],["Lasso","L","lasso","Khoanh tay một vùng, dùng với content-aware fill để xoá vật thể."],["Quick Selection","W","q","Quét qua vùng cần chọn, tự bám theo cạnh."],["Magic Wand","⇧W","wand","Chọn theo màu giống nhau chỉ với một cú bấm."],["Dao cắt layer","K","knife","Cắt một layer thành nhiều phần."],["Cắt canvas","C","crop","Cắt khung, hoặc cắt theo vùng chọn, theo nội dung."],["Lấy màu","I","drop","Hút màu từ bất kỳ đâu trên ảnh."],["Chữ","T","text","Chữ tiếng Việt chuẩn dấu, font riêng, Google Fonts."],["Hình chữ nhật","R","rect","Vẽ hình có bo góc, viền, bóng đổ."],["Hình tròn","O","ell","Vẽ hình tròn, elip."],["Chuyển màu","G","grad","Tô gradient tuyến tính hoặc toả tròn."],["Cọ vẽ","B","brush","Năm loại cọ, cảm biến lực bút."],["Tẩy","E","erase","Tẩy theo đầu cọ; khi chọn mask, tẩy làm ngược lại."],["Bàn tay","H","hand","Kéo để di chuyển khung nhìn."],["Thu phóng","Z","zoom","Phóng to, thu nhỏ khung nhìn."]],
+    [["Clone Stamp","S","stamp","Nhân bản một vùng ảnh sang chỗ khác."],["Healing Brush","J","heal","Sửa vết bằng mẫu lấy từ vùng lành, hoà màu tự nhiên."],["Spot Healing","⇧J","heal","Chấm vào vết, tự lấp bằng vùng xung quanh."],["Dodge","⇧O","sun","Làm sáng từng vùng."],["Burn","⇧B","moon","Làm tối từng vùng."],["Sponge","⇧S","sponge","Tăng hoặc giảm bão hoà màu."],["Blur","⇧R","blur","Làm mờ từng vùng."],["Sharpen","⇧U","sharp","Làm nét từng vùng."],["Smudge","⇧M","smudge","Vuốt, kéo màu như ngón tay."],["Liquify","⇧L","liq","Bóp méo: đẩy, phồng, co, xoáy."]]
+  ];
+  const tg = $("tools"), tip = $("tooltip");
+  function showTools(gi) {
+    tg.innerHTML = "";
+    G[gi].forEach(([n, k, ic, d], i) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "tool"; b.setAttribute("aria-pressed", String(i === 0));
+      b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICO[ic] + "</svg><span>" + n + ' <kbd>' + k + "</kbd></span>";
+      b.onclick = () => { press(tg, b); tip.innerHTML = "<b>" + n + " (" + k + "):</b> " + d; };
+      tg.appendChild(b);
+    });
+    tip.innerHTML = "<b>" + G[gi][0][0] + " (" + G[gi][0][1] + "):</b> " + G[gi][0][3];
+  }
+  document.querySelectorAll("#toolTabs button").forEach(b => b.onclick = () => { press($("toolTabs"), b); showTools(+b.dataset.g); });
+  showTools(0);
+
+  // ---- cọ & sửa ảnh trên canvas ----
+  const cv = $("paint"), g = cv.getContext("2d");
+  function base() {
+    const gr = g.createLinearGradient(0, 0, 0, 440); gr.addColorStop(0, "#7cc8f5"); gr.addColorStop(1, "#ffe2b8");
+    g.globalCompositeOperation = "source-over"; g.globalAlpha = 1; g.filter = "none";
+    g.fillStyle = gr; g.fillRect(0, 0, 720, 440);
+    g.fillStyle = "#2b8fc0"; g.fillRect(0, 250, 720, 80); g.fillStyle = "#f0cf96"; g.fillRect(0, 330, 720, 110);
+    g.fillStyle = "#fff4c9"; g.beginPath(); g.arc(560, 110, 40, 0, 7); g.fill();
+    g.fillStyle = "#3d6b4f"; g.beginPath(); g.moveTo(0, 260); g.lineTo(140, 170); g.lineTo(260, 250); g.closePath(); g.fill();
+    g.font = "800 46px 'Bricolage Grotesque', sans-serif"; g.fillStyle = "#ffffff"; g.fillText("Mùa hè", 40, 90);
+  }
+  base();
+  const BR = [["hard", "Cọ cứng"], ["soft", "Cọ mềm"], ["calli", "Bút lá"], ["chalk", "Phấn"], ["scatter", "Tán xạ"], ["dodge", "Dodge"], ["burn", "Burn"], ["sponge", "Sponge"], ["blur", "Blur"]];
+  let brush = "soft";
+  BR.forEach(([k, n]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = n; b.setAttribute("aria-pressed", String(k === brush)); b.onclick = () => { brush = k; press($("brushes"), b); }; $("brushes").appendChild(b); });
+  let down = false, last = null;
+  const pt = e => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * 720 / r.width, y: (e.clientY - r.top) * 440 / r.height, p: e.pressure && e.pointerType === "pen" ? e.pressure : .6 }; };
+  function dab(x, y, p) {
+    const s = +$("psize").value * (0.5 + p), col = $("pcol").value;
+    g.save(); g.globalCompositeOperation = "source-over"; g.globalAlpha = 1; g.filter = "none";
+    if (brush === "hard") { g.fillStyle = col; g.beginPath(); g.arc(x, y, s / 2, 0, 7); g.fill(); }
+    else if (brush === "soft") { const r = g.createRadialGradient(x, y, 0, x, y, s); r.addColorStop(0, col + "aa"); r.addColorStop(1, col + "00"); g.fillStyle = r; g.beginPath(); g.arc(x, y, s, 0, 7); g.fill(); }
+    else if (brush === "calli") { g.translate(x, y); g.rotate(-0.7); g.fillStyle = col; g.beginPath(); g.ellipse(0, 0, s / 2, s / 9, 0, 0, 7); g.fill(); }
+    else if (brush === "chalk") { g.fillStyle = col; for (let i = 0; i < s * 1.4; i++) { const a = Math.random() * 7, d = Math.random() * s / 2; g.globalAlpha = Math.random() * .7; g.fillRect(x + Math.cos(a) * d, y + Math.sin(a) * d, 1.6, 1.6); } }
+    else if (brush === "scatter") { g.fillStyle = col; for (let i = 0; i < 3; i++) { const a = Math.random() * 7, d = Math.random() * s * 1.2; g.globalAlpha = .4 + Math.random() * .6; g.beginPath(); g.arc(x + Math.cos(a) * d, y + Math.sin(a) * d, 1 + Math.random() * s / 5, 0, 7); g.fill(); } }
+    else if (brush === "dodge" || brush === "burn") { g.globalCompositeOperation = brush === "dodge" ? "screen" : "multiply"; const r = g.createRadialGradient(x, y, 0, x, y, s); const c = brush === "dodge" ? "255,255,255" : "40,20,60"; r.addColorStop(0, "rgba(" + c + ",.22)"); r.addColorStop(1, "rgba(" + c + ",0)"); g.fillStyle = r; g.beginPath(); g.arc(x, y, s, 0, 7); g.fill(); }
+    else if (brush === "sponge") { g.globalCompositeOperation = "saturation"; g.globalAlpha = .12; g.fillStyle = "#ff0040"; g.beginPath(); g.arc(x, y, s, 0, 7); g.fill(); }
+    else if (brush === "blur") { g.beginPath(); g.arc(x, y, s, 0, 7); g.clip(); g.filter = "blur(4px)"; g.drawImage(cv, 0, 0); }
+    g.restore();
+  }
+  function stroke(a, b) { const d = Math.hypot(b.x - a.x, b.y - a.y), st = Math.max(1, Math.floor(d / 4)); for (let i = 1; i <= st; i++) dab(a.x + (b.x - a.x) * i / st, a.y + (b.y - a.y) * i / st, b.p); }
+  cv.addEventListener("pointerdown", e => { down = true; cv.setPointerCapture(e.pointerId); last = pt(e); dab(last.x, last.y, last.p); });
+  cv.addEventListener("pointermove", e => { if (!down) return; const p = pt(e); stroke(last, p); last = p; });
+  addEventListener("pointerup", () => { down = false; });
+  $("pclear").onclick = base;
+
+  // ---- layer điều chỉnh + bộ lọc ----
+  ["Độ sáng / Tương phản", "Levels", "Curves", "Hue / Saturation", "Vibrance", "Color Balance", "Trắng đen", "Exposure", "Nhiệt độ màu", "Photo Filter"].forEach(n => $("adjNames").insertAdjacentHTML("beforeend", '<span class="chip">' + n + "</span>"));
+  const F0 = { brightness: 100, contrast: 100, saturate: 100, hue: 0, gray: 0, sepia: 0, blur: 0 };
+  const FP = { "Gốc": {}, "Sáng": { brightness: 115, contrast: 105, saturate: 110 }, "Trắng đen": { gray: 100, contrast: 115 }, "Cổ điển": { sepia: 60, contrast: 92, saturate: 85 }, "Lạnh": { hue: -12, saturate: 110, brightness: 102 }, "Ấm": { hue: 10, sepia: 25, saturate: 115 }, "Tương phản": { contrast: 150, saturate: 120 }, "Mờ ảo": { blur: 3, brightness: 108, saturate: 115 } };
+  const SL = [["brightness", "Độ sáng", 50, 160], ["contrast", "Tương phản", 50, 180], ["saturate", "Bão hoà", 0, 200], ["hue", "Sắc độ", -60, 60], ["sepia", "Ấm (sepia)", 0, 100], ["gray", "Trắng đen", 0, 100]];
+  let F = { ...F0 };
+  const img = $("adjimg").querySelector("svg");
+  function apply() { img.style.filter = "brightness(" + F.brightness + "%) contrast(" + F.contrast + "%) saturate(" + F.saturate + "%) hue-rotate(" + F.hue + "deg) grayscale(" + F.gray + "%) sepia(" + F.sepia + "%) blur(" + F.blur + "px)"; SL.forEach(([k]) => { const r = $("fs-" + k); if (r) r.value = F[k]; }); }
+  SL.forEach(([k, n, a, b]) => $("fsl").insertAdjacentHTML("beforeend", '<label>' + n + '<input type="range" id="fs-' + k + '" min="' + a + '" max="' + b + '" value="' + F0[k] + '"></label>'));
+  SL.forEach(([k]) => $("fs-" + k).oninput = e => { F[k] = +e.target.value; apply(); press($("fp"), null); });
+  Object.keys(FP).forEach((n, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = n; b.setAttribute("aria-pressed", String(i === 0)); b.onclick = () => { F = { ...F0, ...FP[n] }; apply(); press($("fp"), b); }; $("fp").appendChild(b); });
+  apply();
+
+  // ---- khung ----
+  const PR = [["Bản trình bày (Slide) 16:9", 1920, 1080], ["Thumbnail YouTube", 1280, 720], ["Bài đăng Instagram", 1080, 1080], ["Story / Reels", 1080, 1920], ["Ảnh bìa Facebook", 1640, 624], ["Full HD", 1920, 1080], ["A4 (300 dpi)", 2480, 3508], ["Banner 3:1", 1500, 500]];
+  const fb = $("fbox"), fs = $("fsz");
+  PR.forEach(([n, w, h], i) => {
+    const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-pressed", String(i === 0)); b.innerHTML = n + "<small>" + w + " × " + h + "</small>";
+    b.onclick = () => { press($("fpick"), b); fb.style.aspectRatio = w + "/" + h; if (w >= h) { fb.style.width = "92%"; fb.style.height = "auto"; } else { fb.style.height = "300px"; fb.style.width = "auto"; } fs.textContent = w + " × " + h; };
+    $("fpick").appendChild(b);
   });
 
-  // camera 2.5D
-  const pa = document.getElementById("para"), hud = document.getElementById("phud"), lys = [...pa.querySelectorAll(".ly")];
-  function cam(x, y) { lys.forEach(l => { const d = +l.dataset.d; l.style.transform = "translate(" + (-x * d) + "px," + (-y * d * .5) + "px)"; }); hud.textContent = "Camera · x " + Math.round(x * 100) + " · y " + Math.round(y * 100); }
-  pa.addEventListener("pointermove", e => { const r = pa.getBoundingClientRect(); cam((e.clientX - r.left) / r.width - .5, (e.clientY - r.top) / r.height - .5); });
-  pa.addEventListener("pointerleave", () => cam(0, 0));
+  // ---- slide 3D ----
+  const v3 = $("v3"), world = $("world"), hud = $("v3hud"), planes = [...world.querySelectorAll(".pl3")];
+  const CAMP = { "2d": [["Ken Burns vào", { zoom: 1 }, { zoom: 1.12 }], ["Ken Burns ra", { zoom: 1.15 }, { zoom: 1 }], ["Lia trái → phải", { x: -60, zoom: 1.1 }, { x: 60, zoom: 1.1 }]],
+    "2.5d": [["Parallax →", { x: -80, yaw: -5 }, { x: 80, yaw: 5 }], ["Parallax ←", { x: 80, yaw: 5 }, { x: -80, yaw: -5 }], ["Đẩy vào", { zoom: 1 }, { zoom: 1.18, yaw: 2 }], ["Kéo ra", { zoom: 1.2 }, { zoom: 1 }], ["Nghiêng xuống", { pitch: -7 }, { pitch: 7 }], ["Trôi nhẹ", { x: -30, y: -20, yaw: -2, pitch: 2 }, { x: 30, y: 20, yaw: 2, pitch: -2 }]],
+    "3d": [["Orbit", { yaw: -38, pitch: 8 }, { yaw: 38, pitch: -4 }], ["Lật vào", { yaw: 90, zoom: .8 }, { yaw: 0, zoom: 1 }], ["Bay xuyên", { z: -500, yaw: -15 }, { z: 250, yaw: 10 }], ["Nhìn từ trên", { pitch: 55, zoom: .9 }, { pitch: 0, zoom: 1 }], ["Xoắn", { roll: -12, yaw: -20, zoom: .85 }, { roll: 0, yaw: 10, zoom: 1 }], ["Lia ngang", { x: -300, yaw: -30 }, { x: 300, yaw: 30 }]] };
+  const LIM = { "2d": { yaw: [0, 0], pitch: [0, 0] }, "2.5d": { yaw: [-15, 15], pitch: [-15, 15] }, "3d": { yaw: [-80, 80], pitch: [-60, 60] } };
+  const C0 = { x: 0, y: 0, z: 0, zoom: 1, yaw: 0, pitch: 0, roll: 0 };
+  let mode = "3d", cam = { ...C0, yaw: -22, pitch: 6 }, kS = null, kE = null, anim = 0;
+  const cl = (v, a, b) => Math.max(a, Math.min(b, v));
+  function render() {
+    const depth = mode === "2d" ? 0 : +$("depth").value * (mode === "2.5d" ? .45 : 1);
+    planes.forEach(p => { const z = (+p.dataset.z - 2) * depth; p.style.transform = "translateZ(" + z + "px)" + (mode !== "2d" && p.dataset.z !== "0" ? " scale(" + (1 - z / 1200).toFixed(3) + ")" : ""); });
+    const L = LIM[mode];
+    cam.yaw = cl(cam.yaw, L.yaw[0], L.yaw[1]); cam.pitch = cl(cam.pitch, L.pitch[0], L.pitch[1]);
+    world.style.transform = "translate3d(" + cam.x + "px," + cam.y + "px," + (mode === "3d" ? cam.z : 0) + "px) scale(" + cam.zoom + ") rotateX(" + (-cam.pitch) + "deg) rotateY(" + cam.yaw + "deg) rotateZ(" + (mode === "3d" ? cam.roll : 0) + "deg)";
+    hud.textContent = mode.toUpperCase() + " · yaw " + Math.round(cam.yaw) + "° · pitch " + Math.round(cam.pitch) + "° · zoom " + cam.zoom.toFixed(2) + (kS ? " · ◆đầu" : "") + (kE ? " ◆cuối" : "");
+    $("zoomR").value = Math.round(cam.zoom * 100);
+  }
+  function setMode(m) {
+    mode = m; press($("camMode"), $("camMode").querySelector('[data-m="' + m + '"]'));
+    $("camPre").innerHTML = ""; CAMP[m].forEach(([n, a, b]) => { const bt = document.createElement("button"); bt.type = "button"; bt.textContent = n; bt.onclick = () => { kS = { ...C0, ...a }; kE = { ...C0, ...b }; play(); }; $("camPre").appendChild(bt); });
+    v3.classList.toggle("show-planes", m !== "2d");
+    if (m === "2d") { cam.yaw = 0; cam.pitch = 0; cam.roll = 0; cam.z = 0; }
+    kS = kE = null; render();
+  }
+  document.querySelectorAll("#camMode button").forEach(b => b.onclick = () => setMode(b.dataset.m));
+  let drag = null;
+  v3.addEventListener("pointerdown", e => { cancelAnimationFrame(anim); drag = { x: e.clientX, y: e.clientY, c: { ...cam } }; v3.setPointerCapture(e.pointerId); });
+  v3.addEventListener("pointermove", e => {
+    if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (mode === "2d") { cam.x = drag.c.x + dx * .6; cam.y = drag.c.y + dy * .6; }
+    else { cam.yaw = drag.c.yaw + dx * .25; cam.pitch = drag.c.pitch + dy * .2; if (mode === "2.5d") cam.x = drag.c.x + dx * .3; }
+    render();
+  });
+  addEventListener("pointerup", () => { drag = null; });
+  $("depth").oninput = render;
+  $("zoomR").oninput = e => { cam.zoom = e.target.value / 100; render(); };
+  $("kStart").onclick = () => { kS = { ...cam }; render(); };
+  $("kEnd").onclick = () => { kE = { ...cam }; render(); };
+  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  function play() {
+    if (!kS || !kE) { if (!kS) kS = { ...cam }; if (!kE) kE = { ...C0 }; }
+    cancelAnimationFrame(anim); const t0 = performance.now(), D = 3000;
+    const step = now => { const t = Math.min(1, (now - t0) / D), k = ease(t); Object.keys(C0).forEach(p => cam[p] = kS[p] + (kE[p] - kS[p]) * k); render(); if (t < 1) anim = requestAnimationFrame(step); };
+    anim = requestAnimationFrame(step);
+  }
+  $("kPlay").onclick = play;
+  setMode("3d"); cam = { ...C0, yaw: -22, pitch: 6 }; render();
 
-  // xuất
-  const EX = { png: ["PNG trong suốt: giữ nền trong suốt để chèn vào video hay trang web.", .25, "PNG · nền trong suốt"],
-               jpg: ["JPG: nhẹ, hợp để đăng mạng xã hội.", .25, "JPG · nhẹ"],
-               webp: ["WebP: nhỏ hơn nữa, hợp cho website.", .25, "WebP · nhỏ gọn"],
-               bravin: ["Gửi sang Bravin: mỗi layer thành một track video, đúng vị trí, đúng thứ tự.", 1, "Bravin · 3 track"] };
-  const eb = [...document.querySelectorAll("#exp button")], ei = document.getElementById("expinfo"), et = document.getElementById("expTracks"), el = document.getElementById("expLbl");
-  function ex(k) { eb.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === k))); ei.textContent = EX[k][0]; et.style.transition = "opacity .5s"; et.setAttribute("opacity", EX[k][1]); el.textContent = EX[k][2]; }
+  // ---- chuyển động layer ----
+  const AN_IN = [["none", "Không"], ["fade", "Hiện dần"], ["slideL", "Trượt từ trái"], ["slideR", "Trượt từ phải"], ["slideU", "Trượt từ trên"], ["slideD", "Trượt từ dưới"], ["zoom", "Phóng vào"], ["pop", "Nảy"], ["rise", "Bay từ chiều sâu"], ["flip", "Lật 3D"], ["spin", "Xoay vào"], ["drop", "Rơi xuống"]];
+  const AN_LOOP = [["none", "Không"], ["float", "Trôi nổi"], ["pulse", "Nhịp đập"], ["sway", "Lắc 3D"], ["spin", "Xoay chậm"], ["bob", "Nhấp nhô chiều sâu"]];
+  const EASE = [["linear", "Đều"], ["ease-in", "Chậm → nhanh"], ["ease-out", "Nhanh → chậm"], ["ease-in-out", "Mượt"]];
+  const KIN = { none: [{}, {}], fade: [{ opacity: 0 }, { opacity: 1 }], slideL: [{ transform: "translateX(-160%)" }, { transform: "none" }], slideR: [{ transform: "translateX(160%)" }, { transform: "none" }], slideU: [{ transform: "translateY(-220%)" }, { transform: "none" }], slideD: [{ transform: "translateY(220%)" }, { transform: "none" }], zoom: [{ transform: "scale(.2)", opacity: 0 }, { transform: "none", opacity: 1 }], pop: [{ transform: "scale(0)" }, { transform: "scale(1.18)", offset: .7 }, { transform: "none" }], rise: [{ transform: "translateZ(-900px)", opacity: 0 }, { transform: "none", opacity: 1 }], flip: [{ transform: "rotateY(90deg)", opacity: 0 }, { transform: "none", opacity: 1 }], spin: [{ transform: "rotate(-200deg) scale(.3)", opacity: 0 }, { transform: "none", opacity: 1 }], drop: [{ transform: "translateY(-260%)" }, { transform: "translateY(0)", offset: .6 }, { transform: "translateY(-18%)", offset: .78 }, { transform: "none" }] };
+  const KLOOP = { float: [[{ transform: "translateY(0)" }, { transform: "translateY(-8px)" }, { transform: "translateY(0)" }], 2600], pulse: [[{ transform: "scale(1)" }, { transform: "scale(1.07)" }, { transform: "scale(1)" }], 1200], sway: [[{ transform: "rotateY(-16deg)" }, { transform: "rotateY(16deg)" }, { transform: "rotateY(-16deg)" }], 3000], spin: [[{ transform: "rotate(0)" }, { transform: "rotate(360deg)" }], 8000], bob: [[{ transform: "translateZ(0)" }, { transform: "translateZ(90px)" }, { transform: "translateZ(0)" }], 2400] };
+  let aIn = "rise", aLoop = "float", aEase = "ease-out";
+  function pills(id, arr, cur, set) { arr.forEach(([k, n]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = n; b.setAttribute("aria-pressed", String(k === cur)); b.onclick = () => { set(k); press($(id), b); playAn(); }; $(id).appendChild(b); }); }
+  pills("anIn", AN_IN, aIn, k => aIn = k); pills("anLoop", AN_LOOP, aLoop, k => aLoop = k); pills("anEase", EASE, aEase, k => aEase = k);
+  const cards = [...document.querySelectorAll("#anstage .an-card")];
+  function playAn() {
+    cards.forEach((c, i) => {
+      c.getAnimations().forEach(a => a.cancel());
+      const delay = $("anStag").checked ? i * 260 : 0, dur = 900;
+      const a = c.animate(KIN[aIn], { duration: aIn === "none" ? 1 : dur, delay, easing: aIn === "pop" || aIn === "drop" ? "linear" : aEase, fill: "both" });
+      a.onfinish = () => { if (aLoop !== "none" && KLOOP[aLoop]) c.animate(KLOOP[aLoop][0], { duration: KLOOP[aLoop][1], iterations: Infinity, easing: "ease-in-out" }); };
+    });
+  }
+  $("anPlay").onclick = playAn;
+  new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) playAn(); }), { threshold: .5 }).observe($("anstage"));
+
+  // ---- chuyển cảnh ----
+  const TR = [["none", "Cắt thẳng"], ["fade", "Mờ dần"], ["slide", "Trượt"], ["zoom", "Phóng"], ["flip", "Lật 3D"]];
+  let tr = "flip"; const sa = document.querySelector("#trstage .a"), sb = document.querySelector("#trstage .b");
+  TR.forEach(([k, n]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = n; b.setAttribute("aria-pressed", String(k === tr)); b.onclick = () => { tr = k; press($("trs"), b); go(); }; $("trs").appendChild(b); });
+  $("trd").oninput = e => $("trdv").textContent = (e.target.value / 1000).toFixed(1).replace(".", ",") + " s";
+  let showingA = true, busy = false;
+  function go() {
+    if (busy) return; busy = true;
+    const from = showingA ? sa : sb, to = showingA ? sb : sa, d = +$("trd").value;
+    to.classList.add("on");
+    const K = { none: [[{ opacity: 1 }, { opacity: 1 }], [{ opacity: 1 }, { opacity: 1 }]], fade: [[{ opacity: 1 }, { opacity: 0 }], [{ opacity: 0 }, { opacity: 1 }]], slide: [[{ transform: "none" }, { transform: "translateX(-100%)" }], [{ transform: "translateX(100%)" }, { transform: "none" }]], zoom: [[{ transform: "none", opacity: 1 }, { transform: "scale(1.6)", opacity: 0 }], [{ transform: "scale(.6)", opacity: 0 }, { transform: "none", opacity: 1 }]], flip: [[{ transform: "rotateY(0)" }, { transform: "rotateY(-180deg)" }], [{ transform: "rotateY(180deg)" }, { transform: "rotateY(0)" }]] }[tr];
+    const dd = tr === "none" ? 1 : d;
+    from.animate(K[0], { duration: dd, easing: "ease-in-out", fill: "forwards" });
+    const a = to.animate(K[1], { duration: dd, easing: "ease-in-out", fill: "forwards" });
+    a.onfinish = () => { from.classList.remove("on"); from.getAnimations().forEach(x => x.cancel()); to.getAnimations().forEach(x => x.cancel()); showingA = !showingA; busy = false; };
+  }
+  $("trGo").onclick = go;
+
+  // ---- xuất ----
+  const EX = { png: ["PNG trong suốt: giữ nền trong suốt để chèn vào video hay trang web. Có cả JPG, WebP.", .25, "PNG · nền trong suốt"],
+    mp4: ["Video MP4: xuất cả bài slide với camera, chuyển cảnh và chuyển động layer (trên Chrome, Edge).", .25, "MP4 · camera + chuyển cảnh"],
+    gif: ["GIF động: chạy ở mọi nơi; chỉ có 256 màu và nặng hơn video, hợp cho đoạn ngắn.", .25, "GIF · 256 màu"],
+    bravin: ["Gửi sang Bravin: mỗi layer thành một track video, đúng vị trí, đúng thứ tự, giữ keyframe và camera.", 1, "Bravin · 3 track"] };
+  const eb = [...document.querySelectorAll("#exp button")];
+  function ex(k) { eb.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === k))); $("expinfo").textContent = EX[k][0]; $("expTracks").style.transition = "opacity .5s"; $("expTracks").setAttribute("opacity", EX[k][1]); $("expLbl").textContent = EX[k][2]; }
   eb.forEach(b => b.onclick = () => ex(b.dataset.k)); ex("png");
 })();
 </script>

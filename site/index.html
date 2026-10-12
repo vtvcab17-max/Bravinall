@@ -49,6 +49,28 @@
 .proj.featured .strip i:nth-child(3){background:var(--clip-c)}
 .proj.featured .strip i{flex:1}
 .proj .pic{width:48px;height:48px;display:block}
+.proj{transform-style:preserve-3d;will-change:transform}
+.proj:hover{transform:none}
+.mini{position:relative}
+.mbr .strip{display:flex;gap:4px;height:34px}
+.mbr .strip i{display:block;flex:1;border-radius:6px;background:var(--clip-a)}
+.mbr .strip i:nth-child(2){background:var(--clip-b);flex:1.6}.mbr .strip i:nth-child(3){background:var(--clip-c)}
+.mbr .mph{position:absolute;top:-6px;bottom:-6px;left:var(--px,8%);width:2px;background:var(--gold);box-shadow:0 0 10px var(--gold);transition:left .08s linear}
+.mbr .mtc{display:block;margin-top:8px;font:500 12px/1 var(--f-mono);color:var(--gold)}
+.maf{display:flex;align-items:center;gap:12px}
+.maf svg{width:84px;height:auto;overflow:visible}
+.maf path{mix-blend-mode:multiply;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.maf span,.mmc+span{font:500 11px/1.3 var(--f-mono);color:var(--muted)}
+.proj.af:hover .m1,.proj.af:focus-visible .m1{transform:translate(-12px,4px)}
+.proj.af:hover .m3,.proj.af:focus-visible .m3{transform:translate(12px,-4px)}
+.proj.af:hover .m2,.proj.af:focus-visible .m2{transform:translateY(-8px)}
+.mmc{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mmc i{font:600 12px/1 var(--f-body);font-style:normal;padding:8px 10px;border-radius:9px;background:#171923;border:1px solid #2a2d3c;transition:background .3s,border-color .3s}
+.mmc b{width:16px;height:2px;background:#2a2d3c;transition:background .3s}
+.mmc .on{background:#3b2f86;border-color:#8b6bff}
+.mmc b.on{background:#2fd4e8}
+@media (prefers-reduced-motion:reduce){.proj{transform:none!important}}
+
 .proj.af{background:linear-gradient(160deg,color-mix(in srgb,#ff4f99 22%,var(--panel)) 0%,var(--panel) 60%)}
 .proj.af .go{color:#ff7db3}
 .proj.mc{background:linear-gradient(160deg,color-mix(in srgb,#8b6bff 26%,var(--panel)) 0%,var(--panel) 60%)}
@@ -94,7 +116,7 @@
       <a href="bravin.html">Bravin</a>
       <a href="antifact.html">Antifact</a>
       <a href="micron.html">Micron</a>
-      <a href="#tai-ve">Dùng ngay</a>
+      
     </nav>
   </div>
 </header>
@@ -109,7 +131,7 @@
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px">
           <a class="btn primary" href="#he-sinh-thai">Xem hệ sinh thái
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn" href="#tai-ve">Dùng ngay</a>
+          <a class="btn" href="#du-an">Sản phẩm</a>
         </div>
       </div>
       <aside class="route rise" aria-label="Hà Nội và Stanford">
@@ -139,13 +161,14 @@
         <img class="pic" src="assets/brand/bravin.svg" alt="">
         <h3>Bravin</h3>
         <p>Dựng video trên web, Android, Windows: timeline chuyên nghiệp, keyframe, mask, chỉnh màu kiểu node, hơn 40 hiệu ứng, trợ lý AI, chạy plugin.</p>
-        <div class="strip" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="mini mbr" aria-hidden="true"><div class="strip"><i></i><i></i><i></i><i></i></div><span class="mph"></span><span class="mtc">00:00:00</span></div>
         <span class="go">Xem Bravin →</span>
       </a>
       <a class="proj af rise" href="antifact.html">
         <span class="st live">Đã phát hành · v1.1</span>
         <img class="pic" src="assets/brand/antifact.svg" alt="">
         <h3>Antifact</h3>
+        <div class="mini maf" aria-hidden="true"><svg viewBox="0 4 96 88"><path class="m1" d="M7 86Q0 86 2.8 79.6L25.2 28.4Q28 22 30.8 28.4L53.2 79.6Q56 86 49 86Z" fill="#2fd0ee"/><path class="m2" d="M27 86Q20 86 22.8 79.6L45.2 28.4Q48 22 50.8 28.4L73.2 79.6Q76 86 69 86Z" fill="#ff4f99"/><path class="m3" d="M47 86Q40 86 42.8 79.6L65.2 28.4Q68 22 70.8 28.4L93.2 79.6Q96 86 89 86Z" fill="#ffd43b"/></svg><span>Rê để tách layer</span></div>
         <p>Chỉnh ảnh và thiết kế ngay trên trình duyệt. Không cần cài, không cần tài khoản. Gửi sang Bravin, mỗi layer một track.</p>
         <span class="go">Xem Antifact →</span>
       </a>
@@ -153,6 +176,7 @@
         <span class="st live">Đã phát hành · v1.0</span>
         <img class="pic" src="assets/brand/micron.svg" alt="">
         <h3>Micron</h3>
+        <div class="mini mmc" aria-hidden="true"><i>Ý tưởng</i><b></b><i>Viết lời</i><b></b><i>Bài hát</i></div>
         <p>Canvas AI mở: nối AI của bạn thành quy trình. Kèm chợ plugin cho Bravin, có Motion Tracking miễn phí.</p>
         <span class="go">Xem Micron →</span>
       </a>
@@ -184,26 +208,6 @@
     </div>
   </section>
 
-  <section class="sec wrap" id="tai-ve">
-    <div class="sec-head"><h2>Dùng ngay trên trình duyệt</h2><p class="muted">Cả ba ứng dụng chạy ngay trên web, không cần tải bộ cài. Muốn thì cài như app chỉ với một chạm.</p></div>
-    <div class="dl">
-        <a class="get web" href="https://antiface.vtvcab17.workers.dev/" target="_blank" rel="noopener">
-          <span class="ic"><img src="assets/brand/antifact.svg" alt="" width="30" height="30"></span>
-          <h3>Antifact</h3><span class="meta">antiface.vtvcab17.workers.dev<br>Thiết kế · cài được như app, chạy offline</span><span class="act">Mở Antifact</span></a>
-        <a class="get web" href="https://bravin.vtvcab17.workers.dev/" target="_blank" rel="noopener">
-          <span class="ic"><img src="assets/brand/bravin.svg" alt="" width="30" height="30"></span>
-          <h3>Bravin</h3><span class="meta">bravin.vtvcab17.workers.dev<br>Dựng video · Chrome hoặc Edge</span><span class="act">Mở Bravin</span></a>
-        <a class="get web" href="https://micron.vtvcab17.workers.dev/" target="_blank" rel="noopener">
-          <span class="ic"><img src="assets/brand/micron.svg" alt="" width="30" height="30"></span>
-          <h3>Micron</h3><span class="meta">micron.vtvcab17.workers.dev<br>Canvas AI · cài được như app, chạy offline</span><span class="act">Mở Micron</span></a>
-    </div>
-    <div class="notes">
-      <p><b>Không cần cài:</b> mở link là dùng. Dữ liệu và project lưu ngay trên máy bạn.</p>
-      <p><b>Cài như app trên máy tính, Android:</b> mở bằng Chrome hoặc Edge, bấm biểu tượng cài trên thanh địa chỉ (hoặc menu ⋮ → Cài đặt ứng dụng).</p>
-      <p><b>iPhone, iPad:</b> mở bằng Safari → Chia sẻ → Thêm vào Màn hình chính.</p>
-    </div>
-  </section>
-
   <section class="sec wrap" id="gioi-thieu">
     <div class="about">
       <p class="big rise">Làm công cụ sáng tạo mà ai cũng dùng được, trên chính thiết bị họ đang cầm.</p>
@@ -224,7 +228,7 @@
 <footer class="foot">
   <div class="wrap">
     <span>© 2026 Phạm Việt Hà</span>
-    <a href="bravin.html">Bravin</a><a href="antifact.html">Antifact</a><a href="micron.html">Micron</a><a href="#tai-ve">Dùng ngay</a>
+    <a href="bravin.html">Bravin</a><a href="antifact.html">Antifact</a><a href="micron.html">Micron</a>
     <span class="tc">Bravinall</span>
   </div>
 </footer>
@@ -261,6 +265,27 @@
   }
   document.querySelectorAll(".enode,.hit path").forEach(n => { n.addEventListener("click", () => pick(n.dataset.k)); n.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(n.dataset.k); } }); });
   pick("br");
+})();
+</script>
+<script>
+(function () {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll(".proj").forEach(c => {
+    c.addEventListener("pointermove", e => {
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      if (!reduce) c.style.transform = "perspective(900px) rotateY(" + ((x - .5) * 8) + "deg) rotateX(" + ((.5 - y) * 8) + "deg) translateY(-3px)";
+      const m = c.querySelector(".mbr");
+      if (m) { const p = Math.max(0, Math.min(1, x)); m.style.setProperty("--px", (p * 100) + "%"); const s = Math.round(p * 92); m.querySelector(".mtc").textContent = "00:00:" + String(s).padStart(2, "0") + " · rê để tua"; }
+    });
+    c.addEventListener("pointerleave", () => { c.style.transform = ""; });
+  });
+  const mc = document.querySelector(".mmc"), card = mc && mc.closest(".proj");
+  if (mc) {
+    let t = [];
+    const run = () => { t.forEach(clearTimeout); t = []; const k = [...mc.children]; k.forEach(x => x.classList.remove("on")); k.forEach((x, i) => t.push(setTimeout(() => x.classList.add("on"), i * 260))); };
+    card.addEventListener("pointerenter", run); card.addEventListener("focus", run);
+    card.addEventListener("pointerleave", () => { t.forEach(clearTimeout); [...mc.children].forEach(x => x.classList.remove("on")); });
+  }
 })();
 </script>
 </body>

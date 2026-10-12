@@ -138,6 +138,93 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
 @media (prefers-reduced-motion:reduce){
   .ed .pv::before,.ed .ph,.rp2,.rp3,.rp4{animation:none}
 }
+
+.try{display:inline-flex;align-items:center;gap:8px;font:500 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.try::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills button{border:1px solid var(--line);background:var(--ink);color:var(--fg);border-radius:999px;padding:9px 13px;font:600 13px/1 var(--f-body);cursor:pointer}
+.pills button:hover{border-color:var(--iris)}
+.pills button[aria-pressed="true"]{background:var(--iris);color:#120f2a;border-color:var(--iris)}
+.hint{margin-top:10px;font-size:14px;color:color-mix(in srgb,var(--fg) 82%,var(--muted));min-height:1.5em}
+.camctl{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:12px}
+.camctl label{display:flex;flex-direction:column;gap:6px;font:500 11px/1 var(--f-mono);color:var(--muted)}
+.camctl input[type=range]{accent-color:var(--iris);width:130px}
+.camctl .go,.dlrow button{background:var(--iris);color:#120f2a;border:0;border-radius:10px;padding:10px 14px;font:600 13px/1 var(--f-body);cursor:pointer}
+.chat{display:grid;gap:8px;max-height:130px;overflow:auto;padding:4px;margin-top:10px}
+.chat p{max-width:80%;padding:9px 12px;border-radius:12px;font-size:14px}
+.chat .u{justify-self:end;background:var(--iris);color:#120f2a}
+.chat .a{background:var(--ink);border:1px solid var(--line)}
+/* timeline thao tác được */
+.tl2{display:grid;gap:8px;margin-top:12px;user-select:none}
+.tl2 .row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;align-items:center;font:500 11px/1 var(--f-mono);color:var(--muted)}
+.tl2 .lane{position:relative;height:34px;border-radius:8px;background:var(--ink);touch-action:none}
+.tl2 .clip{position:absolute;top:3px;bottom:3px;border-radius:6px;font:500 11px/28px var(--f-body);color:var(--fg);padding-left:8px;white-space:nowrap;overflow:hidden;cursor:grab;transition:left .25s,width .25s,box-shadow .2s}
+.tl2 .clip.drag{transition:none;cursor:grabbing;z-index:2;box-shadow:0 0 0 2px var(--gold)}
+.tl2.cut .clip{cursor:crosshair}.tl2.rip .clip{cursor:not-allowed}
+.tl2 .clip.grp{box-shadow:inset 0 -3px 0 var(--gold)}
+.tl2 .clip.new{animation:pop .4s both}
+.tl2 .clip.dim{opacity:.55}
+/* keyframe */
+#kfKeys path{cursor:ns-resize}
+.kfbar{position:relative;height:30px;border-radius:8px;background:var(--ink);margin-top:8px;overflow:hidden}
+.kfball{position:absolute;top:7px;left:0;width:16px;height:16px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+/* chỉnh màu */
+.cg-prev{border-radius:12px;overflow:hidden;aspect-ratio:16/8.5}
+.cg-prev svg{display:block;width:100%;height:100%;transition:filter .2s}
+.cg-nodes{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.cg-nodes button{border:1px solid #4a3f8f;background:#2b2552;color:#ecebf3;border-radius:10px;padding:9px 12px;font:600 12px/1 var(--f-body);cursor:pointer;opacity:.5}
+.cg-nodes button[aria-pressed="true"]{opacity:1;box-shadow:0 0 0 2px #6fd38a inset}
+.wheels{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px 14px;margin-top:12px}
+.wheels label{display:grid;gap:6px;font:500 11px/1 var(--f-mono);color:var(--muted)}
+.wheels input{accent-color:var(--iris);width:100%}
+/* mask */
+.mk{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;touch-action:none;cursor:move}
+.mk-bg{position:absolute;inset:0;background:#0f1014}
+.mk-fg{position:absolute;inset:0;background:linear-gradient(135deg,#1f6f68,#2b2552);transition:-webkit-mask-position .05s}
+.mk-sub{position:absolute;width:12%;aspect-ratio:.55;border-radius:40% 40% 20% 20%;background:#f2c14e;opacity:.9;left:44%;top:32%}
+.mk-h{position:absolute;border:2px solid #8b7cff;pointer-events:none;border-radius:50%}
+/* hiệu ứng */
+.fxprev{position:relative;aspect-ratio:16/8;border-radius:12px;overflow:hidden;background:#111}
+.fx-scene{position:absolute;inset:0;background:linear-gradient(#26305e,#d0855a);transition:filter .3s}
+.fx-scene b{position:absolute;left:8%;top:12%;font:700 clamp(18px,3vw,32px)/1 var(--f-display);color:#fff}
+.fx-sun{position:absolute;width:14%;aspect-ratio:1;border-radius:50%;background:#fff1c1;right:16%;top:16%}
+.fx-car{position:absolute;width:16%;height:12%;bottom:12%;left:-20%;border-radius:8px 14px 4px 4px;background:#e8e8f0;animation:drive 4s linear infinite}
+@keyframes drive{to{left:110%}}
+@keyframes shake{0%,100%{transform:translate(0,0)}25%{transform:translate(4px,-3px)}50%{transform:translate(-3px,2px)}75%{transform:translate(2px,3px)}}
+.fx-scene.shake{animation:shake .25s linear infinite}
+.fx-ov{position:absolute;inset:0;pointer-events:none;transition:opacity .3s}
+button.tile{border:0;cursor:pointer;font:600 12px/1.2 var(--f-body);color:#fff;outline-offset:2px}
+button.tile[aria-pressed="true"]{outline:3px solid var(--gold)}
+/* âm thanh */
+#auPlay{background:var(--panel)}
+/* phông */
+.fsearch{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:10px;color:var(--fg);padding:11px 12px;font:500 15px/1.2 var(--f-body)}
+.flist{display:grid;gap:8px;margin-top:10px;max-height:min(300px,34svh);overflow:auto}
+.frow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04)}
+.frow .p{font-size:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.frow small{display:block;font:500 11px/1 var(--f-mono);color:var(--muted);margin-top:4px}
+.frow button{flex:none;padding:6px 12px;border-radius:8px;border:0;background:#8b7cff;color:#0e0b22;font:700 12px var(--f-body);cursor:pointer}
+.frow button.ok{background:#6fd3a5;color:#0d1a14}
+.fdrop{display:block;margin-top:10px;padding:14px;border-radius:12px;border:1.5px dashed rgba(236,235,243,.3);text-align:center;color:#9a99a8;font:500 13px var(--f-body);cursor:pointer}
+.fdrop.over{border-color:var(--iris);color:var(--fg)}
+/* tải link */
+.dlrow{display:flex;gap:8px}
+.dlrow input{flex:1;min-width:0;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(139,124,255,.6);font:500 14px var(--f-mono);color:#ecebf3}
+.lkbar{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:12px}
+.lkbar i{display:block;height:100%;width:0;background:#6fd3a5;transition:width .15s}
+.lib{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.lib .lb{font:500 11px/1 var(--f-mono);color:var(--muted);margin-right:4px}
+.lib span.f{padding:6px 10px;border-radius:8px;background:rgba(111,211,165,.12);color:#9be8c4;font:600 12px var(--f-body);animation:pop .4s both}
+/* xuất */
+.xgrid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:16px;align-items:center}
+.xprev{height:230px;display:grid;place-items:center;background:var(--ink);border-radius:12px}
+.xfr{position:relative;height:200px;aspect-ratio:9/16;max-width:94%;border-radius:8px;background:linear-gradient(160deg,#5b4be0,#f2c14e);display:grid;place-items:center;transition:aspect-ratio .35s}
+.xfr b{font:700 20px/1 var(--f-display);color:#fff}
+.xfr i{position:absolute;bottom:6px;left:0;right:0;text-align:center;font:500 10px/1.2 var(--f-mono);font-style:normal;color:#ffffffcc}
+.xopt{display:grid;gap:10px}
+.xopt>div>span{display:block;font:500 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.xopt .pills button{padding:7px 11px;font-size:12px}
+@media (max-width:640px){.xgrid{grid-template-columns:1fr}.tl2 .row{grid-template-columns:44px minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -148,7 +235,6 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
       <a href="bravin.html" aria-current="page">Bravin</a>
       <a href="antifact.html">Antifact</a>
       <a href="micron.html">Micron</a>
-      <a href="index.html#tai-ve">Dùng ngay</a>
     </nav>
   </div>
 </header>
@@ -252,16 +338,13 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
           <span class="key"><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd>Tua</span><span class="key"><kbd>I</kbd><kbd>O</kbd>Điểm vào / ra</span>
         </div>
       </div>
-      <div class="stage rise" aria-hidden="true">
-        <div class="rows">
-          <div class="row"><span>Chữ</span><div class="lane"><span class="clip c5" style="left:4%;width:30%">Tiêu đề</span><span class="clip c5" style="left:52%;width:26%">Phụ đề</span></div></div>
-          <div class="row"><span>Phủ</span><div class="lane"><span class="clip c4" style="left:30%;width:24%">Logo</span></div></div>
-          <div class="row"><span>Video</span><div class="lane"><span class="clip c1" style="left:0;width:24%">Cảnh 1</span><span class="clip c2 sel rp2" style="left:25%;width:20%">Cảnh 2</span><span class="clip c1 rp3" style="left:46%;width:30%">Cảnh 3</span><span class="clip c2 rp4" style="left:77%;width:22%">Cảnh 4</span></div></div>
-          <div class="row"><span>Voice</span><div class="lane"><span class="clip c3" style="left:0;width:72%">Giọng đọc</span></div></div>
-          <div class="row"><span>Nhạc</span><div class="lane"><span class="clip c3" style="left:0;width:100%">Nhạc nền · ducking</span></div></div>
-        </div>
-        <div class="chips"><span class="chip">Ripple / Roll / Slip / Slide</span><span class="chip">Chọn nhiều clip</span><span class="chip">Nhóm clip</span><span class="chip">Compound clip (gộp layer)</span><span class="chip">Nhãn màu</span><span class="chip">Marker có tên</span><span class="chip">Nhập FCP XML</span></div>
+      <div class="stage rise">
+        <p class="try">Chọn công cụ rồi thao tác trên clip</p>
+        <div class="pills" id="tlTools"><button type="button" data-t="v" aria-pressed="true">V · Chọn, kéo</button><button type="button" data-t="c" aria-pressed="false">C · Dao cắt</button><button type="button" data-t="b" aria-pressed="false">B · Xoá ripple</button><button type="button" id="tlUndo">↶ Hoàn tác</button></div>
+        <div class="tl2" id="tl2"></div>
+        <p class="hint" id="tlHint">Kéo một clip sang trái hoặc phải.</p>
       </div>
+
     </div>
   </section>
 
@@ -275,13 +358,13 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <p class="body"><b>Compound clip</b> (Ctrl+Alt+G): chọn nhiều clip rồi gộp thành một layer duy nhất. Áp màu, hiệu ứng, mask, chuyển động một lần cho cả cụm, timeline gọn hơn và máy ít phải giải mã layer. Cần sửa từng clip thì chuột phải, chọn Tách compound.</p>
         <div class="chips"><span class="chip">Ctrl+G nhóm</span><span class="chip">Ctrl+Alt+G compound</span><span class="chip">Chỉnh chung cả nhóm</span><span class="chip">Tách compound</span></div>
       </div>
-      <div class="stage rise" aria-hidden="true">
-        <div class="rows">
-          <div class="row"><span>Trước</span><div class="lane"><span class="clip c5" style="left:2%;width:26%;box-shadow:inset 0 -3px 0 #f2c14e">Tiêu đề</span><span class="clip c4" style="left:30%;width:22%;box-shadow:inset 0 -3px 0 #f2c14e">Logo</span><span class="clip c1" style="left:54%;width:30%;box-shadow:inset 0 -3px 0 #f2c14e">Cảnh 1</span></div></div>
-          <div class="row"><span></span><div class="lane" style="justify-content:center;color:#9a99a8;font:600 12px 'JetBrains Mono',monospace">▼ Compound</div></div>
-          <div class="row"><span>Sau</span><div class="lane"><span class="clip c2 sel" style="left:2%;width:82%">▣ Compound 1 · 3 clip</span></div></div>
-        </div>
+      <div class="stage rise">
+        <p class="try">Bấm phím tắt để gộp</p>
+        <div class="tl2" id="grp"></div>
+        <div class="pills" style="margin-top:12px"><button type="button" id="gG">Ctrl+G · Nhóm</button><button type="button" id="gC">Ctrl+Alt+G · Compound</button><button type="button" id="gU">Tách</button></div>
+        <p class="hint" id="gHint">Ba clip đang rời nhau. Kéo thử một clip.</p>
       </div>
+
     </div>
   </section>
 
@@ -295,22 +378,19 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <p class="body">Công cụ Bút vẽ hình và mask bằng điểm bezier: bấm để đặt điểm, kéo để uốn, Alt để đổi góc nhọn sang cong.</p>
         <div class="chips"><span class="chip">Effect Controls</span><span class="chip">Speed ramp</span><span class="chip">Mẫu chuyển động</span><span class="chip">Bút bezier</span><span class="chip">Key độ mờ trên timeline</span></div>
       </div>
-      <div class="stage rise" aria-hidden="true">
-        <svg viewBox="0 0 460 280">
-          <g stroke="rgba(236,235,243,.08)">
-            <path d="M40 40H440M40 100H440M40 160H440M40 220H440"/>
-            <path d="M40 30V250M140 30V250M240 30V250M340 30V250M440 30V250"/>
-          </g>
+      <div class="stage rise">
+        <p class="try">Kéo các điểm ◆ lên xuống, rồi phát</p>
+        <svg viewBox="0 0 460 260" id="kfSvg" style="touch-action:none">
+          <g stroke="rgba(236,235,243,.08)"><path d="M40 40H440M40 100H440M40 160H440M40 220H440"/><path d="M40 30V240M140 30V240M240 30V240M340 30V240M440 30V240"/></g>
           <text x="40" y="22" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="11">Tốc độ</text>
-          <text x="440" y="270" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="11" text-anchor="end">00:00:04</text>
-          <path d="M40 160 C 110 160, 120 220, 200 220 S 300 60, 440 60" fill="none" stroke="#8b7cff" stroke-width="3"/>
-          <path d="M200 220 L150 220 M200 220 L250 220" stroke="#ecebf3" stroke-width="1.2"/>
-          <circle cx="150" cy="220" r="4" fill="#ecebf3"/><circle cx="250" cy="220" r="4" fill="#ecebf3"/>
-          <g fill="#f2c14e"><path d="M40 152l8 8-8 8-8-8z"/><path d="M200 212l8 8-8 8-8-8z"/><path d="M440 52l8 8-8 8-8-8z"/></g>
-          <text x="208" y="246" fill="#f2c14e" font-family="JetBrains Mono,monospace" font-size="11">0,25×</text>
-          <text x="400" y="50" fill="#f2c14e" font-family="JetBrains Mono,monospace" font-size="11">3×</text>
+          <path id="kfCurve" fill="none" stroke="#8b7cff" stroke-width="3"/>
+          <rect id="kfHead" x="40" y="30" width="2" height="210" fill="#f2c14e"/>
+          <g id="kfKeys"></g>
         </svg>
+        <div class="kfbar"><div class="kfball" id="kfBall"></div></div>
+        <div class="camctl"><button type="button" class="go" id="kfPlay">▶ Phát</button><span class="tc" id="kfInfo" style="color:var(--gold)"></span></div>
       </div>
+
     </div>
   </section>
 
@@ -323,25 +403,19 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <p class="body">Bánh xe màu Lift, Gamma, Gain, Offset, đường cong, hue curves, qualifier chọn vùng theo màu và cửa sổ power window. Nối các node bằng dây trên canvas: nối tiếp, song song, theo lớp hoặc ngoài vùng. Nạp LUT .cube, xem waveform, parade, vectorscope, histogram.</p>
         <div class="chips"><span class="chip">Alt+S nối tiếp</span><span class="chip">Alt+P song song</span><span class="chip">Alt+L lớp</span><span class="chip">LUT .cube</span><span class="chip">Gallery still</span></div>
       </div>
-      <div class="stage rise" aria-hidden="true">
-        <svg viewBox="0 0 470 260">
-          <g fill="none" stroke-width="2.4">
-            <path d="M100 130 C 140 130, 140 80, 170 80" stroke="#6fd38a"/>
-            <path d="M100 130 C 140 130, 140 190, 170 190" stroke="#6fd38a"/>
-            <path d="M270 80 C 300 80, 300 130, 320 130" stroke="#6fd38a"/>
-            <path d="M270 190 C 300 190, 300 140, 320 140" stroke="#6fd38a"/>
-            <path d="M400 135 L 430 135" stroke="#6fd38a"/>
-          </g>
-          <g font-family="Be Vietnam Pro,sans-serif" font-size="12" font-weight="600" fill="#ecebf3">
-            <rect x="14" y="106" width="86" height="48" rx="10" fill="#2a4a36"/><text x="30" y="135">Nguồn</text>
-            <rect x="170" y="52" width="100" height="56" rx="10" fill="#4a3f8f"/><text x="184" y="76">01 Cân sáng</text><text x="184" y="96" font-size="10" fill="#c9c3ff">Lift · Gain</text>
-            <rect x="170" y="162" width="100" height="56" rx="10" fill="#4a3f8f"/><text x="184" y="186">02 Da người</text><text x="184" y="206" font-size="10" fill="#c9c3ff">Qualifier · W1</text>
-            <rect x="320" y="108" width="80" height="56" rx="10" fill="#6b5a2f"/><text x="332" y="132">Trộn</text><text x="332" y="150" font-size="10" fill="#f2dfa8">song song</text>
-            <rect x="430" y="114" width="36" height="42" rx="9" fill="#2a4a36"/><text x="437" y="140" font-size="11">Ra</text>
-          </g>
-          <g fill="#6fd38a"><circle cx="100" cy="130" r="5"/><circle cx="170" cy="80" r="5"/><circle cx="170" cy="190" r="5"/><circle cx="270" cy="80" r="5"/><circle cx="270" cy="190" r="5"/><circle cx="320" cy="130" r="5"/><circle cx="320" cy="140" r="5"/><circle cx="400" cy="135" r="5"/></g>
-        </svg>
+      <div class="stage rise">
+        <p class="try">Kéo bánh xe màu, bật tắt node</p>
+        <div class="cg-prev" id="cgPrev"><svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="cgs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6aa8d8"/><stop offset=".7" stop-color="#e8c9a0"/></linearGradient></defs><rect width="320" height="180" fill="url(#cgs)"/><circle cx="240" cy="60" r="20" fill="#fff4d6"/><path d="M0 140L80 96L150 130L230 90L320 130V180H0Z" fill="#41664d"/><ellipse cx="110" cy="120" rx="18" ry="22" fill="#d9a07c"/><rect x="92" y="138" width="36" height="42" rx="8" fill="#b23a48"/></svg></div>
+        <div class="cg-nodes" id="cgNodes"><button type="button" aria-pressed="true" data-n="bal">01 Cân sáng</button><button type="button" aria-pressed="true" data-n="skin">02 Da người</button><button type="button" aria-pressed="false" data-n="lut">03 LUT phim</button></div>
+        <div class="wheels">
+          <label><span>Lift</span><input type="range" id="cgLift" min="-30" max="30" value="0"></label>
+          <label><span>Gamma</span><input type="range" id="cgGam" min="-30" max="30" value="0"></label>
+          <label><span>Gain</span><input type="range" id="cgGain" min="-30" max="30" value="0"></label>
+          <label><span>Bão hoà</span><input type="range" id="cgSat" min="0" max="200" value="100"></label>
+          <label><span>Nhiệt độ</span><input type="range" id="cgTemp" min="-30" max="30" value="0"></label>
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -354,19 +428,13 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <p class="body">Mask elip, chữ nhật, đường gradient, trái tim, ngôi sao và mask vẽ bằng bút. Cộng, trừ, giao nhiều mask, làm mềm cạnh, nới rộng, đảo ngược. Theo dõi chuyển động để mask đi theo người trong khung. Tách nền xanh và tách người khỏi phông không cần phông xanh.</p>
         <div class="chips"><span class="chip">Cộng · Trừ · Giao</span><span class="chip">Làm mềm cạnh</span><span class="chip">Tracking</span><span class="chip">Tách nền xanh</span><span class="chip">Tách người</span></div>
       </div>
-      <div class="stage rise" aria-hidden="true">
-        <svg viewBox="0 0 460 280">
-          <defs><radialGradient id="soft"><stop offset=".62" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-            <linearGradient id="scene" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f6f68"/><stop offset="1" stop-color="#2b2552"/></linearGradient>
-            <mask id="m"><rect width="460" height="280" fill="#000"/><ellipse cx="250" cy="140" rx="120" ry="100" fill="url(#soft)"/></mask></defs>
-          <rect width="460" height="280" rx="14" fill="#0f1014"/>
-          <rect width="460" height="280" rx="14" fill="url(#scene)" mask="url(#m)"/>
-          <ellipse cx="250" cy="140" rx="96" ry="80" fill="none" stroke="#8b7cff" stroke-width="2"/>
-          <ellipse cx="250" cy="140" rx="120" ry="100" fill="none" stroke="#8b7cff" stroke-width="1.2" stroke-dasharray="3 6"/>
-          <g fill="#f2c14e"><circle cx="90" cy="200" r="3"/><circle cx="120" cy="186" r="3"/><circle cx="152" cy="170" r="3"/><circle cx="186" cy="158" r="3"/><circle cx="218" cy="147" r="3"/><circle cx="250" cy="140" r="5"/></g>
-          <text x="20" y="262" fill="#9a99a8" font-family="JetBrains Mono,monospace" font-size="11">Tracking · 6 khung · 0,8 s</text>
-        </svg>
+      <div class="stage rise">
+        <p class="try">Kéo mask, đổi hình, bật tracking</p>
+        <div class="mk" id="mk"><div class="mk-bg"></div><div class="mk-fg" id="mkFg"></div><div class="mk-sub" id="mkSub"></div><div class="mk-h" id="mkH"></div></div>
+        <div class="pills" id="mkShape" style="margin-top:10px"><button type="button" data-s="ell" aria-pressed="true">Elip</button><button type="button" data-s="rect" aria-pressed="false">Chữ nhật</button><button type="button" data-s="heart" aria-pressed="false">Trái tim</button><button type="button" data-s="star" aria-pressed="false">Ngôi sao</button></div>
+        <div class="camctl"><label>Làm mềm cạnh <input type="range" id="mkFea" min="0" max="40" value="14"></label><label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="mkInv"> Đảo ngược</label><label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="mkTr"> Tracking theo người</label></div>
       </div>
+
     </div>
   </section>
 
@@ -379,12 +447,15 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <p class="body">Hơn 40 hiệu ứng và 23 chuyển cảnh, gói hiệu ứng ánh sáng Glow, Glint, Rays, Prism. Bộ công cụ sửa lỗi có sẵn: khử nhiễu hạt, chống nhấp nháy, ổn định hình rung, slow-motion mượt bằng khung hình nội suy, làm mịn da và giả lập phim nhựa.</p>
         <div class="chips"><span class="chip">Khử nhiễu</span><span class="chip">Chống nhấp nháy</span><span class="chip">Ổn định hình</span><span class="chip">Slow-motion mượt</span><span class="chip">Làm mịn da</span><span class="chip">Giả lập phim</span></div>
       </div>
-      <div class="stage rise" aria-hidden="true">
-        <div class="tiles">
-          <div class="tile t1"><span>Glow</span></div><div class="tile t2"><span>Glint</span></div><div class="tile t3"><span>Rays</span></div><div class="tile t4"><span>Prism</span></div>
-          <div class="tile t5"><span>Phim 250D</span></div><div class="tile t6"><span>Khử nhiễu</span></div><div class="tile t7"><span>Ổn định hình</span></div><div class="tile t8"><span>Slow 25%</span></div>
+      <div class="stage rise">
+        <p class="try">Bấm một hiệu ứng để áp</p>
+        <div class="fxprev" id="fxPrev"><div class="fx-scene" id="fxScene"><span class="fx-sun"></span><span class="fx-car"></span><b>BRAVIN</b></div><div class="fx-ov" id="fxOv"></div></div>
+        <div class="tiles" id="fxTiles" style="margin-top:10px">
+          <button type="button" class="tile t1" data-fx="glow"><span>Glow</span></button><button type="button" class="tile t2" data-fx="glint"><span>Glint</span></button><button type="button" class="tile t3" data-fx="rays"><span>Rays</span></button><button type="button" class="tile t4" data-fx="prism"><span>Prism</span></button>
+          <button type="button" class="tile t5" data-fx="film"><span>Phim 250D</span></button><button type="button" class="tile t6" data-fx="denoise"><span>Khử nhiễu</span></button><button type="button" class="tile t7" data-fx="stab"><span>Ổn định hình</span></button><button type="button" class="tile t8" data-fx="slow"><span>Slow 25%</span></button>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -398,9 +469,12 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <div class="chips"><span class="chip">LUFS</span><span class="chip">Khử ồn</span><span class="chip">Ducking</span><span class="chip">Đồng bộ âm thanh</span><span class="chip">Phụ đề tự động</span><span class="chip">SRT</span><span class="chip">1.908 phông Google, cài khi cần</span><span class="chip">Nhập phông .ttf .otf .woff</span></div>
       </div>
       <div class="stage rise">
+        <p class="try">Bật từng công cụ âm thanh</p>
         <canvas class="wave" id="wave" width="900" height="300" aria-label="Dạng sóng âm thanh minh hoạ" role="img"></canvas>
-        <div class="meter"><span class="v tc">−14,0</span><small>LUFS tích hợp<br>chuẩn TikTok · YouTube</small></div>
+        <div class="pills" style="margin-top:10px"><button type="button" id="auNorm" aria-pressed="false">Chuẩn hoá −14 LUFS</button><button type="button" id="auDuck" aria-pressed="false">Ducking</button><button type="button" id="auNr" aria-pressed="false">Khử ồn</button><button type="button" id="auPlay">▶ Phát</button></div>
+        <div class="meter"><span class="v tc" id="auV">−21,6</span><small>LUFS tích hợp<br>chuẩn mạng xã hội: −14</small></div>
       </div>
+
     </div>
   </section>
 
@@ -414,12 +488,13 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <p class="body">Có sẵn <b>nhập phông từ máy</b>: kéo thả file .ttf, .otf, .woff, .woff2, Bravin tự đọc tên, độ đậm, kiểu nghiêng. Mở dự án dùng phông chưa cài sẽ có gợi ý cài ngay.</p>
         <div class="chips"><span class="chip">Thư viện 1.908 họ phông</span><span class="chip">Cài khi cần</span><span class="chip">Dùng offline</span><span class="chip">Nhập .ttf .otf .woff .woff2</span></div>
       </div>
-      <div class="stage rise" aria-hidden="true" style="display:grid;gap:10px;align-content:center">
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.04)"><span style="font:600 26px 'Be Vietnam Pro',sans-serif">Xin chào Việt Nam</span><span style="padding:5px 12px;border-radius:8px;background:#6fd3a5;color:#0d1a14;font:700 12px 'Be Vietnam Pro',sans-serif">Đã cài ✓</span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.04)"><span style="font:600 24px 'Unbounded',sans-serif">Giảm giá 50%</span><span style="padding:5px 12px;border-radius:8px;background:#8b7cff;color:#0e0b22;font:700 12px 'Be Vietnam Pro',sans-serif">Cài</span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.04)"><span style="font:500 22px 'JetBrains Mono',monospace">00:01:18 · Mã</span><span style="padding:5px 12px;border-radius:8px;background:#8b7cff;color:#0e0b22;font:700 12px 'Be Vietnam Pro',sans-serif">Cài</span></div>
-        <div style="padding:14px 16px;border-radius:12px;border:1.5px dashed rgba(236,235,243,.3);text-align:center;color:#9a99a8;font:500 13px 'Be Vietnam Pro',sans-serif">Kéo thả file phông của bạn vào đây</div>
+      <div class="stage rise">
+        <p class="try">Gõ chữ, cài phông, hoặc thả file phông của bạn</p>
+        <input class="fsearch" id="fsPrev" value="Xin chào Việt Nam" aria-label="Chữ xem trước">
+        <div class="flist" id="flist"></div>
+        <label class="fdrop" id="fdrop"><input type="file" accept=".ttf,.otf,.woff,.woff2" id="ffile" hidden>Kéo thả hoặc bấm để chọn file .ttf .otf .woff .woff2</label>
       </div>
+
     </div>
   </section>
 
@@ -433,12 +508,15 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <p class="body">Link trang web có video nhúng cũng được dò tự động. Các trang như YouTube, TikTok, Facebook không cho tải trực tiếp bằng link, Bravin sẽ nói rõ. Chỉ nên tải nội dung của bạn hoặc nội dung được phép sử dụng.</p>
         <div class="chips"><span class="chip">Android</span><span class="chip">Windows</span><span class="chip">Tiến độ + nút Dừng</span><span class="chip">Báo lỗi rõ ràng</span></div>
       </div>
-      <div class="stage rise" aria-hidden="true" style="display:grid;gap:12px;align-content:center">
-        <div style="padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(139,124,255,.6);font:500 14px 'JetBrains Mono',monospace;color:#ecebf3;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">https://example.com/clip-gioi-thieu.mp4</div>
-        <div style="height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden"><i style="display:block;height:100%;width:68%;background:#6fd3a5"></i></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font:500 13px 'Be Vietnam Pro',sans-serif;color:#9a99a8">Đang tải… 14,2 MB / 20,8 MB (68%)</span><span style="padding:7px 16px;border-radius:9px;background:#8b7cff;color:#0e0b22;font:700 13px 'Be Vietnam Pro',sans-serif">Tải về</span></div>
-        <div style="padding:10px 14px;border-radius:10px;background:rgba(111,211,165,.12);color:#9be8c4;font:600 13px 'Be Vietnam Pro',sans-serif">✓ Đã lưu vào Thư viện: clip-gioi-thieu.mp4</div>
+      <div class="stage rise">
+        <p class="try">Dán một link rồi bấm Tải về</p>
+        <div class="dlrow"><input id="lkIn" value="https://example.com/clip-gioi-thieu.mp4" aria-label="Link"><button type="button" id="lkGo">Tải về</button></div>
+        <div class="pills" id="lkEx" style="margin-top:8px"><button type="button" data-u="https://example.com/nhac-nen.mp3">Link nhạc</button><button type="button" data-u="https://www.youtube.com/watch?v=abc">Link YouTube</button><button type="button" data-u="https://example.com/trang-tin">Link trang web</button></div>
+        <div class="lkbar"><i id="lkBar"></i></div>
+        <p class="hint" id="lkMsg">Bấm Tải về để thử.</p>
+        <div class="lib" id="lkLib"><span class="lb">Thư viện</span></div>
       </div>
+
     </div>
   </section>
 
@@ -451,23 +529,13 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <p class="body">“Thay cảnh ở giây 30”, “thêm phụ đề vàng”, “nhạc nhỏ thêm 4 dB”: trợ lý thao tác từng bước ngay trên timeline, hoàn tác được. Dựng luồng nhiều AI trên canvas với node điều kiện, gộp, lặp lại. Dán mã API là Bravin tự nhận nhà cung cấp và chọn model, hoặc dùng AI chạy trên máy như Ollama, LM Studio, hay model nhúng sẵn.</p>
         <div class="chips"><span class="chip">Claude</span><span class="chip">OpenAI</span><span class="chip">Gemini</span><span class="chip">DeepSeek</span><span class="chip">Groq</span><span class="chip">Ollama</span><span class="chip">Model nhúng</span></div>
       </div>
-      <div class="stage rise" aria-hidden="true">
-        <svg viewBox="0 0 470 250">
-          <g fill="none" stroke-width="2.4">
-            <path d="M118 70 C 150 70, 150 70, 172 70" stroke="#b9b0ff"/>
-            <path d="M292 70 C 320 70, 320 170, 340 170" stroke="#f2c14e"/>
-            <path d="M118 80 C 140 120, 150 170, 172 170" stroke="#b9b0ff"/>
-            <path d="M292 170 C 310 170, 320 170, 340 170" stroke="#b9b0ff"/>
-            <path d="M440 190 C 470 230, 120 240, 160 190" stroke="#ff9d6c" stroke-dasharray="5 5"/>
-          </g>
-          <g font-family="Be Vietnam Pro,sans-serif" font-size="12" font-weight="600" fill="#ecebf3">
-            <rect x="8" y="44" width="110" height="52" rx="10" fill="#2a4a36"/><text x="20" y="74">Lệnh của bạn</text>
-            <rect x="172" y="40" width="120" height="60" rx="10" fill="#4a3f8f"/><text x="184" y="64">AI lập kế hoạch</text><text x="184" y="84" font-size="10" fill="#c9c3ff">Claude Sonnet</text>
-            <rect x="172" y="140" width="120" height="60" rx="10" fill="#4a3f8f"/><text x="184" y="164">AI thao tác</text><text x="184" y="184" font-size="10" fill="#c9c3ff">JSON · GPT</text>
-            <rect x="340" y="140" width="100" height="60" rx="10" fill="#6b5a2f"/><text x="352" y="164">Timeline</text><text x="352" y="184" font-size="10" fill="#f2dfa8">Xong · Lỗi ↺</text>
-          </g>
-        </svg>
+      <div class="stage rise">
+        <p class="try">Bấm một câu lệnh, AI sửa timeline</p>
+        <div class="tl2" id="aiTl"></div>
+        <div class="pills" id="aiCmd" style="margin-top:12px"><button type="button" data-c="sub">Thêm phụ đề vàng</button><button type="button" data-c="swap">Thay cảnh ở giây 30</button><button type="button" data-c="vol">Nhạc nhỏ thêm 4 dB</button><button type="button" data-c="undo">Hoàn tác</button></div>
+        <div class="chat" id="aiChat" aria-live="polite"></div>
       </div>
+
     </div>
   </section>
 
@@ -495,17 +563,20 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
         <h2>Xuất MP4 nhanh hơn thời gian thực.</h2>
         <p class="body">Bravin dùng bộ mã hoá có sẵn trong máy, xuất chính xác từng khung, chọn đoạn In–Out và chuẩn độ to ngay khi xuất. Dự án tự lưu trong máy, mở lại là thấy đúng chỗ đang làm.</p>
       </div>
-      <div class="stage rise" style="overflow-x:auto">
-        <table class="spec">
-          <tr><th>Độ phân giải</th><td>720p · 1080p · 2K · 4K</td></tr>
-          <tr><th>Tốc độ khung</th><td>24 · 25 · 30 · 50 · 60 fps</td></tr>
-          <tr><th>Khung hình</th><td>9:16 · 16:9 · 1:1 · 4:5</td></tr>
-          <tr><th>Định dạng</th><td>MP4 (H.264 + AAC), ảnh PNG từng khung</td></tr>
-          <tr><th>Độ to</th><td>−14 LUFS (mạng xã hội) hoặc tự chọn</td></tr>
-          <tr><th>Trao đổi</th><td>Dự án .json · phụ đề .srt · nhập FCP XML</td></tr>
-          <tr><th>Nhập từ link</th><td>Dán link file video · nhạc · ảnh, tải về thư viện (Android, Windows)</td></tr>
-        </table>
+      <div class="stage rise">
+        <p class="try">Chọn thông số rồi bấm Xuất</p>
+        <div class="xgrid">
+          <div class="xprev"><div class="xfr" id="xFr"><b>BRAVIN</b><i id="xLbl"></i></div></div>
+          <div class="xopt">
+            <div><span>Độ phân giải</span><div class="pills" id="xRes"><button type="button" aria-pressed="false">720p</button><button type="button" aria-pressed="true">1080p</button><button type="button" aria-pressed="false">2K</button><button type="button" aria-pressed="false">4K</button></div></div>
+            <div><span>Khung hình</span><div class="pills" id="xAsp"><button type="button" data-r="9/16" aria-pressed="true">9:16</button><button type="button" data-r="16/9" aria-pressed="false">16:9</button><button type="button" data-r="1/1" aria-pressed="false">1:1</button><button type="button" data-r="4/5" aria-pressed="false">4:5</button></div></div>
+            <div><span>Tốc độ khung</span><div class="pills" id="xFps"><button type="button" aria-pressed="false">24</button><button type="button" aria-pressed="false">25</button><button type="button" aria-pressed="true">30</button><button type="button" aria-pressed="false">50</button><button type="button" aria-pressed="false">60</button></div></div>
+          </div>
+        </div>
+        <div class="lkbar"><i id="xBar"></i></div>
+        <div class="camctl"><button type="button" class="go" id="xGo">Xuất MP4</button><span class="hint" id="xMsg" style="margin:0"></span></div>
       </div>
+
     </div>
   </section>
 
@@ -589,6 +660,7 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
   </div>
 </footer>
 <script src="assets/site.js"></script>
+<script src="assets/bravin-demo.js"></script>
 <script>
 (function () {
   const slides = [...document.querySelectorAll(".slide")], track = document.getElementById("track"), head = document.getElementById("head"), tcv = document.getElementById("tcv");
@@ -605,14 +677,6 @@ canvas.wave{display:block;width:100%;height:150px;border-radius:12px;background:
   addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
   document.getElementById("prev").onclick = () => go(cur() - 1); document.getElementById("next").onclick = () => go(cur() + 1);
   addEventListener("keydown", e => { if (e.target.closest && e.target.closest("input,textarea,select")) return; if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); go(cur() + 1); } else if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); go(cur() - 1); } else if (e.key === "Home") { e.preventDefault(); go(0); } else if (e.key === "End") { e.preventDefault(); go(slides.length - 1); } });
-  // dạng sóng minh hoạ
-  const cv = document.getElementById("wave"), g = cv.getContext("2d"), W = cv.width, H = cv.height;
-  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  g.clearRect(0, 0, W, H); const mid = H / 2;
-  for (let x = 0; x < W; x += 3) { const env = 0.25 + 0.75 * Math.abs(Math.sin(x / 70) * Math.sin(x / 23)), a = env * (0.4 + rnd() * 0.6) * (H * 0.42); const duck = x > W * 0.55 && x < W * 0.8 ? 0.45 : 1;
-    g.fillStyle = x < W * 0.55 ? "#6fd3a5" : (duck < 1 ? "#8b7cff" : "#6fd3a5"); g.fillRect(x, mid - a * duck, 2, a * duck * 2); }
-  g.fillStyle = "#f2c14e"; g.fillRect(W * 0.62, 0, 3, H);
-  g.font = "500 22px JetBrains Mono, monospace"; g.fillStyle = "#9a99a8"; g.fillText("ducking −8 dB", W * 0.56, 30);
 })();
 </script>
 </body>
