@@ -5,7 +5,7 @@ Website hệ sinh thái Bravinall của Phạm Việt Hà: Antifact để thiế
 | Đường dẫn | Nội dung |
 |---|---|
 | `site/index.html` | Trang chủ: sản phẩm, sơ đồ hệ sinh thái tương tác, khu dùng ngay |
-| `site/bravin.html` | Trang trình chiếu Bravin 4.9.1: video giới thiệu, tính năng, hệ sinh thái, so sánh, dùng ngay |
+| `site/bravin.html` | Trang trình chiếu Bravin 4.10: video giới thiệu, tính năng (có Phim AI), hệ sinh thái, so sánh, dùng ngay |
 | `site/antifact.html` | Trang Antifact 1.1: video giới thiệu, thử hoà trộn layer, trước/sau, khung, so sánh, dùng ngay |
 | `site/micron.html` | Trang Micron 1.0: video giới thiệu, thử quy trình, chợ plugin, so sánh, dùng ngay |
 | `site/micon.html`, `site/_redirects` | Chuyển đường dẫn cũ Micon sang Micron |
