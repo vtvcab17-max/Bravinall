@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Micow</title>
+<meta name="description" content="Micow: làm nhạc trên máy bạn. Tạo beat, tạo bài hát hoàn chỉnh từ lời, phong cách và đoạn nhạc mẫu. Miễn phí (MIT), chạy offline, không giới hạn lượt tải.">
+<link rel="icon" href="assets/brand/micow.svg">
+<meta property="og:title" content="Micow: làm nhạc trên máy bạn">
+<meta property="og:description" content="Tạo beat, tạo bài hát, tìm hook cho CapCut. Miễn phí, chạy offline, không giới hạn lượt tải.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/deck.css">
+<style>
+body{--iris:#7b6cf6;--iris-deep:#5a4bd8;--ink:#111216;--panel:#1a1b21;--graphite:#24252d}
+.hero h1{font-size:clamp(56px,9vw,140px)}
+.hero h1 em{font-style:normal;color:var(--iris)}
+.tag3{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.tag3 span{font:500 12px/1 var(--f-mono);padding:9px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--iris) 45%,transparent);color:var(--fg);background:color-mix(in srgb,var(--iris) 12%,transparent)}
+
+/* minh hoạ sóng nhạc */
+.wave{display:flex;align-items:center;gap:3px;height:120px}
+.wave i{flex:1;border-radius:3px;background:var(--graphite);transition:background-color .3s}
+.wave i.hk{background:var(--iris)}
+.tl{position:relative;margin-top:14px}
+.tl .ruler{display:flex;justify-content:space-between;font:500 11px/1 var(--f-mono);color:var(--muted)}
+.tl .drop{position:absolute;top:-136px;bottom:18px;width:2px;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.tl .drop span{position:absolute;top:-4px;left:8px;white-space:nowrap;font:500 12px/1 var(--f-mono);color:#120f2a;background:var(--gold);padding:5px 8px;border-radius:999px}
+
+/* bài hát: lời + nốt */
+.lyr{display:grid;gap:10px}
+.lyr .ln{display:flex;flex-wrap:wrap;gap:6px}
+.lyr .w{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:44px}
+.lyr .w b{font:600 15px/1 var(--f-body)}
+.lyr .w i{display:block;width:30px;height:8px;border-radius:999px;background:var(--iris)}
+.lyr .w small{font:500 10px/1 var(--f-mono);color:var(--muted)}
+.outs{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.outs span{font:500 12px/1 var(--f-mono);padding:8px 11px;border-radius:999px;background:var(--ink);border:1px solid var(--line)}
+
+/* beat */
+.genres{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.genres button{border:1px solid var(--line);background:var(--ink);color:var(--fg);border-radius:999px;padding:11px 8px;font:600 13px/1 var(--f-body);cursor:pointer}
+.genres button[aria-pressed="true"]{background:var(--iris);border-color:var(--iris);color:#120f2a}
+.genres button.vn{border-color:color-mix(in srgb,var(--iris) 55%,transparent)}
+.pads{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:3px;margin-top:16px}
+.pads i{aspect-ratio:1;border-radius:4px;background:var(--graphite)}
+.pads i.on{background:var(--iris)}
+.pads i.now{outline:2px solid var(--gold);outline-offset:-2px}
+.prow{font:500 10px/1 var(--f-mono);color:var(--muted);margin-top:10px;display:flex;justify-content:space-between}
+.ref{margin-top:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ref div{padding:12px;border-radius:12px;background:var(--ink);border:1px solid var(--line);font:600 13px/1.25 var(--f-body)}
+.ref div small{display:block;font:400 12px/1.3 var(--f-body);color:var(--muted);margin-top:4px}
+
+/* capcut */
+.cc{display:grid;gap:10px}
+.cc .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.cc label{font:500 12px/1 var(--f-mono);color:var(--muted)}
+.cc input[type=range]{flex:1;min-width:140px;accent-color:var(--gold)}
+.cc output{font:500 14px/1 var(--f-mono);color:var(--gold);min-width:44px}
+.bars{position:relative;display:flex;gap:2px;height:64px;align-items:flex-end;margin-top:6px}
+.bars i{flex:1;border-radius:2px;background:var(--graphite)}
+.bars i.cut{background:color-mix(in srgb,var(--iris) 70%,var(--graphite))}
+.bars i.bar1{box-shadow:inset 0 2px 0 var(--fg)}
+.bars .dp{position:absolute;top:-8px;bottom:0;width:2px;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.ccinfo{font:500 12px/1.6 var(--f-mono);color:var(--muted)}
+.ccinfo b{color:var(--gold);font-weight:500}
+
+/* mô hình */
+.models{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.models div{display:flex;flex-direction:column;gap:8px;padding:20px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
+.models div.def{border-color:var(--iris)}
+.models b{font:600 18px/1.2 var(--f-display)}
+.models .t{align-self:flex-start;font:500 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.models .def .t{background:var(--iris);color:#120f2a;border-color:var(--iris)}
+.models p{font-size:14px;color:color-mix(in srgb,var(--fg) 84%,var(--muted))}
+.models code,.cmd code{font:500 13px/1.4 var(--f-mono)}
+
+/* số đo */
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.stats div{background:var(--panel);padding:20px 18px}
+.stats dt{font:500 11px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stats dd{margin:8px 0 0;font:600 clamp(26px,3vw,36px)/1 var(--f-display);letter-spacing:-.02em}
+.stats dd small{display:block;font:400 13px/1.35 var(--f-body);color:var(--muted);margin-top:8px;letter-spacing:0}
+.caveat{margin-top:14px;font-size:13px;color:var(--muted);max-width:80ch}
+
+/* tải về */
+.cmd{display:grid;gap:12px}
+.cmd .c{padding:18px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);display:grid;gap:10px;min-width:0}
+.cmd .c h3{font-size:17px}
+.cmd pre{margin:0;display:flex;gap:10px;align-items:flex-start;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px}
+.cmd pre code{flex:1;min-width:0;white-space:pre-wrap;word-break:break-all;color:var(--fg)}
+.cmd .cp{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:7px 12px;font:600 12px/1 var(--f-body);cursor:pointer}
+.cmd .cp.ok{background:var(--iris);color:#120f2a;border-color:var(--iris)}
+.cmd p{font-size:14px;color:color-mix(in srgb,var(--fg) 84%,var(--muted))}
+
+@media (max-width:980px){.models{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.genres{grid-template-columns:repeat(3,minmax(0,1fr))}.ref{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:1fr}.tl .drop{top:-116px}.wave{height:100px}}
+</style>
+</head>
+<body data-total="120">
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="index.html"><i aria-hidden="true"></i>Bravinall</a>
+    <nav class="nav" aria-label="Sản phẩm">
+      <a href="bravin.html">Bravin</a>
+      <a href="antifact.html">Antifact</a>
+      <a href="micron.html">Micron</a>
+      <a href="micow.html" aria-current="page">Micow</a>
+    </nav>
+  </div>
+</header>
+
+<main id="deck">
+  <section class="slide hero" id="mo-dau" data-label="Mở đầu">
+    <div class="wrap split">
+      <div>
+        <div class="plogo"><img src="assets/brand/micow.svg" alt=""><p class="eyebrow">Micow 1.1 · Một sản phẩm của Bravinall</p></div>
+        <h1>Micow<em>.</em></h1>
+        <p class="body" style="font-size:clamp(20px,2.2vw,28px);color:var(--fg);font-weight:600">Làm nhạc trên máy bạn.</p>
+        <p class="body">Mô hình làm nhạc chạy ngay trên máy: tạo beat, tạo bài hát hoàn chỉnh từ lời, phong cách và đoạn nhạc mẫu.</p>
+        <div class="tag3"><span>Miễn phí · MIT</span><span>Chạy offline</span><span>Không giới hạn lượt tải</span></div>
+        <div class="cta">
+          <a class="btn primary" href="#tai-ve">Tải Micow
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg></a>
+          <a class="btn" href="#nhac-capcut">Nhạc CapCut ↓</a>
+        </div>
+      </div>
+      <div class="stage rise" aria-hidden="true">
+        <div class="wave" id="heroWave"></div>
+        <div class="tl"><span class="drop" style="left:35%"><span>drop @ 7s</span></span>
+          <div class="ruler"><span>0s</span><span>5s</span><span>10s</span><span>15s</span><span>20s</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="bai-hat" data-label="Bài hát">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:00:20</span><span class="eyebrow">Tạo bài hát</span></div>
+        <h2>Từ lời và phong cách thành bài hát.</h2>
+        <p class="body">Viết lời, chọn phong cách, Micow dựng bài hoàn chỉnh. <b>Giai điệu đi theo thanh điệu tiếng Việt.</b></p>
+        <div class="outs"><span>WAV</span><span>MP3</span><span>Stem</span><span>MIDI kèm lời</span><span>.lrc cho Bravin</span></div>
+      </div>
+      <div class="stage rise">
+        <p class="try">Minh hoạ: nốt theo dấu thanh</p>
+        <div class="lyr" id="lyr"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="beat" data-label="Beat">
+    <div class="wrap split rev">
+      <div>
+        <div class="kicker"><span class="tc">00:00:40</span><span class="eyebrow">Tạo beat</span></div>
+        <h2>12 thể loại, có cả Drill, Vinahouse, Bolero.</h2>
+        <p class="body">Chọn thể loại là có beat. Thả một đoạn nhạc mẫu để Micow học <b>tempo, giọng, năng lượng</b>, hoặc dùng thẳng làm vòng lặp, bộ trống, hook.</p>
+      </div>
+      <div class="stage rise">
+        <p class="try">Thử chọn thể loại</p>
+        <div class="genres" id="genres"></div>
+        <div class="pads" id="pads" aria-hidden="true"></div>
+        <div class="prow"><span>Kick · Snare · Hi-hat</span><span id="bpm">— BPM</span></div>
+        <div class="ref">
+          <div>Tempo<small>học từ mẫu</small></div><div>Giọng<small>học từ mẫu</small></div><div>Năng lượng<small>học từ mẫu</small></div><div>Vòng lặp<small>trống, hook</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="nhac-capcut" data-label="Nhạc CapCut">
+    <div class="wrap split">
+      <div>
+        <div class="kicker"><span class="tc">00:01:00</span><span class="eyebrow">Nhạc CapCut</span></div>
+        <h2>Drop rơi đúng giây bạn cần.</h2>
+        <ul class="body" style="padding-left:20px;display:grid;gap:8px;margin-bottom:0">
+          <li><b>Micow Ear</b> nghe nhiều bài, tìm hook và đoạn peak.</li>
+          <li>Cắt đúng số giây, bắt đầu đúng đầu ô nhịp.</li>
+          <li>Tạo bài mới có drop rơi đúng giây X của video, vòng lặp liền mạch.</li>
+          <li>Xuất mốc nhịp CSV và dự án Bravin 9:16.</li>
+        </ul>
+      </div>
+      <div class="stage rise cc">
+        <p class="try" style="margin:0">Thử kéo: độ dài và vị trí drop</p>
+        <div class="row"><label for="len">Độ dài</label><input type="range" id="len" min="10" max="30" step="1" value="15"><output id="lenO">15s</output></div>
+        <div class="row"><label for="dr">Drop @</label><input type="range" id="dr" min="3" max="12" step=".5" value="7"><output id="drO">7s</output></div>
+        <div class="bars" id="bars"><span class="dp" id="dp"></span></div>
+        <p class="ccinfo" id="ccinfo"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="mo-hinh" data-label="Mô hình">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:01:20</span><span class="eyebrow">Mô hình</span></div>
+      <h2 style="max-width:22ch">Chạy được trên CPU. Có GPU thì mở thêm.</h2>
+      <div class="models" style="margin-top:28px">
+        <div class="def"><span class="t">Có sẵn</span><b>Micow Beat</b><p>Có sẵn khi cài, chạy trên CPU bất kỳ.</p></div>
+        <div><span class="t">Tuỳ chọn · cần GPU</span><b>ACE-Step 1.5</b><p>Cài thêm khi muốn có giọng hát thật trong bài.</p></div>
+        <div><span class="t">Tự huấn luyện</span><b>Micow-LM</b><p>Mô hình riêng kiểu Suno, bạn tự huấn luyện trên máy bằng <code>micow train all</code>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="so-do" data-label="Số đo">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:01:35</span><span class="eyebrow">Số đo</span></div>
+      <h2 style="max-width:22ch">Đo được, không tự chấm điểm.</h2>
+      <p class="body">Đo trên <b>39 bài nhạc tổng hợp có nhãn</b>, không phải nhạc thật. Chi tiết trong <a href="https://github.com/vtvcab17-max/Micow/blob/HEAD/docs/BENCHMARK.md" target="_blank" rel="noopener">docs/BENCHMARK.md</a>.</p>
+      <dl class="stats" style="margin-top:26px">
+        <div><dt>Ear · nhận phách</dt><dd>99,4%<small>trên nhạc tổng hợp có nhãn</small></dd></div>
+        <div><dt>Ear · tìm hook</dt><dd>94,9%<small>trên nhạc tổng hợp có nhãn</small></dd></div>
+        <div><dt>Ear · tìm peak</dt><dd>87,2%<small>trên nhạc tổng hợp có nhãn</small></dd></div>
+        <div><dt>Nhạc CapCut tạo mới</dt><dd>8/8<small>bài có drop rơi trong ±0,25 giây</small></dd></div>
+        <div><dt>Cắt nhạc</dt><dd>0 giây<small>lệch độ dài</small></dd></div>
+      </dl>
+      <p class="caveat">Các phép đo này đo độ chính xác về thời gian, không đo bài nghe có hay hay không. Về chất lượng giọng hát và phối khí, Suno vẫn hơn. Micow khác ở quy trình: chạy trên máy, dữ liệu ở lại máy bạn, không giới hạn lượt tải (Suno Pro giới hạn 20 lượt/tháng), và có công cụ tìm hook, peak cho CapCut.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="tai-ve" data-label="Tải về">
+    <div class="wrap">
+      <div class="kicker"><span class="tc">00:01:50</span><span class="eyebrow">Tải về</span></div>
+      <h2 style="max-width:20ch">Cài một lệnh, rồi làm nhạc.</h2>
+      <p class="body">Yêu cầu: Python 3.10 trở lên, CPU bất kỳ. GPU chỉ cần cho ACE-Step hoặc khi huấn luyện.</p>
+      <div class="cmd" style="margin-top:26px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))">
+        <div class="c"><h3>Windows · PowerShell</h3>
+          <pre><code>irm https://raw.githubusercontent.com/vtvcab17-max/Micow/HEAD/scripts/get.ps1 | iex</code><button type="button" class="cp">Chép</button></pre></div>
+        <div class="c"><h3>macOS · Linux</h3>
+          <pre><code>curl -fsSL https://raw.githubusercontent.com/vtvcab17-max/Micow/HEAD/scripts/get.sh | bash</code><button type="button" class="cp">Chép</button></pre>
+          <p>Rồi chạy:</p>
+          <pre><code>micow serve --open</code><button type="button" class="cp">Chép</button></pre></div>
+      </div>
+      <div class="dl" style="margin-top:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))">
+        <a class="get" href="https://github.com/vtvcab17-max/Micow/archive/HEAD.zip">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg></span>
+          <h3>Gói .zip</h3><span class="meta">Giải nén, bấm đúp <b>Cai dat Micow.bat</b>,<br>rồi mở <b>Mo Micow.bat</b></span><span class="act">Tải .zip</span></a>
+        <a class="get" href="https://micow.vtvcab17.workers.dev" target="_blank" rel="noopener">
+          <span class="ic"><img src="assets/brand/micow.svg" alt="" width="30" height="30"></span>
+          <h3>Mở Micow trên web</h3><span class="meta">Giao diện web cần Micow đang chạy trên máy (127.0.0.1:5690). Chưa cài thì trang tự hiện hướng dẫn tải.</span><span class="act">Mở Micow</span></a>
+        <a class="get" href="https://github.com/vtvcab17-max/Micow" target="_blank" rel="noopener">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.3-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg></span>
+          <h3>Mã nguồn</h3><span class="meta">github.com/vtvcab17-max/Micow<br>Giấy phép MIT</span><span class="act">Xem trên GitHub</span></a>
+      </div>
+      <p class="eyebrow" style="margin-top:34px;color:var(--muted)">Cùng hệ sinh thái</p>
+      <div class="others">
+        <a href="bravin.html"><img src="assets/brand/bravin.svg" alt=""><span>Bravin<small>Nhận .lrc và dự án .bravin.json từ Micow để dựng video</small></span></a>
+        <a href="antifact.html"><img src="assets/brand/antifact.svg" alt=""><span>Antifact<small>Thiết kế, gửi sang Bravin</small></span></a>
+        <a href="micron.html"><img src="assets/brand/micron.svg" alt=""><span>Micron<small>Canvas AI, plugin cho Bravin</small></span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="scrub" aria-label="Các trang trình bày">
+  <div class="in">
+    <span class="tcv" id="tcv">00:00:00</span>
+    <div class="track" id="track"><span class="head" id="head"></span></div>
+    <div class="nav2"><button type="button" id="prev" aria-label="Trang trước">‹</button><button type="button" id="next" aria-label="Trang sau">›</button></div>
+  </div>
+</nav>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Phạm Việt Hà</span>
+    <a href="index.html">Bravinall</a><a href="bravin.html">Bravin</a><a href="antifact.html">Antifact</a><a href="micron.html">Micron</a>
+    <span class="tc">Micow 1.1</span>
+  </div>
+</footer>
+<script src="assets/site.js"></script>
+<script src="assets/deck.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  // sóng ở đầu trang: đoạn sau drop (35%) cao hơn
+  let seed = 7; const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+  $("heroWave").innerHTML = Array.from({ length: 60 }, (_, i) => { const p = i / 60, h = p < .35 ? 18 + rnd() * 30 : 45 + rnd() * 55; return '<i class="' + (p >= .35 && p < .6 ? "hk" : "") + '" style="height:' + h.toFixed(0) + '%"></i>'; }).join("");
+
+  // lời + thanh điệu (minh hoạ)
+  const L = [[["Chiều", "huyền", 14], ["nay", "ngang", 0], ["mình", "huyền", 14], ["đạp", "nặng", 20], ["xe", "ngang", 0]], [["qua", "ngang", 0], ["hồ", "huyền", 14], ["Tây", "ngang", 0], ["gió", "sắc", -16], ["bay", "ngang", 0]]];
+  $("lyr").innerHTML = L.map(r => '<div class="ln">' + r.map(([w, t, y]) => '<div class="w"><i style="transform:translateY(' + y + 'px)"></i><b style="margin-top:22px">' + w + "</b><small>" + t + "</small></div>").join("") + "</div>").join("");
+
+  // beat
+  const G = [["V-Pop", 100], ["Ballad", 72], ["R&B", 90], ["Trap", 140], ["Drill", 142, 1], ["Boom Bap", 88], ["Lo-fi", 80], ["House", 124], ["EDM", 128], ["Vinahouse", 132, 1], ["Bolero", 68, 1], ["Cinematic", 96]];
+  const P = { 0: "1000001010000010", 1: "1000000000100000", 2: "1000001000100100", 3: "1000000000100010", 4: "1000000100100000", 5: "1000000010100000", 6: "1000000100000010", 7: "1000100010001000", 8: "1000100010001000", 9: "1010101010101010", 10: "1000000010000000", 11: "1000000000000010" };
+  const g = $("genres"), pads = $("pads");
+  pads.innerHTML = "<i></i>".repeat(48);
+  const cells = [...pads.children];
+  let step = 0, iv = null;
+  function pickG(k) {
+    g.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-pressed", String(i === k)));
+    const kick = P[k], snare = k === 10 ? "0000100000001000" : "0000100000001000", hat = k === 1 || k === 10 ? "1010101010101010" : k === 3 || k === 4 ? "1111111111111111" : "1010101010101010";
+    [kick, snare, hat].forEach((row, r) => [...row].forEach((c, j) => cells[r * 16 + j].classList.toggle("on", c === "1")));
+    $("bpm").textContent = G[k][1] + " BPM (minh hoạ)";
+    clearInterval(iv); step = 0;
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) iv = setInterval(() => { cells.forEach((c, i) => c.classList.toggle("now", i % 16 === step)); step = (step + 1) % 16; }, 60000 / G[k][1] / 4);
+  }
+  G.forEach(([n, , vn], i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = n; if (vn) b.className = "vn"; b.onclick = () => pickG(i); g.appendChild(b); });
+  pickG(0);
+
+  // capcut
+  const bars = $("bars"), dp = $("dp"), TOT = 40;
+  bars.insertAdjacentHTML("beforeend", Array.from({ length: TOT * 2 }, (_, i) => '<i style="height:' + (20 + Math.abs(Math.sin(i * 1.7)) * 70).toFixed(0) + '%"></i>').join(""));
+  const bi = [...bars.querySelectorAll("i")];
+  function cc() {
+    const len = +$("len").value, d = Math.min(+$("dr").value, len - 1);
+    $("lenO").textContent = len + "s"; $("drO").textContent = d + "s";
+    const start = 8; // điểm bắt đầu cắt ở đầu ô nhịp (minh hoạ, 2 thanh mỗi giây)
+    bi.forEach((b, i) => { const t = i / 2; b.classList.toggle("cut", t >= start && t < start + len); b.classList.toggle("bar1", t >= start && t < start + len && (i - start * 2) % 8 === 0); });
+    dp.style.left = ((start + d) / TOT * 100) + "%";
+    $("ccinfo").innerHTML = "Bắt đầu ở đầu ô nhịp · dài " + len + " giây · drop lúc <b>" + d + "s</b> của video";
+  }
+  $("len").oninput = cc; $("dr").oninput = cc; cc();
+
+  // nút chép lệnh
+  document.querySelectorAll(".cmd .cp").forEach(b => b.onclick = async () => {
+    const t = b.previousElementSibling.textContent;
+    try { await navigator.clipboard.writeText(t); b.textContent = "Đã chép"; b.classList.add("ok"); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Đã chọn"; }
+    setTimeout(() => { b.textContent = "Chép"; b.classList.remove("ok"); }, 1600);
+  });
+})();
+</script>
+</body>
+</html>
