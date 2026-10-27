@@ -25,6 +25,7 @@
 .city .lbl{font:500 11px/1.4 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .city .nm{font:600 18px/1.25 var(--f-display);margin-top:4px}
 .city .clock{font:500 26px/1.1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--gold);margin-top:8px}
+.city .sub{font:500 14px/1.4 var(--f-mono);color:var(--muted);margin-top:12px}
 .city:last-child{text-align:right}
 .route .dist{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);margin-top:16px;padding-top:12px;font:500 12px/1.4 var(--f-mono);color:var(--muted)}
 
@@ -140,15 +141,15 @@
       <div>
         <p class="eyebrow">Hà Nội · 21.0285° N, 105.8542° E</p>
         <h1 class="name" style="margin-top:18px">Phạm<br>Việt <span>Hà</span></h1>
-        <p class="lede">Người thiết kế và tự xây hệ sinh thái <b>Bravin</b>: Antifact để thiết kế, Bravin để dựng video, Micron để mở rộng bằng AI, Micow để làm nhạc. Hiện đang học Thạc sĩ Trí tuệ nhân tạo tại Đại học Stanford.</p>
+        <p class="lede">Người thiết kế và tự xây hệ sinh thái <b>Bravin</b>: Antifact để thiết kế, Bravin để dựng video, Micron để mở rộng bằng AI, Micow để làm nhạc. Cử nhân Trí tuệ nhân tạo, đang học Kỹ sư phần mềm và Deep Learning.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px">
           <a class="btn primary" href="#he-sinh-thai">Xem hệ sinh thái
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           <a class="btn" href="#du-an">Sản phẩm</a>
         </div>
       </div>
-      <aside class="route rise" aria-label="Hà Nội và Stanford">
-        <svg viewBox="0 0 400 150" role="img" aria-label="Đường bay từ Hà Nội tới Stanford">
+      <aside class="route rise" aria-label="Học ở Hà Nội và học trực tuyến">
+        <svg viewBox="0 0 400 150" role="img" aria-label="Từ Hà Nội tới khoá học trực tuyến DeepLearning.AI">
           <defs><linearGradient id="arc" x1="0" x2="1"><stop offset="0" stop-color="#f2c14e"/><stop offset="1" stop-color="#8b7cff"/></linearGradient></defs>
           <path id="routePath" d="M30 120 C 120 10, 280 10, 370 120" fill="none" stroke="url(#arc)" stroke-width="2" stroke-dasharray="4 7"/>
           <circle cx="30" cy="120" r="6" fill="#f2c14e"/><circle cx="370" cy="120" r="6" fill="#8b7cff"/>
@@ -156,9 +157,9 @@
         </svg>
         <div class="cities">
           <div class="city"><div class="lbl">Đang sống</div><div class="nm">Hà Nội</div><div class="clock" id="clkHN">--:--</div></div>
-          <div class="city"><div class="lbl">Đang học</div><div class="nm">Stanford, California</div><div class="clock" id="clkSF">--:--</div></div>
+          <div class="city"><div class="lbl">Đang học trực tuyến</div><div class="nm">DeepLearning.AI</div><div class="sub">Andrew Ng giảng dạy</div></div>
         </div>
-        <div class="dist"><span>≈ 11.800 km</span><span id="clkDiff">lệch 14 giờ</span></div>
+        <div class="dist"><span>Kỹ sư phần mềm · PTIT</span><span>Deep Learning Specialization</span></div>
       </aside>
     </div>
   </section>
@@ -238,10 +239,10 @@
       <div class="txt">
         <p><a href="https://portfolio.vtvcab17.workers.dev/pham-viet-ha/" rel="author">Phạm Việt Hà</a> (nghệ danh âm nhạc <a href="https://portfolio.vtvcab17.workers.dev/havvking/">HAVVKING</a>) sống và làm việc ở Hà Nội. Hà tự thiết kế và viết Bravin từ đầu: timeline, bộ dựng hình, trang chỉnh màu, công cụ mask, xử lý âm thanh, trợ lý AI và các bản cho Android, Windows.</p>
         <p>Bravin chạy ngay trong trình duyệt, không cần máy chủ riêng, và vẫn có các công cụ của phần mềm chuyên nghiệp như keyframe, chỉnh màu theo node, theo dõi chuyển động hay xuất video 4K. Antifact, Micron và Micow mở rộng luồng làm việc đó: thiết kế trước, mở rộng bằng AI, làm nhạc, rồi dựng thành video.</p>
-        <p>Song song với việc làm sản phẩm, Hà đang học Thạc sĩ Trí tuệ nhân tạo tại Đại học Stanford.</p>
+        <p>Hà là cử nhân Trí tuệ nhân tạo của Đại học FPT. Song song với việc làm sản phẩm, Hà đang học Kỹ sư phần mềm tại Học viện Công nghệ Bưu chính Viễn thông và chuỗi khoá Deep Learning Specialization của DeepLearning.AI do Andrew Ng giảng dạy.</p>
         <dl class="facts">
           <div><dt>Nơi ở</dt><dd>Hà Nội, Việt Nam</dd></div>
-          <div><dt>Đang học</dt><dd>Thạc sĩ AI · Stanford</dd></div>
+          <div><dt>Đang học</dt><dd>Kỹ sư phần mềm · PTIT</dd></div>
           <div><dt>Hệ sinh thái</dt><dd>Antifact · Bravin · Micron · Micow</dd></div>
         </dl>
       </div>
@@ -260,13 +261,9 @@
 <script>
 (function () {
   const f = tz => new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz });
-  const hn = f("Asia/Ho_Chi_Minh"), sf = f("America/Los_Angeles");
+  const hn = f("Asia/Ho_Chi_Minh");
   function tick() {
-    const d = new Date();
-    document.getElementById("clkHN").textContent = hn.format(d);
-    document.getElementById("clkSF").textContent = sf.format(d);
-    const off = tz => { const p = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(d).find(x => x.type === "timeZoneName"); const m = /GMT([+-]\d+)?/.exec(p ? p.value : ""); return m && m[1] ? +m[1] : 0; };
-    document.getElementById("clkDiff").textContent = "lệch " + Math.abs(off("Asia/Ho_Chi_Minh") - off("America/Los_Angeles")) + " giờ";
+    document.getElementById("clkHN").textContent = hn.format(new Date());
   }
   tick(); setInterval(tick, 15000);
 })();
